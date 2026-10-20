@@ -1,0 +1,13 @@
+# SMART HELMET 360 - DANH SÁCH THƯ VIỆN PYTHON TRÊN RASPBERRY PI
+# Cài đặt bằng lệnh: pip install -r requirements.txt
+
+opencv-python-headless>=4.8.0
+ultralytics>=8.0.0
+flask>=2.2.0
+requests>=2.28.0
+numpy>=1.23.0
+pyserial>=3.5
+pyttsx3>=2.90
+# Thư viện GPIO cho Raspberry Pi (Nếu chạy trên Raspberry Pi OS Bookworm/Bullseye)
+RPi.GPIO>=0.7.1
+gpiozero>=2.0

@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Helmet 360° - Kế Hoạch & Cẩm Nang Kỹ Thuật 4 Camera</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0f1d;
+      --bg-card: #11192e;
+      --bg-card-hover: #16223f;
+      --bg-glass: rgba(17, 25, 46, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 229, 255, 0.25);
+      
+      --primary: #00f0ff;
+      --primary-dim: rgba(0, 240, 255, 0.15);
+      --secondary: #7928ca;
+      --accent: #00e676;
+      --accent-dim: rgba(0, 230, 118, 0.15);
+      --warning: #ffb300;
+      --danger: #ff3366;
+      --danger-dim: rgba(255, 51, 102, 0.15);
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 30px rgba(0,0,0,0.45);
+      --shadow-glow: 0 0 35px rgba(0, 240, 255, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(121, 40, 202, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 35%, rgba(0, 240, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(0, 230, 118, 0.08) 0%, transparent 45%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 30px 24px 100px;
+    }
+
+    /* Header & Hero */
+    header {
+      position: relative;
+      margin-bottom: 45px;
+      padding: 40px;
+      border-radius: var(--radius-xl);
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    .badge.cyan {
+      background: var(--primary-dim);
+      color: var(--primary);
+      border-color: rgba(0, 240, 255, 0.3);
+    }
+
+    .badge.green {
+      background: var(--accent-dim);
+      color: var(--accent);
+      border-color: rgba(0, 230, 118, 0.3);
+    }
+
+    .badge.red {
+      background: var(--danger-dim);
+      color: var(--danger);
+      border-color: rgba(255, 51, 102, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      max-width: 900px;
+      margin-bottom: 30px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 18px 22px;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 240, 255, 0.1);
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 35px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-btn {
+      padding: 12px 22px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-btn.active {
+      background: var(--primary-dim);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    /* Section common */
+    section {
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 35px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+    }
+
+    .section-title .icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    /* Interactive FOV Simulator */
+    .sim-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .sim-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 460px;
+      margin: 0 auto;
+      background: #080d19;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+
+    #fovCanvas {
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    .sim-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .control-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: var(--radius-md);
+    }
+
+    .slider-group {
+      margin-bottom: 16px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .slider-val {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .cam-toggles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .btn-toggle-cam {
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-toggle-cam.active {
+      background: var(--primary-dim);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .haptic-status {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .haptic-indicator {
+      text-align: center;
+      padding: 10px 4px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      transition: all 0.2s ease;
+    }
+
+    .haptic-indicator.vibrating {
+      background: var(--danger-dim);
+      border-color: var(--danger);
+      color: var(--danger);
+      box-shadow: 0 0 12px rgba(255, 51, 102, 0.4);
+      animation: pulse 0.5s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+
+    /* Comparison Table & Cards */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 850px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .comp-card {
+      padding: 26px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      background: rgba(255, 255, 255, 0.02);
+      position: relative;
+    }
+
+    .comp-card.good {
+      border-color: rgba(0, 230, 118, 0.3);
+      background: linear-gradient(180deg, rgba(0, 230, 118, 0.04) 0%, transparent 100%);
+    }
+
+    .comp-card.bad {
+      border-color: rgba(255, 51, 102, 0.3);
+      background: linear-gradient(180deg, rgba(255, 51, 102, 0.04) 0%, transparent 100%);
+    }
+
+    .comp-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comp-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .comp-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+    }
+
+    .comp-item .icon {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      flex-shrink: 0;
+    }
+
+    /* Hardware Table */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    .highlight-row td {
+      background: var(--primary-dim) !important;
+      color: #fff !important;
+      font-weight: 500;
+    }
+
+    /* Architecture Flow */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .flow-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      position: relative;
+    }
+
+    .flow-step-num {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: var(--primary);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.8rem;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .flow-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 8px 0 10px;
+      color: #fff;
+    }
+
+    .code-snippet {
+      background: #090e1a;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    /* Roadmap Timeline */
+    .timeline {
+      position: relative;
+      margin-top: 30px;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 7px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -30px;
+      top: 5px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+    }
+
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 22px;
+    }
+
+    .timeline-week {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .timeline-task {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .timeline-details {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Action bar */
+    .action-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #38e1ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      padding-top: 30px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header>
+    <div class="badge-bar">
+      <span class="badge cyan">Đề Tài KHKT 2026</span>
+      <span class="badge green">Smart Helmet Cho Người Khiếm Thị</span>
+      <span class="badge">Hệ Thống 4 Cam Cố Định 360°</span>
+      <span class="badge red">Không Sử Dụng Cam Xoay</span>
+    </div>
+    
+    <h1>Kế Hoạch & Thiết Kế Kỹ Thuật: Smart Helmet 360°</h1>
+    <p class="hero-subtitle">
+      Giải pháp thị giác nhân tạo toàn cảnh không góc chết cho người khiếm thị sử dụng hệ thống 4 camera góc rộng cố định ($120^\circ-130^\circ$ FOV), phản hồi đa kênh bằng 4 motor rung định hướng và giọng nói AI thông minh.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-val">360°</div>
+        <div class="stat-label">Quan sát toàn cảnh liên tục</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">0 ms</div>
+        <div class="stat-label">Độ trễ quay quét (Không cơ khí)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">4 Kênh</div>
+        <div class="stat-label">Rung xúc giác định hướng haptic</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">15+ FPS</div>
+        <div class="stat-label">Xử lý biên AI (YOLOv8n)</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <div class="nav-tabs">
+    <button class="nav-btn active" onclick="scrollToSection('sim')">🎯 Mô Phỏng Góc Phủ 360°</button>
+    <button class="nav-btn" onclick="scrollToSection('comp')">⚖️ So Sánh: 4 Cam vs Cam Xoay</button>
+    <button class="nav-btn" onclick="scrollToSection('hardware')">📷 Lựa Chọn Module Camera</button>
+    <button class="nav-btn" onclick="scrollToSection('arch')">⚡ Kiến Trúc Phần Cứng & AI</button>
+    <button class="nav-btn" onclick="scrollToSection('roadmap')">📅 Lộ Trình 8 Tuần</button>
+  </div>
+
+  <!-- SECTION 1: INTERACTIVE FOV SIMULATOR -->
+  <section id="sim">
+    <div class="section-title">
+      <div class="icon-box">🎯</div>
+      <span>Mô Phỏng Trực Quan Góc Phủ 360° & Phản Hồi Rung Haptic</span>
+    </div>
+    <p class="section-desc">
+      Kéo thanh trượt góc FOV hoặc di chuột/chạm vào màn hình để đặt "Vật cản giả lập". Xem trực tiếp cách hệ sinh thái 4 camera nhận diện và kích hoạt motor rung tương ứng.
+    </p>
+
+    <div class="sim-container">
+      <div class="canvas-wrapper">
+        <canvas id="fovCanvas" width="460" height="460"></canvas>
+      </div>
+
+      <div class="sim-controls">
+        <div class="control-box">
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Góc nhìn mỗi Camera (H-FOV):</span>
+              <span class="slider-val" id="fovVal">120°</span>
+            </div>
+            <input type="range" id="fovSlider" min="80" max="150" value="120" step="1">
+            <small style="color: var(--text-dim); display:block; margin-top:4px;">
+              * Lưu ý: FOV ≥ 115° là bắt buộc để triệt tiêu hoàn toàn 4 góc chết giữa các cam.
+            </small>
+          </div>
+
+          <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;">Bật / Tắt Từng Mắt Camera:</div>
+          <div class="cam-toggles">
+            <button class="btn-toggle-cam active" id="btnCam0" onclick="toggleCam(0)">
+              <span>Cam Trước (0°)</span> <span class="dot">●</span>
+            </button>
+            <button class="btn-toggle-cam active" id="btnCam1" onclick="toggleCam(1)">
+              <span>Cam Phải (90°)</span> <span class="dot">●</span>
+            </button>
+            <button class="btn-toggle-cam active" id="btnCam2" onclick="toggleCam(2)">
+              <span>Cam Sau (180°)</span> <span class="dot">●</span>
+            </button>
+            <button class="btn-toggle-cam active" id="btnCam3" onclick="toggleCam(3)">
+              <span>Cam Trái (270°)</span> <span class="dot">●</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="control-box">
+          <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 6px;">Trạng Thái Kích Hoạt 4 Motor Rung Xung Quanh Mũ:</div>
+          <div class="haptic-status">
+            <div class="haptic-indicator" id="haptic0">TRƯỚC<br>(Trán)</div>
+            <div class="haptic-indicator" id="haptic1">PHẢI<br>(T.Dương P)</div>
+            <div class="haptic-indicator" id="haptic2">SAU<br>(Gáy)</div>
+            <div class="haptic-indicator" id="haptic3">TRÁI<br>(T.Dương T)</div>
+          </div>
+          <div id="simLog" style="margin-top: 14px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; color: var(--primary);">
+            [Trạng thái]: Di chuyển chuột vào vùng quét để thử nghiệm cảnh báo vật cản.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: COMPARISON -->
+  <section id="comp">
+    <div class="section-title">
+      <div class="icon-box">⚖️</div>
+      <span>Phân Tích Chuyên Sâu: 4 Camera Cố Định vs 1 Camera Xoay Góc</span>
+    </div>
+    <p class="section-desc">
+      Giải trình khoa học vì sao không nên dùng camera xoay cho mũ bảo hiểm người khiếm thị trong đề tài KHKT.
+    </p>
+
+    <div class="comparison-grid">
+      <!-- Cố định -->
+      <div class="comp-card good">
+        <div class="comp-card-title" style="color: var(--accent);">
+          <span>✓</span> Hệ Thống 4 Camera Cố Định 360° (Lựa chọn tối ưu)
+        </div>
+        <ul class="comp-list">
+          <li class="comp-item">
+            <span class="icon">⚡</span>
+            <div><strong>Phản ứng tức thời (0 delay):</strong> Theo dõi cùng lúc cả 4 góc phần tư. Xe chạy nhanh từ sau đến được cảnh báo ngay lập tức mà không cần chờ motor lia góc.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">🛡️</span>
+            <div><strong>Độ bền Solid-State:</strong> Không có chi tiết nhông bánh răng chuyển động. Kháng va đập, rung xóc khi đi bộ/chạy nhảy mà không lo kẹt cơ khí.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">🤫</span>
+            <div><strong>Êm ái tuyệt đối:</strong> Không tạo ra tiếng kêu "rè rè" và rung động của motor servo ngay trên đỉnh đầu, giữ cho người khiếm thị không bị stress thính giác.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">📷</span>
+            <div><strong>Ảnh sắc nét:</strong> Khung hình ổn định, thuật toán AI (YOLO / MobileNet) không bị hiện tượng motion blur (nhòe chuyển động) khi lia camera.</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Xoay góc -->
+      <div class="comp-card bad">
+        <div class="comp-card-title" style="color: var(--danger);">
+          <span>✗</span> Camera Xoay Góc (PTZ / Servo Motor)
+        </div>
+        <ul class="comp-list">
+          <li class="comp-item">
+            <span class="icon">⏳</span>
+            <div><strong>Độ trễ rất lớn (1–3 giây/vòng):</strong> Khi camera đang quay về phía trước, toàn bộ phía sau và hai bên hông bị "mù hoàn toàn", cực kỳ nguy hiểm trong giao thông.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">⚠️</span>
+            <div><strong>Dễ đứt cáp và gãy bánh răng:</strong> Dây cáp camera bị vặn xoắn liên tục qua cổ xoay dẫn đến đứt gãy sau thời gian ngắn sử dụng.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">🔊</span>
+            <div><strong>Gây ồn và rung lắc đầu:</strong> Motor servo gắn trên mũ gây rung và phát ra tiếng ồn cơ khí liên tục lấn át âm thanh cảnh báo xung quanh.</div>
+          </li>
+          <li class="comp-item">
+            <span class="icon">🌀</span>
+            <div><strong>Hình ảnh bị mờ:</strong> Tốc độ quét cơ học làm tốc độ bắt sáng giảm, AI nhận diện nhầm hoặc bỏ sót vật thể nguy hiểm.</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: CAMERA HARDWARE SELECTION -->
+  <section id="hardware">
+    <div class="section-title">
+      <div class="icon-box">📷</div>
+      <span>Xác Định Rõ Module Camera Sử Dụng</span>
+    </div>
+    <p class="section-desc">
+      So sánh các dòng cảm biến trên thị trường để chọn linh kiện phù hợp với ngân sách và trình độ học sinh THCS.
+    </p>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Giải Pháp Camera</th>
+            <th>Góc Nhìn (FOV)</th>
+            <th>Chuẩn Giao Tiếp</th>
+            <th>Độ Phân Giải / Nén</th>
+            <th>Mức Tải CPU & Kích Thước</th>
+            <th>Đánh Giá & Lựa Chọn</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td><strong>4x Module USB Camera OV2710 / GC2053 (Khuyên dùng)</strong></td>
+            <td><strong>120° - 130° M12 Wide Lens</strong></td>
+            <td>USB 2.0 UVC (Standard Plug & Play)</td>
+            <td>1080p / 720p cứng MJPEG (VGA 640x480 @ 20fps)</td>
+            <td>Rất nhẹ nhờ nén phần cứng; Kích thước bo trần 28x28mm siêu mỏng</td>
+            <td>⭐ <strong>TỐI ƯU NHẤT:</strong> Dễ mua, độ ổn định cực cao trên Linux/RPi5, không lo hỏng cáp FPC.</td>
+          </tr>
+          <tr>
+            <td>Bộ 4 Camera Arducam Camarray MIPI CSI (IMX219)</td>
+            <td>160° Fisheye</td>
+            <td>MIPI CSI-2 qua bo phân mạch Arducam HAT</td>
+            <td>1080p Raw Stream</td>
+            <td>Giao tiếp trực tiếp GPU nhưng bo chia cồng kềnh, ngốn điện</td>
+            <td>❌ Giá thành quá cao (>2.5 - 3.5 triệu đồng), cáp FPC dẹp dễ đứt gập khi uốn trong mũ.</td>
+          </tr>
+          <tr>
+            <td>4x Module độc lập ESP32-CAM / ESP32-S3 Eye</td>
+            <td>66° - 120°</td>
+            <td>Không dây WiFi / RTSP Stream</td>
+            <td>SVGA (800x600) JPEG</td>
+            <td>Độ trễ truyền stream qua WiFi dao động 150ms - 500ms</td>
+            <td>❌ Bị trễ mạng và nghẽn băng thông WiFi nội bộ, hao pin riêng cho từng module.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Thông số module chốt -->
+    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: var(--radius-md); padding: 22px; margin-top: 25px;">
+      <h3 style="color: var(--primary); margin-bottom: 12px; font-size: 1.15rem;">📌 Thông Số Kỹ Thuật Đã Chốt Cho Đề Tài:</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 15px; font-size: 0.9rem;">
+        <div>• <strong>Cảm biến hình ảnh:</strong> CMOS 1/2.7" Full HD (OV2710 hoặc GC2053)</div>
+        <div>• <strong>Loại ống kính:</strong> M12 x 0.5, Tiêu cự f=2.1mm hoặc 2.5mm cho góc nhìn $120^\circ-130^\circ$</div>
+        <div>• <strong>Cổng kết nối:</strong> 4 chân USB chuẩn (VCC, D-, D+, GND)</div>
+        <div>• <strong>Mạch gộp trung tâm:</strong> Bo mạch USB 2.0 Hub 4 cổng (IC FE1.1s hoặc GL850G) kích thước mỏng $15 \times 30\,\text{mm}$</div>
+        <div>• <strong>Chế độ hoạt động AI:</strong> MJPEG $640 \times 480$ pixels @ 15fps (đáp ứng hoàn hảo tốc độ đi bộ của người dùng)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: ARCHITECTURE & AI -->
+  <section id="arch">
+    <div class="section-title">
+      <div class="icon-box">⚡</div>
+      <span>Kiến Trúc Phần Cứng, Mạch Altium & Luồng AI Xử Lý</span>
+    </div>
+    <p class="section-desc">
+      Quy trình phối hợp giữa 4 camera, bo mạch chủ AI và hệ thống phản hồi cảnh báo rung/âm thanh.
+    </p>
+
+    <div class="flow-grid">
+      <div class="flow-card">
+        <div class="flow-step-num">1</div>
+        <div class="flow-card-title">Thu Nhận Đa Luồng (4 Threads)</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          Chạy 4 thread Python độc lập với OpenCV capture liên tục 4 luồng video dạng MJPEG buffer để loại bỏ hoàn toàn độ trễ tích lũy.
+        </p>
+        <div class="code-snippet">
+cap_front = cv2.VideoCapture(0)
+cap_right = cv2.VideoCapture(1)
+cap_rear  = cv2.VideoCapture(2)
+cap_left  = cv2.VideoCapture(3)
+        </div>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-step-num">2</div>
+        <div class="flow-card-title">Phân Trọng Số AI Ưu Tiên</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          Cam Trước chạy AI liên tục phát hiện hố gà, bậc thang, cột điện, người đối diện. 3 Cam còn lại chạy thuật toán phát hiện xe lao tới từ sau/bên hông.
+        </p>
+        <div class="code-snippet">
+# Model: YOLOv8-Nano ONNX/NCNN
+results = model.predict(frame_front)
+        </div>
+      </div>
+
+      <div class="flow-card">
+        <div class="flow-step-num">3</div>
+        <div class="flow-card-title">Phản Hồi Xúc Giác & Âm Thanh</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">
+          Gửi tín hiệu PWM kích 4 motor rung ở 4 vị trí trên mũ qua mạch đệm Transistor ULN2003 / MOSFET. Phát thông báo giọng nói qua tai nghe.
+        </p>
+        <div class="code-snippet">
+if danger_direction == 'LEFT':
+    vibrate_motor(PIN_VIB_LEFT, freq=80)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: ROADMAP -->
+  <section id="roadmap">
+    <div class="section-title">
+      <div class="icon-box">📅</div>
+      <span>Lộ Trình Triển Khai Chi Tiết (8 Tuần)</span>
+    </div>
+    <p class="section-desc">
+      Phù hợp với tiến độ làm đề tài nghiên cứu khoa học kỹ thuật dành cho học sinh.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-week">Tuần 1 – Tuần 2</div>
+          <div class="timeline-task">Đặt Mua Linh Kiện & Khảo Sát Góc Phủ Camera</div>
+          <div class="timeline-details">
+            • Đặt 4 mắt USB Camera $120^\circ$, mạch USB Hub 4 cổng, 4 motor rung đồng xu $1027$, kit Raspberry Pi 5 / Orange Pi 5.<br>
+            • Viết script test mở đồng thời 4 camera trên máy tính để đo góc phủ và độ trễ.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-week">Tuần 3 – Tuần 4</div>
+          <div class="timeline-task">Thiết Kế Mạch Altium & Gá Cơ Khí 3D Trên Mũ</div>
+          <div class="timeline-details">
+            • Thiết kế mạch PCB Altium: Khối hạ áp $5\text{V}/5\text{A}$, khối mạch đệm điều khiển 4 motor rung, nút SOS và còi cảnh báo.<br>
+            • Thiết kế ngàm 3D in nhựa để cố định 4 mắt camera nghiêng nhẹ $5^\circ-10^\circ$ xuống mặt đường.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-week">Tuần 5 – Tuần 7</div>
+          <div class="timeline-task">Phát Triển Thuật Toán AI & Tích Hợp Hệ Thống Cảnh Báo</div>
+          <div class="timeline-details">
+            • Huấn luyện và tối ưu mô hình YOLOv8-Nano / YOLOv11n sang định dạng ONNX/NCNN.<br>
+            • Lập trình bộ lọc cảnh báo thông minh: chỉ báo khi vật cản có xu hướng tiến lại gần.<br>
+            • Tích hợp module giọng nói tiếng Việt ngắn gọn, súc tích.
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-week">Tuần 8</div>
+          <div class="timeline-task">Thử Nghiệm Môi Trường An Toàn & Hoàn Thiện Hồ Sơ KHKT</div>
+          <div class="timeline-details">
+            • Thử nghiệm trong sân trường, phòng lab với chướng ngại vật mô phỏng (tuyệt đối không thử ngoài đường thật theo lưu ý an toàn của đề tài).<br>
+            • Viết báo cáo thuyết minh, vẽ sơ đồ khối, làm poster và video clip trình diễn cho ban giám khảo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <button class="btn btn-outline" onclick="window.print()">🖨️ In / Xuất File PDF Kế Hoạch</button>
+    <a href="ke_hoach_trien_khai_smart_helmet_4cam.md" class="btn btn-outline">📄 Kế Hoạch KHKT</a>
+    <a href="smart_helmet_pi/README_HUONG_DAN_NAP_PI.md" class="btn btn-outline">🚀 Code Nạp Pi</a>
+    <a href="SCHEMATIC_PCB_VIEWER.html" class="btn btn-primary" style="background: linear-gradient(135deg, #00f0ff, #10b981); color: #000; font-weight: 800; box-shadow: 0 4px 20px rgba(0, 240, 255, 0.4);">🎯 Tra Cứu Linh Kiện & CAD Altium</a>
+  </div>
+
+  <footer>
+    <p>Dự Án Nghiên Cứu Khoa Học Kỹ Thuật - Mũ Bảo Hiểm Thông Minh Hỗ Trợ Người Khiếm Thị (Smart Helmet 360°)</p>
+    <p style="margin-top: 5px;">Thư mục dự án: <code>C:\Users\Public\Documents\Altium\08052026\Smart_helmet</code></p>
+  </footer>
+</div>
+
+<script>
+  // Smooth scroll
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // Simulator Canvas Logic
+  const canvas = document.getElementById('fovCanvas');
+  const ctx = canvas.getContext('2d');
+  const fovSlider = document.getElementById('fovSlider');
+  const fovValText = document.getElementById('fovVal');
+  const simLog = document.getElementById('simLog');
+
+  let currentFov = 120;
+  const camsActive = [true, true, true, true]; // Front (0), Right (1), Rear (2), Left (3)
+  const camAngles = [ -Math.PI / 2, 0, Math.PI / 2, Math.PI ]; // Radians
+  const camNames = ['TRƯỚC', 'PHẢI', 'SAU', 'TRÁI'];
+  const hapticEls = [
+    document.getElementById('haptic0'),
+    document.getElementById('haptic1'),
+    document.getElementById('haptic2'),
+    document.getElementById('haptic3')
+  ];
+
+  let obstacle = { x: 330, y: 130, active: true };
+
+  function drawSim() {
+    const w = canvas.width;
+    const h = canvas.height;
+    const cx = w / 2;
+    const cy = h / 2;
+    const rHelmet = 60;
+    const rScan = 160;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Draw background grid lines
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(cx, cy, rScan, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Check which camera detects the obstacle
+    let detectedCams = [];
+    if (obstacle.active) {
+      const dx = obstacle.x - cx;
+      const dy = obstacle.y - cy;
+      const dist = Math.hypot(dx, dy);
+      let angle = Math.atan2(dy, dx); // [-PI, PI]
+
+      if (dist <= rScan + 20) {
+        const halfFovRad = (currentFov * Math.PI / 180) / 2;
+        for (let i = 0; i < 4; i++) {
+          if (!camsActive[i]) continue;
+          let baseAng = camAngles[i];
+          let diff = angle - baseAng;
+          while (diff < -Math.PI) diff += Math.PI * 2;
+          while (diff > Math.PI) diff -= Math.PI * 2;
+
+          if (Math.abs(diff) <= halfFovRad) {
+            detectedCams.push(i);
+          }
+        }
+      }
+    }
+
+    // Update Haptic Indicators
+    for (let i = 0; i < 4; i++) {
+      if (detectedCams.includes(i)) {
+        hapticEls[i].classList.add('vibrating');
+      } else {
+        hapticEls[i].classList.remove('vibrating');
+      }
+    }
+
+    if (detectedCams.length > 0) {
+      const names = detectedCams.map(i => camNames[i]).join(' + ');
+      simLog.innerHTML = `<span style="color:#ff3366;">⚠️ PHÁT HIỆN VẬT CẢN:</span> Hướng ${names} ➔ Kích hoạt rung tương ứng!`;
+    } else {
+      simLog.innerHTML = `<span style="color:#00e676;">✓ An toàn:</span> Không phát hiện vật cản trong tầm quét gần.`;
+    }
+
+    // Draw FOV cones for active cameras
+    const halfFovRad = (currentFov * Math.PI / 180) / 2;
+    for (let i = 0; i < 4; i++) {
+      if (!camsActive[i]) continue;
+      const baseAng = camAngles[i];
+      const startAng = baseAng - halfFovRad;
+      const endAng = baseAng + halfFovRad;
+
+      const isWarning = detectedCams.includes(i);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, rScan, startAng, endAng);
+      ctx.closePath();
+
+      if (isWarning) {
+        ctx.fillStyle = 'rgba(255, 51, 102, 0.28)';
+        ctx.strokeStyle = 'rgba(255, 51, 102, 0.8)';
+      } else {
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.12)';
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.5)';
+      }
+      ctx.fill();
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Camera lens dot
+      const lx = cx + Math.cos(baseAng) * (rHelmet + 4);
+      const ly = cy + Math.sin(baseAng) * (rHelmet + 4);
+      ctx.beginPath();
+      ctx.arc(lx, ly, 5, 0, Math.PI * 2);
+      ctx.fillStyle = isWarning ? '#ff3366' : '#00f0ff';
+      ctx.fill();
+
+      // Label
+      ctx.font = '10px JetBrains Mono';
+      ctx.fillStyle = '#94a3b8';
+      ctx.textAlign = 'center';
+      const tx = cx + Math.cos(baseAng) * (rHelmet + 22);
+      const ty = cy + Math.sin(baseAng) * (rHelmet + 22) + 3;
+      ctx.fillText(camNames[i], tx, ty);
+    }
+
+    // Draw Helmet (Center Head)
+    ctx.beginPath();
+    ctx.arc(cx, cy, rHelmet, 0, Math.PI * 2);
+    ctx.fillStyle = '#1e293b';
+    ctx.fill();
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Helmet visor / nose indicator (pointing UP/Front)
+    ctx.beginPath();
+    ctx.moveTo(cx - 15, cy - rHelmet + 6);
+    ctx.lineTo(cx, cy - rHelmet - 8);
+    ctx.lineTo(cx + 15, cy - rHelmet + 6);
+    ctx.strokeStyle = '#38e1ff';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    ctx.font = '11px Plus Jakarta Sans';
+    ctx.fillStyle = '#f8fafc';
+    ctx.textAlign = 'center';
+    ctx.fillText('SMART', cx, cy - 6);
+    ctx.fillText('HELMET', cx, cy + 12);
+
+    // Draw Obstacle
+    if (obstacle.active) {
+      ctx.beginPath();
+      ctx.arc(obstacle.x, obstacle.y, 10, 0, Math.PI * 2);
+      ctx.fillStyle = '#ff3366';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.font = '10px Plus Jakarta Sans';
+      ctx.fillStyle = '#ff3366';
+      ctx.textAlign = 'center';
+      ctx.fillText('Vật cản', obstacle.x, obstacle.y - 14);
+    }
+  }
+
+  // Interactive controls
+  fovSlider.addEventListener('input', (e) => {
+    currentFov = parseInt(e.target.value);
+    fovValText.innerText = currentFov + '°';
+    drawSim();
+  });
+
+  function toggleCam(idx) {
+    camsActive[idx] = !camsActive[idx];
+    const btn = document.getElementById('btnCam' + idx);
+    if (camsActive[idx]) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+    drawSim();
+  }
+
+  function updateObstaclePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    obstacle.x = (e.clientX - rect.left) * scaleX;
+    obstacle.y = (e.clientY - rect.top) * scaleY;
+    obstacle.active = true;
+    drawSim();
+  }
+
+  canvas.addEventListener('mousemove', updateObstaclePos);
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      updateObstaclePos(e.touches[0]);
+    }
+  });
+
+  // Initial draw
+  drawSim();
+</script>
+
+</body>
+</html>

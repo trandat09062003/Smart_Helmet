@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Helmet 360° - Sơ Đồ Nguyên Lý Altium, Layout PCB & Tra Cứu Linh Kiện (BOM)</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #080c16;
+      --bg-card: #0f172a;
+      --bg-card-hover: #1e293b;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-glow: rgba(0, 240, 255, 0.35);
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --accent: #00f0ff;
+      --accent-glow: rgba(0, 240, 255, 0.25);
+      --accent-green: #10b981;
+      --accent-gold: #f59e0b;
+      --accent-red: #ff3366;
+      --accent-purple: #a855f7;
+      
+      --net-pwr: #ef4444;
+      --net-5v: #10b981;
+      --net-3v3: #38bdf8;
+      --net-gnd: #8b5cf6;
+      --net-haptic: #f59e0b;
+      --net-usb: #ec4899;
+      
+      --font-main: 'Inter', -apple-system, sans-serif;
+      --font-title: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.08) 0px, transparent 45%),
+        radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.08) 0px, transparent 45%),
+        radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* TOP HEADER */
+    header {
+      background: rgba(15, 23, 42, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-wrap { display: flex; align-items: center; gap: 14px; }
+
+    .brand-icon {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #0284c7, #00f0ff);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-title); font-weight: 900; font-size: 20px;
+      color: #000; box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .brand-info h1 {
+      font-family: var(--font-title); font-size: 17px; font-weight: 800;
+      letter-spacing: -0.2px;
+      background: linear-gradient(90deg, #ffffff, #93c5fd, #00f0ff);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .brand-info p {
+      font-size: 12px; color: var(--text-dim); margin-top: 2px;
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; }
+
+    .brand-badge {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 999px;
+      background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--accent); letter-spacing: 0.5px;
+    }
+
+    .btn-action {
+      background: var(--bg-card); border: 1px solid var(--card-border);
+      color: var(--text-main); font-size: 12.5px; font-weight: 600;
+      padding: 7px 14px; border-radius: 8px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s ease; text-decoration: none;
+    }
+    .btn-action:hover {
+      background: var(--bg-card-hover); border-color: var(--accent);
+      color: var(--accent); transform: translateY(-1px);
+    }
+
+    /* NAVIGATION BAR TABS */
+    .nav-bar {
+      background: rgba(11, 18, 33, 0.85);
+      border-bottom: 1px solid var(--card-border);
+      padding: 8px 28px 0;
+      display: flex; gap: 8px; overflow-x: auto;
+    }
+
+    .nav-tab {
+      background: transparent; border: none; border-bottom: 3px solid transparent;
+      color: var(--text-muted); font-size: 13.5px; font-weight: 600;
+      padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+      transition: all 0.2s ease; white-space: nowrap;
+    }
+    .nav-tab:hover { color: var(--text-main); }
+    .nav-tab.active {
+      color: var(--accent); border-bottom-color: var(--accent);
+      background: rgba(0, 240, 255, 0.05);
+      border-radius: 8px 8px 0 0;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1; padding: 24px 28px 60px; max-width: 1540px; margin: 0 auto; width: 100%;
+    }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* =========================================================================
+       TAB 3: BOM STYLES (TRÍCH XUẤT LINH KIỆN & TRA CỨU THƯ VIỆN ALTIUM)
+       ========================================================================= */
+    .bom-container {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .bom-header-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px;
+      background: var(--bg-card); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 16px 20px;
+    }
+
+    .bom-search-box {
+      position: relative; flex: 1; min-width: 280px; max-width: 480px;
+    }
+    .bom-search-box input {
+      width: 100%; background: #060a14; border: 1px solid var(--card-border);
+      color: #fff; padding: 10px 16px 10px 42px; border-radius: 10px;
+      font-size: 13px; font-family: var(--font-main); outline: none;
+      transition: all 0.2s ease;
+    }
+    .bom-search-box input:focus {
+      border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .bom-search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-dim); font-size: 16px; pointer-events: none;
+    }
+
+    .bom-filter-pills {
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+    }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid var(--card-border);
+      color: var(--text-muted); font-size: 12px; font-weight: 600;
+      padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .filter-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+    .filter-btn.active {
+      background: rgba(0, 240, 255, 0.15); border-color: var(--accent);
+      color: var(--accent); font-weight: 700;
+    }
+    .filter-btn.src-btn.active {
+      background: rgba(16, 185, 129, 0.15); border-color: var(--accent-green);
+      color: #34d399;
+    }
+
+    .bom-table-wrapper {
+      background: var(--bg-card); border: 1px solid var(--card-border);
+      border-radius: 14px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    .bom-main-table {
+      width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;
+    }
+    .bom-main-table th {
+      background: #090e1a; color: var(--text-dim); font-size: 11px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 14px 16px; border-bottom: 1px solid var(--card-border);
+      white-space: nowrap;
+    }
+    .bom-main-table td {
+      padding: 14px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+    .bom-main-table tr:hover td {
+      background: rgba(0, 240, 255, 0.02);
+    }
+
+    .tag-desig {
+      font-family: var(--font-mono); font-weight: 800; font-size: 12.5px;
+      color: #38bdf8; background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px;
+      border-radius: 6px; display: inline-block;
+    }
+    .tag-lib {
+      font-size: 11.5px; color: var(--text-muted); font-family: var(--font-mono);
+    }
+    .tag-fp {
+      font-family: var(--font-mono); font-size: 11.5px; color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.04); padding: 3px 8px;
+      border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08);
+      display: inline-block;
+    }
+
+    .btn-copy {
+      background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--accent); padding: 4px 10px; border-radius: 6px; font-size: 11.5px;
+      font-weight: 700; cursor: pointer; display: inline-flex; align-items: center;
+      gap: 5px; transition: all 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: var(--accent); color: #000; transform: scale(1.04);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* TOAST NOTIFICATION */
+    #toast-msg {
+      position: fixed; bottom: 25px; right: 25px;
+      background: linear-gradient(135deg, #0284c7, #00f0ff);
+      color: #000; font-weight: 700; font-size: 13px;
+      padding: 12px 22px; border-radius: 10px; box-shadow: 0 8px 30px rgba(0, 240, 255, 0.4);
+      display: none; align-items: center; gap: 8px; z-index: 9999;
+      animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* VIEWER TOOLBARS */
+    .viewer-toolbar {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px; margin-bottom: 14px;
+      background: var(--bg-card); border: 1px solid var(--card-border);
+      border-radius: 12px; padding: 12px 18px;
+    }
+    .tool-group { display: flex; align-items: center; gap: 8px; }
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border);
+      color: var(--text-muted); font-size: 12px; font-weight: 600;
+      padding: 7px 12px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;
+    }
+    .tool-btn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .tool-btn.active {
+      background: rgba(0, 240, 255, 0.15); border-color: var(--accent); color: var(--accent);
+    }
+
+    .svg-canvas-box {
+      width: 100%; height: 680px; background: #050811;
+      border: 1px solid var(--card-border); border-radius: 14px;
+      overflow: hidden; position: relative; cursor: grab;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+    }
+    .svg-canvas-box:active { cursor: grabbing; }
+
+    /* CHIP CARDS & PINS TABLE */
+    .pins-mini-table {
+      width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px;
+    }
+    .pins-mini-table th {
+      background: rgba(0, 240, 255, 0.08); color: var(--accent);
+      padding: 8px 10px; text-align: left; font-size: 11px;
+    }
+    .pins-mini-table td {
+      padding: 7px 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    /* RATIONALE CARDS */
+    .rationale-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 18px; margin-top: 20px;
+    }
+    .rat-card {
+      background: var(--bg-card); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 22px; position: relative;
+      transition: all 0.25s ease;
+    }
+    .rat-card:hover {
+      border-color: var(--card-border-glow); transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .rat-icon {
+      font-size: 26px; margin-bottom: 12px; display: inline-block;
+    }
+    .rat-title {
+      font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px;
+    }
+    .rat-desc {
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    }
+
+    footer {
+      text-align: center; font-size: 12px; color: var(--text-dim);
+      padding: 30px; border-top: 1px solid var(--card-border); margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand-wrap">
+      <div class="brand-icon">🪖</div>
+      <div class="brand-info">
+        <h1>SMART HELMET 360° - CARRIER BOARD CAD & BOM VIEWER</h1>
+        <p>Mũ Bảo Hiểm Thông Minh Cho Người Khiếm Thị • Mạch Phụ Trợ RPi & 4 Camera 360°</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="brand-badge">🟢 THƯ VIỆN CHUẨN: THU_VIEN_ALTIUMM2.IntLib</span>
+      <a href="index.html" class="btn-action">🏠 Trang Kế Hoạch</a>
+      <a href="smart_helmet_pi/README_HUONG_DAN_NAP_PI.md" class="btn-action">🚀 Code Nạp Pi</a>
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <nav class="nav-bar">
+    <button class="nav-tab" onclick="switchTab('pane-sch')">📐 Sơ Đồ Nguyên Lý (Schematic CAD)</button>
+    <button class="nav-tab" onclick="switchTab('pane-pcb')">🖨️ Bố Trí Mạch In (PCB Layout)</button>
+    <button class="nav-tab active" onclick="switchTab('pane-bom')">📋 Danh Mục Linh Kiện (BOM Tra Cứu Altium)</button>
+    <button class="nav-tab" onclick="switchTab('pane-pins')">🔌 Bảng Nối Dây (Pin-to-Pin Mapping)</button>
+    <button class="nav-tab" onclick="switchTab('pane-rationale')">💡 Nguyên Lý Chọn Linh Kiện</button>
+  </nav>
+
+  <main>
+
+    <!-- =====================================================================
+         TAB 3: BOM - DANH MỤC LINH KIỆN & TRA CỨU ALTIUM (ACTIVE MẶC ĐỊNH)
+         ===================================================================== -->
+    <div id="pane-bom" class="tab-pane active">
+      <div class="bom-container">
+        
+        <!-- BANNER HƯỚNG DẪN TRA CỨU ALTIUM -->
+        <div style="background:linear-gradient(135deg, rgba(15,23,42,0.98), rgba(30,41,59,0.92)); border:1px solid #10b981; border-radius:14px; padding:18px 24px; box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <div style="flex:1; min-width:320px;">
+              <h2 style="font-family:var(--font-title); font-size:17px; color:#fff; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:22px;">🎯</span> CẨM NANG TRA CỨU LINH KIỆN: ƯU TIÊN <code style="color:#34d399; background:rgba(16,185,129,0.15); padding:2px 8px; border-radius:6px; border:1px solid rgba(16,185,129,0.3);">THU_VIEN_ALTIUMM2.IntLib</code>
+              </h2>
+              <div style="margin-top:10px; font-size:13px; line-height:1.6; color:var(--text-muted);">
+                <p style="margin-bottom:6px;">
+                  <strong style="color:#34d399;">🟢 Nhóm 1 - Có sẵn trong thư viện Altium của bạn (85% linh kiện):</strong>
+                  Các linh kiện như IC Buck LM2596/2576, IC đệm ULN2003, Transistor S8050, Còi Buzzer, Cuộn cảm 33uH, Tụ lọc nguồn, Header cắm motor/camera đã có sẵn trong <code style="color:#fff;">THU_VIEN_ALTIUMM2.IntLib</code>. Chỉ cần bấm nút <span style="background:rgba(0,240,255,0.15); color:var(--accent); padding:1px 6px; border-radius:4px; font-weight:bold;">📋 Copy</span> rồi dán vào ô tìm kiếm bảng <strong>Components</strong> trong Altium là lấy ra ngay!
+                </p>
+                <p>
+                  <strong style="color:#fbbf24;">🟠 Nhóm 2 - Module bổ sung đặc thù (Camera Hub & Cảm biến ToF):</strong>
+                  IC Hub USB 4 cổng (FE1.1s / GL850G) và Cảm biến Laser VL53L0X là dạng module hoặc IC chuyên dụng, đã được gán sẵn footprint chuẩn SMD/DIP để vẽ schematic cực nhanh.
+                </p>
+              </div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+              <button class="btn-action" onclick="exportBomCsv()" style="background:linear-gradient(135deg, #059669, #10b981); color:#fff; font-weight:700; border:none; box-shadow:0 4px 15px rgba(16,185,129,0.3);">
+                📥 Xuất File Excel / BOM CSV
+              </button>
+              <span style="font-size:11.5px; color:var(--text-dim);">Tổng cộng: <strong style="color:var(--accent);" id="bomTotalCount">26 linh kiện</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- THANH TÌM KIẾM & BỘ LỌC THÔNG MINH -->
+        <div class="bom-header-bar">
+          <div class="bom-search-box">
+            <span class="bom-search-icon">🔍</span>
+            <input type="text" id="bom-search" placeholder="Gõ tìm kiếm ký hiệu (U1, R1), tên linh kiện, từ khóa Altium..." oninput="filterBom()">
+          </div>
+
+          <div class="bom-filter-pills">
+            <button class="filter-btn active" onclick="setBomFilter('ALL')">Tất Cả</button>
+            <button class="filter-btn" onclick="setBomFilter('POWER')">⚡ Nguồn 5V/5A</button>
+            <button class="filter-btn" onclick="setBomFilter('HOST')">🖥️ Pi 4/5 HAT</button>
+            <button class="filter-btn" onclick="setBomFilter('HAPTIC')">📳 4 Motor Rung</button>
+            <button class="filter-btn" onclick="setBomFilter('SOS')">🚨 Còi & SOS</button>
+            <button class="filter-btn" onclick="setBomFilter('USB_CAM')">📷 4 Cam USB Hub</button>
+            <button class="filter-btn" onclick="setBomFilter('SENSOR')">🛰️ GPS & ToF</button>
+            <button class="filter-btn" onclick="setBomFilter('PASSIVE')">🧲 R - C - Diode</button>
+            <span style="color:var(--text-dim); margin:0 4px;">|</span>
+            <button class="filter-btn src-btn" onclick="setBomFilter('SRC_ALTIUMM2')">🟢 Có trong THU_VIEN_ALTIUMM2</button>
+            <button class="filter-btn src-btn" onclick="setBomFilter('SRC_PROJECT')">🟠 Module Bổ Sung</button>
+          </div>
+        </div>
+
+        <!-- BẢNG DANH MỤC LINH KIỆN CHI TIẾT -->
+        <div class="bom-table-wrapper">
+          <table class="bom-main-table" id="bom-main-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">Ký Hiệu</th>
+                <th>Tên Linh Kiện & Chức Năng</th>
+                <th style="width: 170px;">Nguồn Thư Viện</th>
+                <th style="width: 220px;">TỪ KHÓA GÕ VÀO ALTIUM</th>
+                <th style="width: 170px;">Thư Viện (.SchLib)</th>
+                <th style="width: 140px;">Footprint PCB</th>
+                <th style="width: 60px; text-align: center;">SL</th>
+                <th>Gợi Ý / Hướng Dẫn Mua & Hàn</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Được render động từ JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         TAB 1: SCHEMATIC CAD VIEWER (SƠ ĐỒ NGUYÊN LÝ DẠNG CHIP)
+         ===================================================================== -->
+    <div id="pane-sch" class="tab-pane">
+      <div class="viewer-toolbar">
+        <div class="tool-group">
+          <strong style="color:#fff; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+            <span>📐</span> Sơ Đồ Khối Nguyên Lý Chip-Level (Smart Helmet Carrier Board)
+          </strong>
+        </div>
+        <div class="tool-group">
+          <button class="tool-btn" onclick="zoomSch(1.2)">🔍 Phóng To (+)</button>
+          <button class="tool-btn" onclick="zoomSch(0.8)">Thu Nhỏ (-)</button>
+          <button class="tool-btn" onclick="resetSchZoom()">↺ Mặc Định</button>
+        </div>
+      </div>
+
+      <div class="svg-canvas-box" id="schCanvasBox">
+        <svg id="schSvg" width="100%" height="100%" viewBox="0 0 1400 900" style="transition: transform 0.15s ease;">
+          <defs>
+            <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+            <linearGradient id="pwrGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7f1d1d"/>
+              <stop offset="100%" stop-color="#450a0a"/>
+            </linearGradient>
+            <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#14532d"/>
+              <stop offset="100%" stop-color="#052e16"/>
+            </linearGradient>
+            <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+
+          <!-- KHỐI 1: RASPBERRY PI 4/5 40-PIN HEADER (TRUNG TÂM) -->
+          <g transform="translate(480, 180)">
+            <rect width="440" height="420" rx="16" fill="url(#chipGrad)" stroke="#00f0ff" stroke-width="2.5" filter="url(#glowCyan)"/>
+            <rect width="440" height="40" rx="16" fill="#00f0ff"/>
+            <text x="220" y="26" text-anchor="middle" font-family="var(--font-title)" font-size="16" font-weight="800" fill="#000">
+              J_PI: RASPBERRY PI 4 / 5 GPIO HEADER (2x20 PIN)
+            </text>
+
+            <!-- Chân Pinout -->
+            <text x="25" y="75" font-family="var(--font-mono)" font-size="12" fill="#ef4444" font-weight="700">Pin 2, 4: +5V_IN (Nguồn nuôi Pi 5V/5A)</text>
+            <text x="25" y="105" font-family="var(--font-mono)" font-size="12" fill="#8b5cf6" font-weight="700">Pin 6, 9, 14, 20: GND (Nối đất chung)</text>
+            <text x="25" y="145" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">Pin 11 (GPIO 17) ➔ Kích Rung Trước (Front)</text>
+            <text x="25" y="175" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">Pin 13 (GPIO 27) ➔ Kích Rung Phải (Right)</text>
+            <text x="25" y="205" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">Pin 15 (GPIO 22) ➔ Kích Rung Sau (Rear)</text>
+            <text x="25" y="235" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">Pin 16 (GPIO 23) ➔ Kích Rung Trái (Left)</text>
+            <text x="25" y="275" font-family="var(--font-mono)" font-size="12" fill="#ff3366" font-weight="700">Pin 18 (GPIO 24) ➔ Kích Còi Buzzer 5V</text>
+            <text x="25" y="305" font-family="var(--font-mono)" font-size="12" fill="#38bdf8" font-weight="700">Pin 22 (GPIO 25)  Nút SOS Khẩn Cấp (Pull-Up)</text>
+            <text x="25" y="345" font-family="var(--font-mono)" font-size="12" fill="#10b981" font-weight="700">Pin 8, 10 (TXD/RXD)  Module GPS NEO-6M</text>
+            <text x="25" y="375" font-family="var(--font-mono)" font-size="12" fill="#a855f7" font-weight="700">Pin 3, 5 (SDA/SCL)  Cảm Biến Laser ToF VL53L0X</text>
+          </g>
+
+          <!-- KHỐI 2: HẠ ÁP NGUỒN DC-DC LM2596S-5.0 / XL4015 (GÓC TRÁI TRÊN) -->
+          <g transform="translate(60, 80)">
+            <rect width="340" height="260" rx="14" fill="url(#pwrGrad)" stroke="#ef4444" stroke-width="2"/>
+            <text x="170" y="30" text-anchor="middle" font-family="var(--font-title)" font-size="15" font-weight="800" fill="#fca5a5">
+              KHỐI NGUỒN DC-DC 5V/5A BUCK
+            </text>
+            <text x="20" y="65" font-family="var(--font-mono)" font-size="12" fill="#fff">U2: LM2596S-5.0 / XL4015 (TO-263-5)</text>
+            <text x="20" y="95" font-family="var(--font-mono)" font-size="12" fill="#94a3b8">J_PWR: Pin Li-ion 7.4V - 12V (KF301)</text>
+            <text x="20" y="125" font-family="var(--font-mono)" font-size="12" fill="#94a3b8">D_IN: Diode SS54 chống ngược cực</text>
+            <text x="20" y="155" font-family="var(--font-mono)" font-size="12" fill="#94a3b8">L1: Cuộn cảm 33uH - 47uH 5A (CD54)</text>
+            <text x="20" y="185" font-family="var(--font-mono)" font-size="12" fill="#94a3b8">C_OUT: 470uF/10V + 100nF (Lọc mịn 5V)</text>
+            <rect x="20" y="210" width="300" height="34" rx="6" fill="#10b981"/>
+            <text x="170" y="232" text-anchor="middle" font-family="var(--font-mono)" font-size="13" font-weight="800" fill="#000">
+              ⚡ OUTPUT: +5V_STABLE (5A MAX)
+            </text>
+          </g>
+
+          <!-- DÂY NỐI NGUỒN 5V VÀO RASPBERRY PI -->
+          <path d="M 400 230 L 480 230" stroke="#10b981" stroke-width="3" stroke-dasharray="6,4" fill="none"/>
+          <circle cx="480" cy="230" r="5" fill="#10b981"/>
+
+          <!-- KHỐI 3: MẠCH ĐỆM 4 MOTOR RUNG ULN2003A (GÓC PHẢI TRÊN) -->
+          <g transform="translate(980, 80)">
+            <rect width="360" height="340" rx="14" fill="url(#chipGrad)" stroke="#f59e0b" stroke-width="2"/>
+            <text x="180" y="30" text-anchor="middle" font-family="var(--font-title)" font-size="15" font-weight="800" fill="#fde68a">
+              U1: MẠCH ĐỆM RUNG ULN2003A
+            </text>
+            <text x="20" y="65" font-family="var(--font-mono)" font-size="12" fill="#fff">IC: ULN2003A (SOIC-16 / DIP-16)</text>
+            <text x="20" y="90" font-family="var(--font-mono)" font-size="11.5" fill="#94a3b8">Đệm dòng 500mA/kênh + Diode bảo vệ</text>
+            
+            <rect x="20" y="115" width="320" height="40" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="35" y="140" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">M_FRONT (Motor Trước trán - JST-2P)</text>
+
+            <rect x="20" y="165" width="320" height="40" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="35" y="190" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">M_RIGHT (Motor Thái dương phải)</text>
+
+            <rect x="20" y="215" width="320" height="40" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="35" y="240" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">M_REAR (Motor Gáy sau đầu)</text>
+
+            <rect x="20" y="265" width="320" height="40" rx="6" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="35" y="290" font-family="var(--font-mono)" font-size="12" fill="#f59e0b" font-weight="700">M_LEFT (Motor Thái dương trái)</text>
+          </g>
+
+          <!-- DÂY NỐI TÍN HIỆU RUNG TỪ PI SANG ULN2003A -->
+          <path d="M 920 330 L 980 230" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+
+          <!-- KHỐI 4: GỘP 4 CAMERA USB HUB FE1.1S (GÓC TRÁI DƯỚI) -->
+          <g transform="translate(60, 420)">
+            <rect width="360" height="380" rx="14" fill="url(#hubGrad)" stroke="#10b981" stroke-width="2"/>
+            <text x="180" y="30" text-anchor="middle" font-family="var(--font-title)" font-size="15" font-weight="800" fill="#a7f3d0">
+              U3: USB 2.0 HUB FE1.1S (SSOP-28)
+            </text>
+            <text x="20" y="65" font-family="var(--font-mono)" font-size="12" fill="#fff">X1: Thạch anh 12.000MHz + 2x 22pF</text>
+            <text x="20" y="90" font-family="var(--font-mono)" font-size="11.5" fill="#94a3b8">Gộp 4 luồng Camera USB UVC về Pi</text>
+
+            <rect x="20" y="115" width="320" height="44" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+            <text x="35" y="142" font-family="var(--font-mono)" font-size="12" fill="#34d399" font-weight="700">CAM 1 (Trước 0°): OV2710 Wide 120°</text>
+
+            <rect x="20" y="170" width="320" height="44" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+            <text x="35" y="197" font-family="var(--font-mono)" font-size="12" fill="#34d399" font-weight="700">CAM 2 (Phải 90°): GC2053 Wide 120°</text>
+
+            <rect x="20" y="225" width="320" height="44" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+            <text x="35" y="252" font-family="var(--font-mono)" font-size="12" fill="#34d399" font-weight="700">CAM 3 (Sau 180°): OV2710 Wide 120°</text>
+
+            <rect x="20" y="280" width="320" height="44" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+            <text x="35" y="307" font-family="var(--font-mono)" font-size="12" fill="#34d399" font-weight="700">CAM 4 (Trái 270°): GC2053 Wide 120°</text>
+
+            <rect x="20" y="335" width="320" height="32" rx="6" fill="#0284c7"/>
+            <text x="180" y="356" text-anchor="middle" font-family="var(--font-mono)" font-size="12" font-weight="800" fill="#fff">
+              ➔ DÂY USB UPSTREAM CẮM VÀO PI 3.0
+            </text>
+          </g>
+
+          <!-- KHỐI 5: CÒI BUZZER, NÚT SOS & CẢM BIẾN NGOẠI VI (GÓC PHẢI DƯỚI) -->
+          <g transform="translate(980, 470)">
+            <rect width="360" height="330" rx="14" fill="url(#chipGrad)" stroke="#a855f7" stroke-width="2"/>
+            <text x="180" y="30" text-anchor="middle" font-family="var(--font-title)" font-size="15" font-weight="800" fill="#e9d5ff">
+              CÒI BÁO, SOS & CẢM BIẾN NGOẠI VI
+            </text>
+            <text x="20" y="65" font-family="var(--font-mono)" font-size="12" fill="#ff3366" font-weight="700">
+              LS1: Còi Buzzer 5V Chủ Động (Active 12mm)
+            </text>
+            <text x="20" y="95" font-family="var(--font-mono)" font-size="12" fill="#38bdf8" font-weight="700">
+              J_SOS: Nút Nhấn Khẩn Cấp Vành Mũ (Pull-Up)
+            </text>
+            <text x="20" y="125" font-family="var(--font-mono)" font-size="11.5" fill="#94a3b8">
+              Lọc chống dội phần cứng: R=10kΩ + C=100nF
+            </text>
+            <line x1="20" y1="145" x2="340" y2="145" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+            
+            <text x="20" y="180" font-family="var(--font-mono)" font-size="12" fill="#10b981" font-weight="700">
+              J_GPS: Module GPS Định Vị NEO-6M / NEO-8M
+            </text>
+            <text x="20" y="205" font-family="var(--font-mono)" font-size="11.5" fill="#94a3b8">Giao tiếp UART 9600 baud (Chân TXD/RXD của Pi)</text>
+            
+            <text x="20" y="245" font-family="var(--font-mono)" font-size="12" fill="#a855f7" font-weight="700">
+              J_TOF: Cảm Biến Khoảng Cách Laser VL53L0X
+            </text>
+            <text x="20" y="270" font-family="var(--font-mono)" font-size="11.5" fill="#94a3b8">Giao tiếp I2C đo cự ly gần 0.05m - 2m trước trán</text>
+
+            <text x="20" y="305" font-family="var(--font-mono)" font-size="12" fill="#fbbf24" font-weight="700">
+              J_AUDIO: Jack 3.5mm Tai Nghe Dẫn Truyền Xương
+            </text>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         TAB 2: PCB LAYOUT VIEWER (BỐ TRÍ MẠCH IN 2 LỚP)
+         ===================================================================== -->
+    <div id="pane-pcb" class="tab-pane">
+      <div class="viewer-toolbar">
+        <div class="tool-group">
+          <strong style="color:#fff; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+            <span>🖨️</span> Bố Trí Mạch In PCB 2 Lớp (70mm x 60mm Compact Carrier HAT)
+          </strong>
+        </div>
+        <div class="tool-group">
+          <button class="tool-btn active" id="btnLayerTop" onclick="togglePcbLayer('top')">Lớp Top (Đỏ)</button>
+          <button class="tool-btn active" id="btnLayerBot" onclick="togglePcbLayer('bot')">Lớp Bottom (Xanh)</button>
+          <button class="tool-btn active" id="btnLayerSilk" onclick="togglePcbLayer('silk')">Lớp Chữ (Silk)</button>
+          <span style="color:var(--text-dim); margin:0 4px;">|</span>
+          <button class="tool-btn" onclick="changePcbColor('green')">🟢 Xanh Lá</button>
+          <button class="tool-btn active" onclick="changePcbColor('black')">⚫ Đen Nhám</button>
+          <button class="tool-btn" onclick="changePcbColor('blue')">🔵 Xanh Dương</button>
+        </div>
+      </div>
+
+      <div class="svg-canvas-box" id="pcbCanvasBox">
+        <svg id="pcbSvg" width="100%" height="100%" viewBox="0 0 1000 800">
+          <!-- BOARD OUTLINE -->
+          <rect id="pcbBoardBg" x="150" y="80" width="700" height="640" rx="20" fill="#0b1120" stroke="#f59e0b" stroke-width="3"/>
+
+          <!-- 4 LỖ BẮT ỐC M3 ĐỊNH VỊ NÓN -->
+          <circle cx="180" cy="110" r="14" fill="#000" stroke="#f59e0b" stroke-width="2"/>
+          <circle cx="820" cy="110" r="14" fill="#000" stroke="#f59e0b" stroke-width="2"/>
+          <circle cx="180" cy="690" r="14" fill="#000" stroke="#f59e0b" stroke-width="2"/>
+          <circle cx="820" cy="690" r="14" fill="#000" stroke="#f59e0b" stroke-width="2"/>
+
+          <!-- KHỐI HEADER RASPBERRY PI 40 CHÂN (GIỮA BO MẠCH) -->
+          <g id="layer-silk">
+            <rect x="330" y="240" width="340" height="60" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.5"/>
+            <text x="500" y="275" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="#fff" font-weight="700">
+              J_PI: HEADER 2x20 PIN 2.54MM (HAT CONNECTOR)
+            </text>
+            <!-- 2 Hàng chân pin -->
+            <g fill="#fbbf24">
+              <circle cx="360" cy="255" r="3"/><circle cx="380" cy="255" r="3"/><circle cx="400" cy="255" r="3"/><circle cx="420" cy="255" r="3"/>
+              <circle cx="440" cy="255" r="3"/><circle cx="460" cy="255" r="3"/><circle cx="480" cy="255" r="3"/><circle cx="500" cy="255" r="3"/>
+              <circle cx="520" cy="255" r="3"/><circle cx="540" cy="255" r="3"/><circle cx="560" cy="255" r="3"/><circle cx="580" cy="255" r="3"/>
+              <circle cx="600" cy="255" r="3"/><circle cx="620" cy="255" r="3"/><circle cx="640" cy="255" r="3"/>
+
+              <circle cx="360" cy="285" r="3"/><circle cx="380" cy="285" r="3"/><circle cx="400" cy="285" r="3"/><circle cx="420" cy="285" r="3"/>
+              <circle cx="440" cy="285" r="3"/><circle cx="460" cy="285" r="3"/><circle cx="480" cy="285" r="3"/><circle cx="500" cy="285" r="3"/>
+              <circle cx="520" cy="285" r="3"/><circle cx="540" cy="285" r="3"/><circle cx="560" cy="285" r="3"/><circle cx="580" cy="285" r="3"/>
+              <circle cx="600" cy="285" r="3"/><circle cx="620" cy="285" r="3"/><circle cx="640" cy="285" r="3"/>
+            </g>
+
+            <!-- KHỐI IC NGUỒN LM2596 (GÓC TRÁI TRÊN) -->
+            <rect x="180" y="150" width="120" height="90" rx="4" fill="#2d1515" stroke="#ef4444" stroke-width="1.5"/>
+            <text x="240" y="195" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#fca5a5" font-weight="700">LM2596S-5.0</text>
+            <circle cx="200" cy="170" r="12" fill="#333" stroke="#cbd5e1" stroke-width="1"/>
+            <text x="200" y="174" text-anchor="middle" font-size="8" fill="#fff">L1</text>
+
+            <!-- 4 HEADER CẮM 4 MOTOR RUNG (GÓC PHẢI) -->
+            <rect x="700" y="150" width="120" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="760" y="175" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#f59e0b">M_FRONT</text>
+
+            <rect x="700" y="210" width="120" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="760" y="235" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#f59e0b">M_RIGHT</text>
+
+            <rect x="700" y="270" width="120" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="760" y="295" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#f59e0b">M_REAR</text>
+
+            <rect x="700" y="330" width="120" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+            <text x="760" y="355" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#f59e0b">M_LEFT</text>
+
+            <!-- IC ĐỆM ULN2003 (GIỮA PHẢI) -->
+            <rect x="700" y="390" width="120" height="60" rx="4" fill="#1e293b" stroke="#00f0ff" stroke-width="1.5"/>
+            <text x="760" y="425" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="#00f0ff" font-weight="700">ULN2003A</text>
+
+            <!-- KHỐI 4 HEADER CAMERA (DƯỚI TRÁI) -->
+            <rect x="180" y="520" width="120" height="40" rx="4" fill="#14532d" stroke="#10b981" stroke-width="1"/>
+            <text x="240" y="545" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#34d399">CAM_FRONT</text>
+
+            <rect x="180" y="570" width="120" height="40" rx="4" fill="#14532d" stroke="#10b981" stroke-width="1"/>
+            <text x="240" y="595" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#34d399">CAM_RIGHT</text>
+
+            <rect x="180" y="620" width="120" height="40" rx="4" fill="#14532d" stroke="#10b981" stroke-width="1"/>
+            <text x="240" y="645" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#34d399">CAM_REAR</text>
+
+            <rect x="180" y="670" width="120" height="40" rx="4" fill="#14532d" stroke="#10b981" stroke-width="1"/>
+            <text x="240" y="695" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#34d399">CAM_LEFT</text>
+
+            <!-- IC HUB FE1.1S (DƯỚI GIỮA) -->
+            <rect x="340" y="560" width="140" height="70" rx="4" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+            <text x="410" y="600" text-anchor="middle" font-family="var(--font-mono)" font-size="12" fill="#34d399" font-weight="700">FE1.1S HUB</text>
+
+            <!-- CÒI BUZZER, NÚT SOS & GPS (DƯỚI PHẢI) -->
+            <circle cx="760" cy="530" r="24" fill="#1e293b" stroke="#ff3366" stroke-width="2"/>
+            <text x="760" y="534" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="#ff3366">BUZZER</text>
+
+            <rect x="700" y="580" width="120" height="40" rx="4" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
+            <text x="760" y="605" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#38bdf8">J_SOS (BTN)</text>
+
+            <rect x="700" y="640" width="120" height="40" rx="4" fill="#1e293b" stroke="#a855f7" stroke-width="1"/>
+            <text x="760" y="665" text-anchor="middle" font-family="var(--font-mono)" font-size="11" fill="#a855f7">GPS NEO-6M</text>
+          </g>
+
+          <!-- TOP TRACES (ĐỎ) -->
+          <g id="layer-top" stroke="#ef4444" stroke-width="2.5" fill="none" opacity="0.85">
+            <path d="M 240 240 L 240 330 L 360 330 L 360 285"/>
+            <path d="M 700 420 L 640 420 L 640 285"/>
+            <path d="M 410 560 L 410 400 L 480 400 L 480 285"/>
+          </g>
+
+          <!-- BOTTOM TRACES (XANH DƯƠNG) -->
+          <g id="layer-bot" stroke="#38bdf8" stroke-width="2.5" fill="none" opacity="0.85">
+            <path d="M 760 450 L 760 500"/>
+            <path d="M 700 600 L 600 600 L 600 285"/>
+            <path d="M 300 540 L 340 580"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         TAB 4: PIN-TO-PIN WIRING MAP (BẢNG ÁNH XẠ NỐI DÂY CHI TIẾT)
+         ===================================================================== -->
+    <div id="pane-pins" class="tab-pane">
+      <div class="bom-table-wrapper" style="padding: 24px;">
+        <h2 style="font-family:var(--font-title); font-size:18px; color:#fff; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+          <span>🔌</span> BẢNG ÁNH XẠ NỐI DÂY 40 CHÂN RASPBERRY PI VỚI BO MẠCH PHỤ TRỢ MŨ
+        </h2>
+        <table class="bom-main-table">
+          <thead>
+            <tr>
+              <th style="width: 100px;">Chân Vật Lý</th>
+              <th style="width: 140px;">Tên Chân BCM</th>
+              <th style="width: 160px;">Tên Net Thiết Kế</th>
+              <th style="width: 140px;">Kiểu Tín Hiệu</th>
+              <th>Mục Đích & Kết Nối Thiết Bị</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag-desig">Pin 2, 4</span></td>
+              <td><strong>5V</strong></td>
+              <td><span style="color:#ef4444; font-weight:700;">+5V_POWER</span></td>
+              <td>Nguồn Vào (Power In)</td>
+              <td>Nhận nguồn 5.0V / 5A ổn áp từ khối Buck LM2596 để nuôi toàn bộ mạch Raspberry Pi và CPU.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 6, 9, 14, 20</span></td>
+              <td><strong>GND</strong></td>
+              <td><span style="color:#8b5cf6; font-weight:700;">GND</span></td>
+              <td>Mass Chung (Ground)</td>
+              <td>Đường nối đất chung toàn hệ thống (Pi, Camera Hub, Motor driver, GPS, Còi).</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 11</span></td>
+              <td><strong>GPIO 17</strong></td>
+              <td><span style="color:#f59e0b; font-weight:700;">VIB_FRONT</span></td>
+              <td>GPIO Output (PWM)</td>
+              <td>Nối chân IN1 của ULN2003 kích rung Motor Trước trán khi AI phát hiện vật cản trước mặt.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 13</span></td>
+              <td><strong>GPIO 27</strong></td>
+              <td><span style="color:#f59e0b; font-weight:700;">VIB_RIGHT</span></td>
+              <td>GPIO Output (PWM)</td>
+              <td>Nối chân IN2 của ULN2003 kích rung Motor Thái dương phải khi xe cộ tiếp cận bên phải.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 15</span></td>
+              <td><strong>GPIO 22</strong></td>
+              <td><span style="color:#f59e0b; font-weight:700;">VIB_REAR</span></td>
+              <td>GPIO Output (PWM)</td>
+              <td>Nối chân IN3 của ULN2003 kích rung Motor Gáy sau khi có xe vượt hoặc vật cản sau lưng.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 16</span></td>
+              <td><strong>GPIO 23</strong></td>
+              <td><span style="color:#f59e0b; font-weight:700;">VIB_LEFT</span></td>
+              <td>GPIO Output (PWM)</td>
+              <td>Nối chân IN4 của ULN2003 kích rung Motor Thái dương trái khi có chướng ngại vật bên trái.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 18</span></td>
+              <td><strong>GPIO 24</strong></td>
+              <td><span style="color:#ff3366; font-weight:700;">BUZZER_CTRL</span></td>
+              <td>GPIO Output</td>
+              <td>Nối chân IN5 của ULN2003 kích còi Buzzer 5V kêu dồn dập khi gặp nguy cấp hoặc bấm nút SOS.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 22</span></td>
+              <td><strong>GPIO 25</strong></td>
+              <td><span style="color:#38bdf8; font-weight:700;">BTN_SOS</span></td>
+              <td>GPIO Input (Pull-Up)</td>
+              <td>Nối nút bấm SOS khẩn cấp trên vành mũ (nhấn nối đất GND). Tích hợp tụ 100nF lọc chống dội.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 8, 10</span></td>
+              <td><strong>UART TX / RX</strong></td>
+              <td><span style="color:#10b981; font-weight:700;">UART_GPS</span></td>
+              <td>UART Serial (9600)</td>
+              <td>Kết nối module GPS NEO-6M/8M để thu nhận tọa độ kinh độ/vĩ độ gửi về cho người thân khi SOS.</td>
+            </tr>
+            <tr>
+              <td><span class="tag-desig">Pin 3, 5</span></td>
+              <td><strong>I2C1 SDA / SCL</strong></td>
+              <td><span style="color:#a855f7; font-weight:700;">I2C_TOF</span></td>
+              <td>I2C Bus (Fast Mode)</td>
+              <td>Kết nối cảm biến khoảng cách Laser ToF VL53L0X đo khoảng cách vật cản chính xác cự ly gần.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         TAB 5: NGUYÊN LÝ CHỌN LINH KIỆN & TÍNH TOÁN KỸ THUẬT
+         ===================================================================== -->
+    <div id="pane-rationale" class="tab-pane">
+      <h2 style="font-family:var(--font-title); font-size:19px; color:#fff; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+        <span>💡</span> NGUYÊN LÝ LỰA CHỌN LINH KIỆN & THIẾT KẾ PHẦN CỨNG MŨ BẢO HIỂM
+      </h2>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">
+        Luận cứ khoa học và tính toán thực tế cho ban giám khảo cuộc thi Nghiên cứu Khoa học Kỹ thuật (KHKT).
+      </p>
+
+      <div class="rationale-grid">
+        <div class="rat-card">
+          <div class="rat-icon">⚡</div>
+          <div class="rat-title">Tại Sao Dùng Chip Buck LM2596S-5.0 / XL4015 Thay Vì IC Tuyến Tính 7805?</div>
+          <div class="rat-desc">
+            Raspberry Pi 4/5 cùng 4 mắt camera USB khi chạy thuật toán YOLOv8 tiêu thụ dòng điện trung bình từ <strong>2.5A đến 3.5A</strong>. Nếu dùng IC tuyến tính 7805 hạ áp từ Pin 7.4V xuống 5V, công suất tỏa nhiệt lãng phí là $P = (7.4V - 5V) \times 3A = 7.2W$ sẽ gây nóng bỏng mũ và nhanh cạn pin. IC Buck xung LM2596/XL4015 đạt hiệu suất <strong>> 88%</strong>, mạch mát mẻ, kéo dài thời lượng pin của mũ lên hơn 3-4 giờ sử dụng liên tục.
+          </div>
+        </div>
+
+        <div class="rat-card">
+          <div class="rat-icon">📳</div>
+          <div class="rat-title">Tại Sao Bắt Buộc Dùng IC Đệm ULN2003A Điều Khiển 4 Motor Rung?</div>
+          <div class="rat-desc">
+            Chân GPIO của vi xử lý Raspberry Pi chỉ chịu dòng tối đa <strong>16mA</strong>. Mỗi motor rung đồng xu mini khi quay tiêu thụ dòng <strong>60mA - 90mA</strong> và khi ngắt dòng sinh ra điện áp cảm ứng ngược cực lớn ($\mathcal{E} = -L \frac{di}{dt}$) làm cháy cổng GPIO ngay lập tức. IC đệm ULN2003A chịu dòng tới <strong>500mA/kênh</strong> và tích hợp sẵn <strong>diode bảo vệ dập xung ngược</strong>, giúp triệt tiêu xung gai điện áp, bảo vệ vi mạch Raspberry Pi an toàn tuyệt đối.
+          </div>
+        </div>
+
+        <div class="rat-card">
+          <div class="rat-icon">📷</div>
+          <div class="rat-title">Tại Sao Dùng IC Hub USB 4 Cổng FE1.1s Chuyên Dụng?</div>
+          <div class="rat-desc">
+            Để bao quát toàn cảnh $360^\circ$ cần 4 mắt camera góc rộng. Thay vì phải cắm 4 dây USB lòng thòng vào từng cổng của Raspberry Pi làm vướng víu vành mũ, mạch tích hợp chip <strong>FE1.1s (SSOP-28)</strong> làm bộ gộp trung tâm ngay trên mũ. Chuẩn UVC tự động nén phần cứng MJPEG giúp truyền 4 luồng hình ảnh mượt mà qua duy nhất 1 cáp USB về bo mạch xử lý, giảm tối đa độ rung lắc dây khi người dùng đi lại.
+          </div>
+        </div>
+
+        <div class="rat-card">
+          <div class="rat-icon">🛡️</div>
+          <div class="rat-title">Tại Sao Cần Mạch Lọc RC Chống Dội Cho Nút SOS?</div>
+          <div class="rat-desc">
+            Nút bấm cơ khí khi ấn luôn xảy ra hiện tượng dội phím (Contact Bouncing) tạo ra hàng chục xung nhiễu trong vài mili-giây. Mạch tích hợp điện trở kéo lên $10\text{k}\Omega$ kết hợp tụ gốm $100\text{nF}$ tạo thành <strong>bộ lọc thông thấp RC</strong> có hằng số thời gian $\tau = R \times C = 1\text{ms}$, triệt tiêu hoàn toàn xung nhiễu vật lý, giúp chương trình Python nhận diện chính xác thao tác bấm giữ khẩn cấp của người khiếm thị mà không bao giờ bị báo động giả.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-msg">
+    <span>📋</span>
+    <span id="toast-text">Đã sao chép từ khóa vào Clipboard!</span>
+  </div>
+
+  <footer>
+    <p>Smart Helmet 360° • Thiết Kế Phần Cứng & BOM Altium Dành Cho Cuộc Thi Nghiên Cứu KHKT 2026</p>
+    <p style="margin-top: 5px;">Thư mục dự án: <code>C:\Users\Public\Documents\Altium\08052026\Smart_helmet\</code></p>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // DỮ LIỆU BOM CHI TIẾT (TRA CỨU ALTIUM TỪ KHÓA & THƯ VIỆN)
+    // =========================================================================
+    const bomData = [
+      // 1. KHỐI NGUỒN DC-DC
+      {
+        desig: 'U2',
+        name: 'IC Nguồn Xung Buck Hạ Áp 5V/5A (LM2596S-5.0 / XL4015)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: '2576',
+        lib: 'IC.SchLib (LM2576HVS 5.0V SMD)',
+        fp: 'TO-263-5',
+        qty: 1,
+        cat: 'POWER',
+        hint: 'Gõ "2576" trong Altium ra ngay con LM2576HVS 5.0V SMD chân TO-263-5 (tương thích 100% với LM2596S-5.0 hạ áp nuôi Pi).'
+      },
+      {
+        desig: 'L1',
+        name: 'Cuộn Cảm Công Suất Dán 33uH - 47uH (Dòng 5A)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: '33uH',
+        lib: 'Cuon Cam.SchLib (IND_33uH-8A-30%-SMD)',
+        fp: 'CD54 / SMD',
+        qty: 1,
+        cat: 'POWER',
+        hint: 'Gõ "33uH" ra ngay cuộn cảm dán công suất 33uH chịu dòng 8A cực bền cho mạch nguồn Buck.'
+      },
+      {
+        desig: 'D_IN, D_BUCK',
+        name: 'Diode Schottky Chống Ngược & Dập Xung Buck (SS54 / SS34)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'SS34',
+        lib: 'Diode.SchLib (SS34)',
+        fp: 'DO-214AA / SMB',
+        qty: 2,
+        cat: 'POWER',
+        hint: 'Gõ "SS34" hoặc "SS54" trong Diode.SchLib, chịu dòng 3A-5A, sụt áp thuận cực thấp 0.4V.'
+      },
+      {
+        desig: 'C_IN1, C_IN2',
+        name: 'Tụ Nhôm Lọc Nguồn Vào 100uF - 220uF/25V & Tụ Gốm 100nF',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'CAP POL',
+        lib: 'Capacitor.SchLib (CAP ALUM SMD)',
+        fp: 'CAP-ALU-SMD-8X10',
+        qty: 2,
+        cat: 'POWER',
+        hint: 'Gõ "CAP POL" cho tụ lọc nhôm phân cực và gõ "CAP 0805" cho tụ lọc nhiễu cao tần 100nF.'
+      },
+      {
+        desig: 'C_OUT1, C_OUT2',
+        name: 'Tụ Lọc Nguồn 5V Ngõ Ra 470uF/10V & Tụ Gốm 100nF',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'CAP POL',
+        lib: 'Capacitor.SchLib (CAP ALUM SMD)',
+        fp: 'CAP-ALU-SMD-8X10',
+        qty: 2,
+        cat: 'POWER',
+        hint: 'Lọc phẳng điện áp 5V ngõ ra chống sụt áp nguồn khi Raspberry Pi khởi động hoặc tải nặng.'
+      },
+      {
+        desig: 'J_PWR',
+        name: 'Domino Cọc Bắt Vít Nối Nguồn Pin 7.4V/11.1V (KF301-2P)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'KF301-2P',
+        lib: 'Header2.SchLib (KF301-2P)',
+        fp: 'KF301-5.08-2P',
+        qty: 1,
+        cat: 'POWER',
+        hint: 'Gõ "KF301-2P" hoặc "KF128" cọc đấu dây bước 5.08mm chịu dòng lớn từ pack pin nón.'
+      },
+      {
+        desig: 'SW_PWR',
+        name: 'Công Tắc Gạt Nguồn Chính Của Mũ (Slide Switch 3P)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'SW-1P2T',
+        lib: 'Switch.SchLib (SW-1P2T / SS-12D00)',
+        fp: 'SW-SLIDE-3P',
+        qty: 1,
+        cat: 'POWER',
+        hint: 'Gõ "SW-1P2T" công tắc gạt bật/tắt nguồn toàn bộ hệ thống mũ bảo hiểm.'
+      },
+      {
+        desig: 'F1',
+        name: 'Cầu Chì Tự Phục Hồi Chống Chập Ngắn Mạch (PPTC 5A)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'FUSE',
+        lib: 'Fuse.SchLib (FUSE SMD 1812 / 2920)',
+        fp: 'FUSE-1812',
+        qty: 1,
+        cat: 'POWER',
+        hint: 'Bảo vệ toàn diện, khi quá tải cầu chì ngắt; khi hết chập cầu chì tự dẫn điện lại.'
+      },
+
+      // 2. KHỐI RASPBERRY PI 40-PIN HAT
+      {
+        desig: 'J_PI',
+        name: 'Đầu Nối 40 Chân Cắm Bo Mạch Chủ Raspberry Pi 4 / 5',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 20X2',
+        lib: 'HEADER.SchLib (HEADER 20X2)',
+        fp: 'HDR2X20',
+        qty: 1,
+        cat: 'HOST',
+        hint: 'Gõ "HEADER 20X2" hoặc "HDR2X20" ra ngay socket cắm chuẩn 40 chân khoảng cách 2.54mm của Pi.'
+      },
+
+      // 3. KHỐI 4 MOTOR RUNG ĐỊNH HƯỚNG HAPTIC
+      {
+        desig: 'U1',
+        name: 'IC Đệm Transistor Darlington 7 Kênh (ULN2003A)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'ULN2003',
+        lib: 'IC.SchLib (ULN2003 SMD / DIP)',
+        fp: 'SOIC-16 / DIP-16',
+        qty: 1,
+        cat: 'HAPTIC',
+        hint: 'Gõ "ULN2003" ra ngay IC đệm 7 kênh. Đệm dòng 500mA cho 4 motor rung và còi buzzer an toàn tuyệt đối.'
+      },
+      {
+        desig: 'M_FRONT, M_RIGHT, M_REAR, M_LEFT',
+        name: 'Bộ 4 Header Kết Nối 4 Motor Rung Xúc Giác (Trước, Phải, Sau, Trái)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 2',
+        lib: 'HEADER.SchLib (HEADER 2 / JST-XH-2P)',
+        fp: 'HDR1X2',
+        qty: 4,
+        cat: 'HAPTIC',
+        hint: 'Gõ "HEADER 2" ra cọc 2 chân 2.54mm cắm dây dẫn đến 4 motor rung đồng xu $1027$ gắn trên mũ.'
+      },
+      {
+        desig: 'LED_F, LED_R, LED_B, LED_L',
+        name: 'Bộ 4 LED Báo Trạng Thái Rung Định Hướng (0805 SMD)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'LED 0805',
+        lib: 'LED.SchLib (LED 0805 SMD)',
+        fp: 'LED-0805',
+        qty: 4,
+        cat: 'HAPTIC',
+        hint: 'Gõ "LED 0805" sáng đèn theo từng hướng motor rung, trực quan cho ban giám khảo chấm thi.'
+      },
+
+      // 4. KHỐI CÒI BÁO & NÚT SOS
+      {
+        desig: 'LS1',
+        name: 'Còi Chíp Chủ Động 5V Báo Động (Active Buzzer 5V 12mm)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'BUZZER',
+        lib: 'Speaker.SchLib (BUZZER 5V 12MM)',
+        fp: 'BUZZER-12MM',
+        qty: 1,
+        cat: 'SOS',
+        hint: 'Gõ "BUZZER" ra ngay còi báo 5V chân cắm, phát tiếng bíp to rõ khi kích hoạt khẩn cấp.'
+      },
+      {
+        desig: 'J_SOS',
+        name: 'Cọc Nối Nút Bấm Khẩn Cấp SOS Trên Vành Mũ (JST 2P)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 2',
+        lib: 'HEADER.SchLib (HEADER 2)',
+        fp: 'HDR1X2',
+        qty: 1,
+        cat: 'SOS',
+        hint: 'Cọc 2 chân nối ra nút bấm to bố trí bên hông vành mũ giúp người khiếm thị dễ dàng bấm khi gặp nạn.'
+      },
+      {
+        desig: 'SW_TEST',
+        name: 'Nút Bấm Test Khẩn Cấp Trực Tiếp Trên Bo Mạch (Tact Switch 6x6)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'SW-PB',
+        lib: 'Switch.SchLib (SW-PB / BUTTON 4P)',
+        fp: 'SW-DIP-4P',
+        qty: 1,
+        cat: 'SOS',
+        hint: 'Gõ "SW-PB" hoặc "BUTTON" nút ấn 4 chân cơ học để kỹ thuật viên test mạch tại bàn.'
+      },
+
+      // 5. KHỐI MẠCH GỘP 4 CAMERA USB HUB
+      {
+        desig: 'U3',
+        name: 'IC Mạch Gộp USB Hub 4 Cổng UVC Tốc Độ Cao (FE1.1s / GL850G)',
+        src: 'SRC_PROJECT',
+        srcLabel: '🟠 Thư Viện Bổ Sung',
+        keyword: 'FE1.1S',
+        lib: 'IC.SchLib (FE1.1S SSOP-28)',
+        fp: 'SSOP-28',
+        qty: 1,
+        cat: 'USB_CAM',
+        hint: 'Chip chuyên dụng gộp 4 luồng USB Camera về 1 cổng của Pi (có thể dùng module mạch trần FE1.1s sẵn).'
+      },
+      {
+        desig: 'Y1',
+        name: 'Thạch Anh Dao Động 12.000 MHz (Cho IC USB Hub)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: '12MHZ',
+        lib: 'Thach Anh.SchLib (XTAL 12MHZ HC-49S)',
+        fp: 'HC-49S',
+        qty: 1,
+        cat: 'USB_CAM',
+        hint: 'Gõ "12MHZ" hoặc "XTAL" thạch anh vỏ kim loại cắm cho khối tạo xung USB Hub.'
+      },
+      {
+        desig: 'C_X1, C_X2',
+        name: 'Cặp Tụ Pi Gốm Định Pha Thạch Anh 22pF (0805 SMD)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: '22pF',
+        lib: 'Capacitor.SchLib (CAP 0805)',
+        fp: 'CAP-0805',
+        qty: 2,
+        cat: 'USB_CAM',
+        hint: 'Gõ "22pF" hoặc "CAP 0805" tụ gốm ổn định dao động 12MHz.'
+      },
+      {
+        desig: 'CAM_F, CAM_R, CAM_B, CAM_L',
+        name: 'Bộ 4 Header Kết Nối 4 Mắt Camera USB Góc Rộng 120°',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 4',
+        lib: 'HEADER.SchLib (HEADER 4 / JST-XH-4P)',
+        fp: 'HDR1X4',
+        qty: 4,
+        cat: 'USB_CAM',
+        hint: 'Gõ "HEADER 4" ra cọc 4 chân (VCC 5V, D-, D+, GND) nối tới 4 mắt camera OV2710/GC2053.'
+      },
+      {
+        desig: 'J_USB_OUT',
+        name: 'Cọc Xuất Luồng Dữ Liệu USB Hub Về Cổng USB 3.0 Trên Pi',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 4',
+        lib: 'HEADER.SchLib (HEADER 4)',
+        fp: 'HDR1X4',
+        qty: 1,
+        cat: 'USB_CAM',
+        hint: 'Xuất tín hiệu gộp 4 camera cắm vào cổng USB xanh dương của Raspberry Pi 4/5.'
+      },
+
+      // 6. KHỐI CẢM BIẾN NGOẠI VI & GPS
+      {
+        desig: 'J_GPS',
+        name: 'Header Cắm Module Định Vị Vệ Tinh GPS (NEO-6M / NEO-8M)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 4',
+        lib: 'HEADER.SchLib (HEADER 4)',
+        fp: 'HDR1X4',
+        qty: 1,
+        cat: 'SENSOR',
+        hint: 'Gõ "HEADER 4" cắm 4 chân (VCC, GND, TX, RX) của module GPS NEO-6M để lấy tọa độ khẩn cấp.'
+      },
+      {
+        desig: 'J_TOF',
+        name: 'Header Cắm Cảm Biến Khoảng Cách Laser ToF (VL53L0X)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 4',
+        lib: 'HEADER.SchLib (HEADER 4)',
+        fp: 'HDR1X4',
+        qty: 1,
+        cat: 'SENSOR',
+        hint: 'Cắm cảm biến Laser I2C đo khoảng cách vật cản tầm gần 5cm - 200cm gắn ngay trước trán nón.'
+      },
+      {
+        desig: 'J_AUDIO',
+        name: 'Header Kết Nối Tai Nghe Dẫn Truyền Xương / Loa Mini (3.5mm Jack)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'HEADER 3',
+        lib: 'HEADER.SchLib (HEADER 3)',
+        fp: 'HDR1X3',
+        qty: 1,
+        cat: 'SENSOR',
+        hint: 'Gõ "HEADER 3" ra chân kết nối tín hiệu Audio ra loa hướng dẫn giọng nói tiếng Việt.'
+      },
+
+      // 7. KHỐI LINH KIỆN THỤ ĐỘNG (PASSIVE)
+      {
+        desig: 'R_LED (x5)',
+        name: 'Điện Trở Hạn Dòng Cho 4 LED Rung & 1 LED Nguồn 5V (1kΩ 0805)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'RES 0805',
+        lib: 'Resistor.SchLib (RES 0805 SMD)',
+        fp: 'RES-0805',
+        qty: 5,
+        cat: 'PASSIVE',
+        hint: 'Gõ "RES 0805" ra điện trở dán 1kΩ (giá trị 102) hạn dòng 3mA cho LED sáng dịu.'
+      },
+      {
+        desig: 'R_USB (x8)',
+        name: 'Bộ Điện Trở Phối Kháng Đường Dữ Liệu USB D+/D- (22Ω 0805)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'RES 0805',
+        lib: 'Resistor.SchLib (RES 0805 SMD)',
+        fp: 'RES-0805',
+        qty: 8,
+        cat: 'PASSIVE',
+        hint: 'Điện trở phối kháng 22Ω trên các đường truyền tín hiệu USB giúp triệt tiêu sóng phản xạ.'
+      },
+      {
+        desig: 'R_SOS, C_SOS',
+        name: 'Mạch Lọc RC Chống Dội Cho Nút SOS (R=10kΩ 0805, C=100nF 0805)',
+        src: 'SRC_ALTIUMM2',
+        srcLabel: '🟢 THU_VIEN_ALTIUMM2',
+        keyword: 'RES 0805',
+        lib: 'Resistor.SchLib / Capacitor.SchLib',
+        fp: 'RES-0805 / CAP-0805',
+        qty: 2,
+        cat: 'PASSIVE',
+        hint: 'Khử hoàn toàn xung dội cơ học của nút bấm khẩn cấp để thuật toán Python đọc chuẩn xác 100%.'
+      }
+    ];
+
+    let currentBomFilter = 'ALL';
+
+    function renderBom() {
+      const tbody = document.querySelector('#bom-main-table tbody');
+      tbody.innerHTML = '';
+      const query = (document.getElementById('bom-search').value || '').toLowerCase();
+      let matchCount = 0;
+
+      bomData.forEach(item => {
+        // Filter by category or source
+        if (currentBomFilter === 'SRC_ALTIUMM2' && item.src !== 'SRC_ALTIUMM2') return;
+        if (currentBomFilter === 'SRC_PROJECT' && item.src !== 'SRC_PROJECT') return;
+        if (currentBomFilter !== 'ALL' && !currentBomFilter.startsWith('SRC_') && item.cat !== currentBomFilter) return;
+
+        const match = item.desig.toLowerCase().includes(query) ||
+                      item.name.toLowerCase().includes(query) ||
+                      item.keyword.toLowerCase().includes(query) ||
+                      item.lib.toLowerCase().includes(query) ||
+                      item.fp.toLowerCase().includes(query) ||
+                      item.hint.toLowerCase().includes(query);
+
+        if (!match) return;
+        matchCount++;
+
+        const isAltiumM2 = item.src === 'SRC_ALTIUMM2';
+        const badgeBg = isAltiumM2 ? 'rgba(16,185,129,0.12)' : 'rgba(245,158,11,0.12)';
+        const badgeBorder = isAltiumM2 ? 'rgba(16,185,129,0.35)' : 'rgba(245,158,11,0.35)';
+        const badgeColor = isAltiumM2 ? '#34d399' : '#fbbf24';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="tag-desig">${item.desig}</span></td>
+          <td>
+            <strong style="color:#fff; font-size:13px;">${item.name}</strong>
+          </td>
+          <td>
+            <span style="display:inline-block; font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor};">
+              ${item.srcLabel}
+            </span>
+          </td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-family:var(--font-mono); font-weight:800; font-size:13px; color:#00f0ff; background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.3); padding:4px 10px; border-radius:6px; letter-spacing:0.3px;">
+                ${item.keyword}
+              </span>
+              <button class="btn-copy" onclick="copyKeyword('${item.keyword}')" title="Copy từ khóa gõ vào Altium">
+                📋 Copy
+              </button>
+            </div>
+          </td>
+          <td>
+            <span class="tag-lib" style="color:var(--accent-green); font-weight:bold;">
+              ${item.lib}
+            </span>
+          </td>
+          <td>
+            <span class="tag-fp">${item.fp}</span>
+          </td>
+          <td style="text-align: center; font-weight: 800; color: #fff; font-family: var(--font-mono);">
+            ${item.qty}
+          </td>
+          <td>
+            <span style="color:var(--text-muted); font-size:12px; line-height:1.5;">${item.hint}</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('bomTotalCount').innerText = `${matchCount} linh kiện phù hợp`;
+    }
+
+    function setBomFilter(cat) {
+      currentBomFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderBom();
+    }
+
+    function filterBom() {
+      renderBom();
+    }
+
+    function copyKeyword(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`Đã copy từ khóa "${text}"! Hãy dán vào bảng Components trong Altium.`);
+      }).catch(err => {
+        const input = document.createElement('input');
+        input.value = text;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        showToast(`Đã copy từ khóa "${text}"!`);
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast-msg');
+      document.getElementById('toast-text').innerText = msg;
+      t.style.display = 'flex';
+      setTimeout(() => { t.style.display = 'none'; }, 3000);
+    }
+
+    function exportBomCsv() {
+      let csv = "Ky Hieu,Ten Linh Kien,Nguon Thu Vien,Tu Khoa Altium,Thu Vien (.SchLib),Footprint PCB,So Luong,Ghi Chu\n";
+      bomData.forEach(item => {
+        csv += `"${item.desig}","${item.name}","${item.srcLabel}","${item.keyword}","${item.lib}","${item.fp}",${item.qty},"${item.hint.replace(/"/g, '""')}"\n`;
+      });
+      const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "BOM_SMART_HELMET_360_ALTIUM.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Đã xuất file BOM CSV thành công!");
+    }
+
+    // =========================================================================
+    // TAB NAVIGATION
+    // =========================================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+      const targetPane = document.getElementById(tabId);
+      if (targetPane) targetPane.classList.add('active');
+
+      if (event && event.target) {
+        event.target.classList.add('active');
+      }
+    }
+
+    // =========================================================================
+    // SVG VIEWER CONTROLS (ZOOM & PAN)
+    // =========================================================================
+    let schZoom = 1.0;
+    function zoomSch(factor) {
+      schZoom *= factor;
+      if (schZoom < 0.5) schZoom = 0.5;
+      if (schZoom > 2.5) schZoom = 2.5;
+      document.getElementById('schSvg').style.transform = `scale(${schZoom})`;
+    }
+    function resetSchZoom() {
+      schZoom = 1.0;
+      document.getElementById('schSvg').style.transform = 'scale(1.0)';
+    }
+
+    // PCB Layer controls
+    function togglePcbLayer(layer) {
+      const el = document.getElementById('layer-' + layer);
+      const btn = document.getElementById('btnLayer' + layer.charAt(0).toUpperCase() + layer.slice(1));
+      if (!el) return;
+      if (el.style.display === 'none') {
+        el.style.display = 'inline';
+        if (btn) btn.classList.add('active');
+      } else {
+        el.style.display = 'none';
+        if (btn) btn.classList.remove('active');
+      }
+    }
+
+    function changePcbColor(color) {
+      const bg = document.getElementById('pcbBoardBg');
+      if (color === 'green') bg.setAttribute('fill', '#064e3b');
+      else if (color === 'blue') bg.setAttribute('fill', '#1e3a8a');
+      else bg.setAttribute('fill', '#0b1120');
+    }
+
+    // Khởi tạo bảng BOM khi tải trang
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBom();
+    });
+  </script>
+</body>
+</html>
