@@ -67,6 +67,16 @@ cd Smart_Helmet/smart_helmet_pi
 
 ### Bước 2: Chạy script cài đặt tự động (1-Click Setup)
 ```bash
+### Bước 2: Cắm 4 Camera USB vào USB Hub & Raspberry Pi 4
+- Cắm 4 mắt camera USB vào 4 cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed 4 Ports Hub)** theo thứ tự:
+  - Cổng **USB1**: Camera **TRƯỚC** (Front - 0°)
+  - Cổng **USB2**: Camera **PHẢI** (Right - 90°)
+  - Cổng **USB3**: Camera **SAU** (Rear - 180°)
+  - Cổng **USB4**: Camera **TRÁI** (Left - 270°)
+- Cắm đầu dây USB của Hub vào cổng **USB 3.0 màu xanh dương** trên Raspberry Pi 4 để đảm bảo băng thông đường truyền tối ưu.
+
+### Bước 3: Chạy script cài đặt tự động (1-Click Setup)
+```bash
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -78,13 +88,20 @@ Script sẽ tự động:
 4. Tải trước trọng số mô hình `yolov8n.pt`.
 5. Đăng ký và kích hoạt dịch vụ chạy ngầm `smart_helmet.service` (tự khởi động khi bật nguồn pin).
 
-### Bước 3: Chạy thử nghiệm thủ công
+### Bước 4: Kiểm tra nhanh 4 Camera USB qua Hub
+Trước khi chạy hệ thống chính, chạy script kiểm tra để xác nhận 4 camera đều nhận tín hiệu và lưu ảnh test:
 ```bash
 source venv/bin/activate
+python3 test_cameras.py
+```
+*(Chương trình sẽ tự động dò các cổng camera, đo FPS đồng thời và xuất file ảnh ghép 4 góc `test_4cam_grid.jpg` để bạn căn chỉnh mắt cam trên mũ).*
+
+### Bước 5: Chạy thử nghiệm hệ thống AI
+```bash
 python3 main.py
 ```
 
-### Bước 4: Truy cập Web Dashboard Giám Sát
+### Bước 6: Truy cập Web Dashboard Giám Sát
 Mở trình duyệt trên điện thoại hoặc máy tính cùng mạng WiFi với Raspberry Pi:
 ```
 http://<IP_RASPBERRY_PI>:5000

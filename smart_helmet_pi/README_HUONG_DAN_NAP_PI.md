@@ -24,15 +24,19 @@ Trên đầu nối 40 chân GPIO của Raspberry Pi:
 
 ---
 
-### BƯỚC 2: CẮM 4 CAMERA USB VÀO PI
+### BƯỚC 2: CẮM 4 CAMERA USB VÀO BỘ CHIA USB HUB
 
-1. Cắm 4 mắt camera USB góc rộng $120^\circ-130^\circ$ vào 4 cổng của **Module USB Hub**.
-2. Cắm cáp ngõ ra của USB Hub vào cổng **USB 3.0 (cổng màu xanh dương)** trên Raspberry Pi để đảm bảo băng thông truyền tải cao nhất.
-3. Kiểm tra trên terminal của Pi bằng lệnh:
+1. Cắm 4 mắt camera USB vào 4 cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed 4 Ports Hub)** theo quy ước chuẩn:
+   - Cổng **USB1**: Mắt camera **TRƯỚC** (Front - 0°)
+   - Cổng **USB2**: Mắt camera **PHẢI** (Right - 90°)
+   - Cổng **USB3**: Mắt camera **SAU** (Rear - 180°)
+   - Cổng **USB4**: Mắt camera **TRÁI** (Left - 270°)
+2. Cắm cáp ngõ ra của USB Hub vào cổng **USB 3.0 (cổng màu xanh dương)** trên Raspberry Pi 4 để đảm bảo băng thông truyền tải cao nhất.
+3. Chạy script chẩn đoán tự động để test đồng thời 4 camera và kiểm tra FPS:
    ```bash
-   ls -l /dev/video*
+   python3 test_cameras.py
    ```
-   *Hệ thống sẽ hiện các cổng video từ `/dev/video0` đến `/dev/video7`.*
+   *Script sẽ chụp ảnh ghép 4 mắt cam lưu vào `test_4cam_grid.jpg` để bạn kiểm tra góc nhìn thực tế trên mũ.*
 
 ---
 

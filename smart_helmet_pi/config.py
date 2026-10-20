@@ -28,15 +28,22 @@ MOTOR_PINS = {
 }
 
 # ==============================================================================
-# 2. CẤU HÌNH 4 CAMERA USB (CHUẨN UVC)
+# 2. CẤU HÌNH 4 CAMERA USB CẮM QUA USB HUB (CHUẨN UVC)
 # ==============================================================================
-# Thứ tự cổng VideoCapture trong hệ thống Linux (/dev/video0, /dev/video2, ...)
-# Tự động map hoặc gán cố định index
+# Thứ tự cắm dây trên Hub 4 Cổng (USB 3.0 SuperSpeed 4 Ports Hub):
+# - Cổng USB1 trên Hub: Camera TRƯỚC (Front) - Hướng nhìn chính
+# - Cổng USB2 trên Hub: Camera PHẢI (Right)   - Quan sát bên phải
+# - Cổng USB3 trên Hub: Camera SAU (Rear)     - Quan sát gáy sau lưng
+# - Cổng USB4 trên Hub: Camera TRÁI (Left)    - Quan sát bên trái
+AUTO_DISCOVER_CAMERAS = True
+
+# Fallback index thủ công nếu không dùng auto-discovery:
+# (Lưu ý: Trên Linux mỗi webcam tạo 2 node, ví dụ video0 là hình, video1 là metadata)
 CAMERA_INDICES = {
-    'FRONT': 0,    # Camera trước (hướng nhìn chính)
-    'RIGHT': 1,    # Camera phải
-    'REAR':  2,    # Camera sau
-    'LEFT':  3     # Camera trái
+    'FRONT': 0,    # Thường là /dev/video0 hoặc USB1
+    'RIGHT': 2,    # Thường là /dev/video2 hoặc USB2
+    'REAR':  4,    # Thường là /dev/video4 hoặc USB3
+    'LEFT':  6     # Thường là /dev/video6 hoặc USB4
 }
 
 CAM_WIDTH  = 640
