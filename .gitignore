@@ -28,6 +28,9 @@ wheels/
 # Altium Designer
 History/
 *.History
+__Previews/
+*.SchDocPreview
+*.Preview
 *.PrjPcbStructure
 *.LOG
 *.PrjPcb.Save

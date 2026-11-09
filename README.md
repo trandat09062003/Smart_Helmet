@@ -1,28 +1,28 @@
 # Smart Helmet 360° - Mũ Bảo Hiểm Thông Minh Hỗ Trợ Người Khiếm Thị
 
-Dự án nghiên cứu và phát triển hệ thống mũ bảo hiểm thông minh tích hợp thị giác máy tính toàn cảnh 360 độ (4 camera góc rộng cố định), phản hồi xúc giác định hướng (4 kênh motor rung haptic) và cảnh báo giọng nói tiếng Việt thời gian thực.
+Dự án nghiên cứu và phát triển hệ thống mũ bảo hiểm thông minh tích hợp thị giác máy tính toàn cảnh 360 độ (kiến trúc Continuous Low-FPS V4L2-MMAP), phản hồi xúc giác định hướng (4 kênh motor rung haptic) và cảnh báo giọng nói tiếng Việt thời gian thực.
 
-Hệ thống được thiết kế tối ưu để triển khai trên bo mạch chủ **Raspberry Pi 4 (8GB RAM)** chạy hệ điều hành **Ubuntu 22.04 LTS (Jammy Jellyfish)**.
+Hệ thống được thiết kế tối ưu để triển khai trên bo mạch chủ **Raspberry Pi 4 (8GB RAM)** chạy hệ điều hành **Ubuntu 22.04 LTS / Raspberry Pi OS**.
 
 ---
 
 ## 📌 Điểm Nhấn Công Nghệ & Kiến Trúc Phần Cứng
 
-1. **Thị giác toàn cảnh 360° không góc chết:**
-   - 4 Camera USB góc rộng ($120^\circ - 130^\circ$) chuẩn UVC cắm qua IC Hub USB 4 cổng (FE1.1s / GL850G).
-   - Loại bỏ hoàn toàn độ trễ cơ học của cơ cấu camera quay quét (0 ms delay).
+1. **Thị giác toàn cảnh 360° không góc chết (Continuous Low-FPS V4L2-MMAP):**
+   - 3 Camera USB góc rộng ($120^\circ - 130^\circ$) chuẩn UVC cắm qua USB Hub (Trước 0°, Sau 180°, Phải 90°), kết hợp thuật toán phân vùng không gian góc Trái (Spatial Zone Splitting) trên Camera Trước để bao quát toàn cảnh 360° và kích hoạt đủ 4 kênh Haptic.
+   - Chạy đồng thời ở 6 FPS/cam với cơ chế Zero-Copy MMAP drain, triệt tiêu hoàn toàn lỗi nghẽn bus USB và lỗi treo chip USB Jieli (-110).
 2. **Xử lý thị giác biên (Edge AI):**
    - Mô hình YOLOv8-Nano tối ưu hóa cho kiến trúc ARM64 của Raspberry Pi 4.
    - Nhận diện người đi bộ, phương tiện giao thông (xe máy, ô tô, xe đạp), chướng ngại vật tầm thấp.
    - Thuật toán ước lượng khoảng cách và đánh giá tốc độ tiệm cận (Optical Expansion Rate) để cảnh báo kịp thời khi vật cản lao tới.
 3. **Cảnh báo đa phương thức:**
    - **4 Motor rung định hướng (Haptic feedback):** Bố trí 4 vị trí quanh vành mũ (Trước trán, Thái dương phải, Gáy sau, Thái dương trái). Vật cản hướng nào -> Rung dồn dập hướng đó.
-   - **Cảnh báo âm thanh tiếng Việt:** Bộ lọc thông minh (Smart Filter) chống quá tải thính giác, thông báo ngắn gọn dứt khoát.
+   - **Cảnh báo âm thanh tiếng Việt:** Bộ lọc thông minh (Smart Filter) chống quá tải thính giác, định tuyến trực tiếp qua ALSA card 0 của Pi.
 4. **Cứu hộ khẩn cấp SOS & Định vị:**
    - Nút bấm vật lý SOS trên vành mũ (kèm mạch lọc chống dội RC).
    - Tự động kích hoạt còi báo động, rung toàn bộ motor và gửi tọa độ GPS vệ tinh kèm liên kết Google Maps tới người thân qua Telegram.
 5. **Giao diện Web Giám Sát Thời Gian Thực:**
-   - Người thân và ban giám khảo có thể truy cập qua điện thoại/máy tính xem luồng ghép 4 camera 360°, radar trạng thái haptic và thông số hệ thống.
+   - Người thân và ban giám khảo có thể truy cập qua điện thoại/máy tính xem luồng camera thời gian thực, radar trạng thái haptic 4 hướng và thông số hệ thống.
 
 ---
 
@@ -65,14 +65,12 @@ git clone https://github.com/trandat09062003/Smart_Helmet.git
 cd Smart_Helmet/smart_helmet_pi
 ```
 
-### Bước 2: Chạy script cài đặt tự động (1-Click Setup)
-```bash
-### Bước 2: Cắm 4 Camera USB vào USB Hub & Raspberry Pi 4
-- Cắm 4 mắt camera USB vào 4 cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed 4 Ports Hub)** theo thứ tự:
+### Bước 2: Cắm Camera USB vào USB Hub & Raspberry Pi 4
+- Cắm các mắt camera USB vào cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed Hub)** theo thứ tự:
   - Cổng **USB1**: Camera **TRƯỚC** (Front - 0°)
-  - Cổng **USB2**: Camera **PHẢI** (Right - 90°)
-  - Cổng **USB3**: Camera **SAU** (Rear - 180°)
-  - Cổng **USB4**: Camera **TRÁI** (Left - 270°)
+  - Cổng **USB2**: Camera **SAU** (Rear - 180°)
+  - Cổng **USB3**: Camera **PHẢI** (Right - 90°)
+  *(Góc Trái được phân vùng tự động trên Camera Trước để điều khiển đủ 4 kênh haptic).*
 - Cắm đầu dây USB của Hub vào cổng **USB 3.0 màu xanh dương** trên Raspberry Pi 4 để đảm bảo băng thông đường truyền tối ưu.
 
 ### Bước 3: Chạy script cài đặt tự động (1-Click Setup)
@@ -82,19 +80,19 @@ chmod +x setup.sh
 ```
 
 Script sẽ tự động:
-1. Cập nhật hệ thống Ubuntu `apt` và cài đặt các phụ thuộc (`v4l-utils`, `espeak-ng`, `ffmpeg`, `libatlas-base-dev`).
+1. Cập nhật hệ thống Linux `apt` và cài đặt các phụ thuộc (`v4l-utils`, `espeak-ng`, `ffmpeg`, `libatlas-base-dev`).
 2. Khởi tạo môi trường ảo Python `venv` với cấu hình `--system-site-packages`.
 3. Cài đặt các thư viện Python: `ultralytics`, `opencv-python-headless`, `flask`, `RPi.GPIO`, `pyserial`.
 4. Tải trước trọng số mô hình `yolov8n.pt`.
 5. Đăng ký và kích hoạt dịch vụ chạy ngầm `smart_helmet.service` (tự khởi động khi bật nguồn pin).
 
-### Bước 4: Kiểm tra nhanh 4 Camera USB qua Hub
-Trước khi chạy hệ thống chính, chạy script kiểm tra để xác nhận 4 camera đều nhận tín hiệu và lưu ảnh test:
+### Bước 4: Kiểm tra nhanh Camera USB qua Hub
+Trước khi chạy hệ thống chính, chạy script kiểm tra để xác nhận các camera nhận tín hiệu và đo FPS:
 ```bash
 source venv/bin/activate
 python3 test_cameras.py
 ```
-*(Chương trình sẽ tự động dò các cổng camera, đo FPS đồng thời và xuất file ảnh ghép 4 góc `test_4cam_grid.jpg` để bạn căn chỉnh mắt cam trên mũ).*
+*(Chương trình sẽ tự động dò các cổng camera, đo FPS đồng thời theo chế độ V4L2-MMAP Low-FPS).*
 
 ### Bước 5: Chạy thử nghiệm hệ thống AI
 - **Chạy trực tiếp trong terminal:**
