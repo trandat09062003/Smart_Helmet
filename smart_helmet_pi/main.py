@@ -179,12 +179,17 @@ class SmartHelmetSystem:
 
     def _main_ai_loop(self):
         """
-        VÒNG LẶP XỬ LÝ AI LUÂN PHIÊN 3 CAMERA (FRONT -> REAR -> FRONT -> RIGHT):
-        - Ưu tiên tần suất kiểm tra phía trước (FRONT) gấp đôi vì người đội di chuyển tiến tới.
-        - Kết hợp phân vùng Trái/Giữa trên Camera Trước với Camera Sau & Phải để kích hoạt đủ 4 motor Haptic.
+        VÒNG LẶP XỬ LÝ AI LUÂN PHIÊN 3 CAMERA (Tần suất Cam Trước được kiểm tra gấp đôi):
+        - Ưu tiên tần suất kiểm tra phía trước (FRONT) gấp đôi vì người dùng di chuyển tiến tới.
+        - Kết hợp phân vùng không gian để kích hoạt chính xác cả 4 motor Haptic (TRƯỚC, PHẢI, SAU, TRÁI).
         """
         logger.info(f"Bắt đầu vòng lặp xử lý thị giác 3 Camera ({', '.join(self.active_cams)}) ở FPS thấp...")
-        schedule = ['FRONT', 'REAR', 'FRONT', 'RIGHT']
+        if len(self.active_cams) >= 3:
+            schedule = [self.active_cams[0], self.active_cams[1], self.active_cams[0], self.active_cams[2]]
+        elif len(self.active_cams) == 2:
+            schedule = [self.active_cams[0], self.active_cams[1]]
+        else:
+            schedule = list(self.active_cams)
         sched_idx = 0
 
         while self.running:

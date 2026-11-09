@@ -744,18 +744,24 @@
             </small>
           </div>
 
+          <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;">Kiến Trúc Bố Trí Camera:</div>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button class="nav-btn" id="btnModeTri" style="padding:6px 12px; font-size:0.8rem; background:rgba(0,240,255,0.2); border-color:var(--primary);" onclick="setTriMode()">📐 3 Cam Tam Giác 120° (Thực tế trên Mũ)</button>
+            <button class="nav-btn" id="btnModeQuad" style="padding:6px 12px; font-size:0.8rem;" onclick="setQuadMode()">🧭 4 Cam Cố Định</button>
+          </div>
+
           <div style="font-size: 0.9rem; font-weight: 600; margin-bottom: 8px;">Bật / Tắt Từng Mắt Camera:</div>
           <div class="cam-toggles">
             <button class="btn-toggle-cam active" id="btnCam0" onclick="toggleCam(0)">
               <span>Cam Trước (0°)</span> <span class="dot">●</span>
             </button>
             <button class="btn-toggle-cam active" id="btnCam1" onclick="toggleCam(1)">
-              <span>Cam Phải (90°)</span> <span class="dot">●</span>
+              <span>Cam Sau-Phải (120°)</span> <span class="dot">●</span>
             </button>
             <button class="btn-toggle-cam active" id="btnCam2" onclick="toggleCam(2)">
-              <span>Cam Sau (180°)</span> <span class="dot">●</span>
+              <span>Cam Sau-Trái (240°)</span> <span class="dot">●</span>
             </button>
-            <button class="btn-toggle-cam active" id="btnCam3" onclick="toggleCam(3)">
+            <button class="btn-toggle-cam" id="btnCam3" style="display:none;" onclick="toggleCam(3)">
               <span>Cam Trái (270°)</span> <span class="dot">●</span>
             </button>
           </div>
@@ -1047,10 +1053,11 @@ if danger_direction == 'LEFT':
   const fovValText = document.getElementById('fovVal');
   const simLog = document.getElementById('simLog');
 
-  let currentFov = 120;
-  const camsActive = [true, true, true, true]; // Front (0), Right (1), Rear (2), Left (3)
-  const camAngles = [ -Math.PI / 2, 0, Math.PI / 2, Math.PI ]; // Radians
-  const camNames = ['TRƯỚC', 'PHẢI', 'SAU', 'TRÁI'];
+  let currentFov = 130;
+  let isTriMode = true; // Mặc định chế độ 3 Cam Tam Giác 120 độ
+  const camsActive = [true, true, true, false]; // Cam 0, 1, 2 bật, Cam 3 tắt
+  const camAngles = [ -Math.PI / 2, Math.PI / 6, 5 * Math.PI / 6, Math.PI ]; // Radians
+  const camNames = ['TRƯỚC (0°)', 'SAU-PHẢI (120°)', 'SAU-TRÁI (240°)', 'TRÁI (270°)'];
   const hapticEls = [
     document.getElementById('haptic0'),
     document.getElementById('haptic1'),
@@ -1059,6 +1066,61 @@ if danger_direction == 'LEFT':
   ];
 
   let obstacle = { x: 330, y: 130, active: true };
+
+  function setTriMode() {
+    isTriMode = true;
+    currentFov = 130;
+    fovSlider.value = 130;
+    fovValText.innerText = '130°';
+    camAngles[0] = -Math.PI / 2;
+    camAngles[1] = Math.PI / 6;
+    camAngles[2] = 5 * Math.PI / 6;
+    camNames[0] = 'TRƯỚC (0°)';
+    camNames[1] = 'SAU-PHẢI (120°)';
+    camNames[2] = 'SAU-TRÁI (240°)';
+    camsActive[0] = true;
+    camsActive[1] = true;
+    camsActive[2] = true;
+    camsActive[3] = false;
+    document.getElementById('btnModeTri').style.background = 'rgba(0,240,255,0.2)';
+    document.getElementById('btnModeTri').style.borderColor = 'var(--primary)';
+    document.getElementById('btnModeQuad').style.background = 'transparent';
+    document.getElementById('btnModeQuad').style.borderColor = 'rgba(255,255,255,0.1)';
+    document.getElementById('btnCam0').innerHTML = '<span>Cam Trước (0°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam1').innerHTML = '<span>Cam Sau-Phải (120°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam2').innerHTML = '<span>Cam Sau-Trái (240°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam3').style.display = 'none';
+    drawSim();
+  }
+
+  function setQuadMode() {
+    isTriMode = false;
+    currentFov = 120;
+    fovSlider.value = 120;
+    fovValText.innerText = '120°';
+    camAngles[0] = -Math.PI / 2;
+    camAngles[1] = 0;
+    camAngles[2] = Math.PI / 2;
+    camAngles[3] = Math.PI;
+    camNames[0] = 'TRƯỚC (0°)';
+    camNames[1] = 'PHẢI (90°)';
+    camNames[2] = 'SAU (180°)';
+    camNames[3] = 'TRÁI (270°)';
+    camsActive[0] = true;
+    camsActive[1] = true;
+    camsActive[2] = true;
+    camsActive[3] = true;
+    document.getElementById('btnModeQuad').style.background = 'rgba(0,240,255,0.2)';
+    document.getElementById('btnModeQuad').style.borderColor = 'var(--primary)';
+    document.getElementById('btnModeTri').style.background = 'transparent';
+    document.getElementById('btnModeTri').style.borderColor = 'rgba(255,255,255,0.1)';
+    document.getElementById('btnCam0').innerHTML = '<span>Cam Trước (0°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam1').innerHTML = '<span>Cam Phải (90°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam2').innerHTML = '<span>Cam Sau (180°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam3').innerHTML = '<span>Cam Trái (270°)</span> <span class="dot">●</span>';
+    document.getElementById('btnCam3').style.display = 'flex';
+    drawSim();
+  }
 
   function drawSim() {
     const w = canvas.width;
@@ -1101,9 +1163,25 @@ if danger_direction == 'LEFT':
       }
     }
 
-    // Update Haptic Indicators
+    // Update Haptic Indicators (Ánh xạ 4 motor rung Trước - Phải - Sau - Trái)
+    let activeHaptics = new Set();
+    if (detectedCams.length > 0) {
+      if (isTriMode) {
+        // Phân vùng không gian 360° theo góc vật cản đối với mũ:
+        const dx = obstacle.x - cx;
+        const dy = obstacle.y - cy;
+        let ang = Math.atan2(dy, dx); // [-PI, PI]
+        if (ang >= -3 * Math.PI / 4 && ang <= -Math.PI / 4) activeHaptics.add(0); // TRƯỚC
+        if (ang >= -Math.PI / 4 && ang <= Math.PI / 4)      activeHaptics.add(1); // PHẢI
+        if (ang >= Math.PI / 4 && ang <= 3 * Math.PI / 4)   activeHaptics.add(2); // SAU
+        if (ang >= 3 * Math.PI / 4 || ang <= -3 * Math.PI / 4) activeHaptics.add(3); // TRÁI
+      } else {
+        detectedCams.forEach(i => activeHaptics.add(i));
+      }
+    }
+
     for (let i = 0; i < 4; i++) {
-      if (detectedCams.includes(i)) {
+      if (activeHaptics.has(i)) {
         hapticEls[i].classList.add('vibrating');
       } else {
         hapticEls[i].classList.remove('vibrating');
@@ -1235,8 +1313,8 @@ if danger_direction == 'LEFT':
     }
   });
 
-  // Initial draw
-  drawSim();
+  // Initial draw in 3-Cam Triangle Mode
+  setTriMode();
 </script>
 
 </body>

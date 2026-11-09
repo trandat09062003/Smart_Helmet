@@ -398,10 +398,12 @@ class CameraSlot:
             cv2.line(img, (0, y), (self.width, y), (30, 40, 58), 1)
 
         vn_map = {
-            'FRONT': "CAM 1: TRUOC (0°)",
-            'REAR':  "CAM 2: SAU (180°)",
-            'RIGHT': "CAM 3: PHAI (90°)",
-            'LEFT':  "CAM 4: TRAI (270°)"
+            'FRONT':      "CAM 1: TRUOC (0°)",
+            'REAR_RIGHT': "CAM 2: SAU-PHAI (120°)",
+            'REAR_LEFT':  "CAM 3: SAU-TRAI (240°)",
+            'REAR':       "CAM 2: SAU (180°)",
+            'RIGHT':      "CAM 3: PHAI (90°)",
+            'LEFT':       "CAM 4: TRAI (270°)"
         }
         vn_name = vn_map.get(self.direction, f"CAM {self.direction}")
         status_text = f"{vn_name} - CHO KET NOI USB"
@@ -409,7 +411,7 @@ class CameraSlot:
         cv2.putText(img, f"Slot: USB{self.slot_index + 1} | {self.width}x{self.height} Low-FPS", (14, 54),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.38, (160, 175, 190), 1)
 
-        dir_offset = {'FRONT': 0, 'REAR': 2, 'RIGHT': 4, 'LEFT': 6}.get(self.direction, 0)
+        dir_offset = {'FRONT': 0, 'REAR_RIGHT': 2, 'REAR_LEFT': 4, 'REAR': 2, 'RIGHT': 4, 'LEFT': 6}.get(self.direction, 0)
         cx = int(self.width / 2 + np.sin(self.sim_tick * 0.25 + dir_offset) * 65)
         cy = int(self.height / 2 + 15 + np.cos(self.sim_tick * 0.2 + dir_offset) * 30)
         cv2.circle(img, (cx, cy), 16, (0, 200, 100), -1)
@@ -599,10 +601,12 @@ class CameraManager:
         [ 1. CAM TRƯỚC (0°) ]  [ 2. CAM SAU (180°) ]  [ 3. CAM PHẢI (90°) ]
         """
         meta = {
-            'FRONT': ("1. CAM TRUOC (0)", (0, 240, 255)),
-            'REAR':  ("2. CAM SAU (180)", (255, 51, 102)),
-            'RIGHT': ("3. CAM PHAI (90)", (0, 230, 118)),
-            'LEFT':  ("4. CAM TRAI (270)", (255, 190, 0))
+            'FRONT':      ("1. CAM TRUOC (0)", (0, 240, 255)),
+            'REAR_RIGHT': ("2. CAM SAU-PHAI (120)", (0, 230, 118)),
+            'REAR_LEFT':  ("3. CAM SAU-TRAI (240)", (255, 51, 102)),
+            'REAR':       ("2. CAM SAU (180)", (255, 51, 102)),
+            'RIGHT':      ("3. CAM PHAI (90)", (0, 230, 118)),
+            'LEFT':       ("4. CAM TRAI (270)", (255, 190, 0))
         }
 
         def _stamp(img, direction):

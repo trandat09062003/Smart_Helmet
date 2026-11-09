@@ -9,6 +9,7 @@ import os
 import time
 import cv2
 import numpy as np
+import config
 from camera_manager import FastV4L2Device, scan_available_video_devices
 
 if hasattr(sys.stdout, 'reconfigure'):
@@ -19,16 +20,24 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 
 def scan_all_video_nodes():
+    layout = getattr(config, 'CAMERA_LAYOUT', 'TRI_120')
     print("=" * 72)
-    print(" [BƯỚC 1] QUÉT CÁC THIẾT BỊ CAMERA V4L2 TRÊN HỆ THỐNG (3 CAMERA)")
+    print(f" [BƯỚC 1] QUÉT CÁC THIẾT BỊ CAMERA V4L2 TRÊN HỆ THỐNG (CHẾ ĐỘ: {layout})")
     print("=" * 72)
 
     available = scan_available_video_devices()
-    roles = [
-        "CAM 1: TRƯỚC (FRONT 0°)",
-        "CAM 2: SAU (REAR 180°)",
-        "CAM 3: PHẢI (RIGHT 90°)"
-    ]
+    if layout == 'TRI_120':
+        roles = [
+            "CAM 1: TRƯỚC (FRONT 0°)",
+            "CAM 2: SAU-PHẢI (REAR-RIGHT 120°)",
+            "CAM 3: SAU-TRÁI (REAR-LEFT 240°)"
+        ]
+    else:
+        roles = [
+            "CAM 1: TRƯỚC (FRONT 0°)",
+            "CAM 2: SAU (REAR 180°)",
+            "CAM 3: PHẢI (RIGHT 90°)"
+        ]
     if available:
         print(f"[OK] Tìm thấy {len(available)} node camera USB (/dev/v4l/by-path/):")
         for i, (path_label, idx) in enumerate(available[:3]):
@@ -43,15 +52,19 @@ def scan_all_video_nodes():
 
 
 def test_concurrent_3_cameras(valid_caps):
+    layout = getattr(config, 'CAMERA_LAYOUT', 'TRI_120')
     print("\n" + "=" * 72)
-    print(" [BƯỚC 2] CHẠY ĐỒNG THỜI 3 CAMERA Ở FPS THẤP (6 FPS V4L2-MMAP)")
+    print(f" [BƯỚC 2] CHẠY ĐỒNG THỜI 3 CAMERA Ở FPS THẤP (6 FPS V4L2-MMAP - {layout})")
     print("=" * 72)
 
     if len(valid_caps) == 0:
         print("[ERR] LỖI: Chưa có camera nào được cắm vào cổng USB của Raspberry Pi!")
         return
 
-    directions = ['1. CAM TRUOC (0°)', '2. CAM SAU (180°)', '3. CAM PHAI (90°)']
+    if layout == 'TRI_120':
+        directions = ['1. CAM TRUOC (0°)', '2. CAM SAU-PHAI (120°)', '3. CAM SAU-TRAI (240°)']
+    else:
+        directions = ['1. CAM TRUOC (0°)', '2. CAM SAU (180°)', '3. CAM PHAI (90°)']
     devs = {}
 
     for i in range(3):

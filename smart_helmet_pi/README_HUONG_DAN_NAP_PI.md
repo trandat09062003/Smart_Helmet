@@ -24,19 +24,25 @@ Trên đầu nối 40 chân GPIO của Raspberry Pi:
 
 ---
 
-### BƯỚC 2: CẮM CAMERA USB VÀO BỘ CHIA USB HUB
+### BƯỚC 2: CẮM 3 CAMERA USB VÀO BỘ CHIA USB HUB (BỐ TRÍ TAM GIÁC 120°)
 
-1. Cắm các mắt camera USB vào cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed Hub)** theo quy ước:
-   - Cổng **USB1**: Mắt camera **TRƯỚC** (Front - 0°)
-   - Cổng **USB2**: Mắt camera **SAU** (Rear - 180°)
-   - Cổng **USB3**: Mắt camera **PHẢI** (Right - 90°)
-   *(Góc **TRÁI** được hệ thống AI tự động phân vùng không gian trên Camera Trước để bao quát toàn cảnh và kích hoạt đầy đủ 4 kênh motor rung).*
-2. Cắm cáp ngõ ra của USB Hub vào cổng **USB 3.0 (cổng màu xanh dương)** trên Raspberry Pi 4 để đảm bảo băng thông truyền tải cao nhất.
-3. Chạy script chẩn đoán tự động để test đồng thời các camera và kiểm tra FPS:
+1. Bố trí 3 mắt camera theo hình tam giác đều ($120^\circ$ mỗi góc) quanh đỉnh mũ:
+   - **Cam 1 (TRƯỚC - $0^\circ$):** Hướng thẳng chính diện phía trước mặt.
+   - **Cam 2 (SAU-PHẢI - $120^\circ$):** Hướng chếch sau vai phải.
+   - **Cam 3 (SAU-TRÁI - $240^\circ$ hay $-120^\circ$):** Hướng chếch sau vai trái.
+   *(Thuật toán AI tự động phân vùng không gian để quét kín 100% không gian 360° và kích hoạt đầy đủ 4 kênh motor rung: TRƯỚC, PHẢI, SAU, TRÁI).*
+
+2. Cắm 3 mắt camera USB vào các cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed Hub)** theo thứ tự:
+   - Cổng **USB1**: Mắt camera **TRƯỚC** (`FRONT` - $0^\circ$)
+   - Cổng **USB2**: Mắt camera **SAU-PHẢI** (`REAR_RIGHT` - $120^\circ$)
+   - Cổng **USB3**: Mắt camera **SAU-TRÁI** (`REAR_LEFT` - $240^\circ$)
+
+3. Cắm cáp ngõ ra của USB Hub vào cổng **USB 3.0 (cổng màu xanh dương)** trên Raspberry Pi 4 để đảm bảo băng thông truyền tải cao nhất.
+4. Chạy script chẩn đoán tự động để test đồng thời cả 3 camera:
    ```bash
    python3 test_cameras.py
    ```
-   *Script sẽ kiểm tra luồng V4L2-MMAP Low-FPS (6 FPS) ổn định không bị treo chip USB.*
+   *Script sẽ kiểm tra luồng V4L2-MMAP Low-FPS (6 FPS) ổn định cho cả 3 camera.*
 
 ---
 

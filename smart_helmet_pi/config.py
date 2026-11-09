@@ -29,20 +29,26 @@ MOTOR_PINS = {
 }
 
 # ==============================================================================
-# 2. CẤU HÌNH 3 CAMERA USB CHẠY ĐỒNG THỜI Ở FPS THẤP (CONTINUOUS LOW-FPS)
+# 2. CẤU HÌNH KIẾN TRÚC 3 CAMERA TAM GIÁC ĐỒNG THỜI (CONTINUOUS LOW-FPS 120°)
 # ==============================================================================
-# Danh sách các mắt camera kích hoạt:
-# - Chế độ 3 Camera đồng thời (Mặc định): ['FRONT', 'REAR', 'RIGHT']
-# - Nếu muốn quay về chế độ 2 Camera: đổi thành ['FRONT', 'REAR']
-ACTIVE_CAMERAS = ['FRONT', 'REAR', 'RIGHT']
+# Kiểu bố trí 3 Camera vật lý trên mũ:
+# - 'TRI_120': Bố trí tam giác đều 120° (Trước 0°, Sau-Phải 120°, Sau-Trái 240°)
+#              -> Phủ kín 100% không gian 360° không góc chết, tối ưu nhất cho mũ!
+# - 'ORTHO_90': Bố trí góc vuông (Trước 0°, Sau 180°, Phải 90°)
+CAMERA_LAYOUT = 'TRI_120'
+
+# Danh sách 3 Camera theo kiến trúc tam giác đều 120°
+ACTIVE_CAMERAS = ['FRONT', 'REAR_RIGHT', 'REAR_LEFT'] if CAMERA_LAYOUT == 'TRI_120' else ['FRONT', 'REAR', 'RIGHT']
 AUTO_DISCOVER_CAMERAS = True
 
-# Fallback index ưu tiên theo thứ tự cổng USB:
+# Fallback index ưu tiên theo thứ tự cổng USB trên Hub:
 # (Trên Linux mỗi webcam tạo 2 node, ví dụ video0 là hình, video1 là metadata)
 CAMERA_INDICES = {
-    'FRONT': 0,    # /dev/video0 (Cổng USB 1 - Cam Chính Phía Trước 0°)
-    'REAR':  2,    # /dev/video2 (Cổng USB 2 - Cam Phía Sau 180°)
-    'RIGHT': 4     # /dev/video4 (Cổng USB 3 - Cam Bên Phải 90°)
+    'FRONT':      0,    # /dev/video0 (Cổng USB 1 - Cam Trước 0°)
+    'REAR_RIGHT': 2,    # /dev/video2 (Cổng USB 2 - Cam Sau-Phải 120°)
+    'REAR_LEFT':  4,    # /dev/video4 (Cổng USB 3 - Cam Sau-Trái 240°)
+    'REAR':       2,    # Tương thích ngược nếu đặt tên REAR
+    'RIGHT':      4     # Tương thích ngược nếu đặt tên RIGHT
 }
 
 # Độ phân giải gốc CIF (352x240) MJPEG V4L2-MMAP với tốc độ lấy mẫu FPS thấp (6 FPS/cam)
@@ -54,15 +60,15 @@ JPEG_QUALITY = 58
 AI_IMG_SIZE  = 256
 
 # Thời gian chờ V4L2 non-blocking (giây):
-# - Khi mới bật cảm biến CMOS (cold-start) chờ tối đa 1.8s để có frame đầu tiên
-# - Khi đang đọc luồng liên tục chờ tối đa 0.6s
 CAM_INIT_TIMEOUT_SEC = 1.80
 CAM_READ_TIMEOUT_SEC = 0.60
 
-# Phân vùng không gian ngang (Spatial Zone Splitting) trên khung hình Camera Trước:
-# Giúp bao quát luôn cả góc Trái (LEFT) để điều khiển đủ 4 Motor Haptic với 3 Camera vật lý
-ZONE_LEFT_RATIO  = 0.35   # Tâm vật thể < 35% chiều ngang Cam Trước -> Lệch TRÁI (Kích motor LEFT)
-ZONE_RIGHT_RATIO = 0.67   # Tâm vật thể > 67% chiều ngang Cam Trước -> Lệch PHẢI (Kích motor RIGHT)
+# Ngưỡng phân vùng không gian ngang (Spatial Ratios):
+# Cho Cam Trước (0°):
+ZONE_FRONT_LEFT_RATIO  = 0.28   # < 28% chiều ngang Cam Trước -> Lệch sườn TRÁI (Kích motor LEFT)
+ZONE_FRONT_RIGHT_RATIO = 0.72   # > 72% chiều ngang Cam Trước -> Lệch sườn PHẢI (Kích motor RIGHT)
+# Cho Cam Sau-Phải (120°) và Sau-Trái (240°):
+ZONE_REAR_SPLIT_RATIO  = 0.50   # Chia nửa ảnh giữa hướng hông sườn và hướng sau gáy
 
 # ==============================================================================
 # 3. CẤU HÌNH MÔ HÌNH AI NHẬN DIỆN VẬT THỂ

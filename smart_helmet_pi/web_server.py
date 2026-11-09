@@ -265,24 +265,13 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                     <span>Chế độ: <b>Continuous Low-FPS V4L2-MMAP (3 Cam Đồng Thời + Tách Vùng Trái/Trước)</b></span>
                     <span id="fpsDisplay">Stream FPS: 6.0</span>
                 </div>
-                <!-- Bảng trạng thái trực tiếp 3 mắt Camera -->
-                <div class="cam-stats-row">
-                    <div class="stat-mini" id="camCardFRONT">
-                        <div class="stat-label">1. CAM TRƯỚC (0° • Trái & Chính Diện)</div>
-                        <div class="stat-val" style="font-size:0.90rem;" id="camStatFRONT">Đang kiểm tra...</div>
-                    </div>
-                    <div class="stat-mini" id="camCardREAR">
-                        <div class="stat-label">2. CAM SAU (180° • Sau Lưng)</div>
-                        <div class="stat-val" style="font-size:0.90rem;" id="camStatREAR">Đang kiểm tra...</div>
-                    </div>
-                    <div class="stat-mini" id="camCardRIGHT">
-                        <div class="stat-label">3. CAM PHẢI (90° • Điểm Mù Phải)</div>
-                        <div class="stat-val" style="font-size:0.90rem;" id="camStatRIGHT">Đang kiểm tra...</div>
-                    </div>
+                <!-- Bảng trạng thái trực tiếp các mắt Camera -->
+                <div class="cam-stats-row" id="camStatsContainer">
+                    <!-- Được cập nhật tự động qua JavaScript từ /api/status -->
                 </div>
                 <div style="margin-top: 12px;">
                     <button class="btn" style="width:100%; border-color: var(--cyan); color: var(--cyan);" onclick="rescanCameras()">
-                        QUÉT & KẾT NỐI LẠI 3 CỔNG CAMERA USB (TRƯỚC • SAU • PHẢI)
+                        QUÉT & KẾT NỐI LẠI CÁC CỔNG CAMERA USB
                     </button>
                 </div>
             </div>
@@ -367,23 +356,36 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                         }
                         if (data.fps) document.getElementById('fpsDisplay').innerText = 'Stream FPS: ' + data.fps.toFixed(1);
 
-                        // Cập nhật trạng thái trực tiếp cả 3 mắt Camera (FRONT, REAR, RIGHT)
+                        // Cập nhật trạng thái trực tiếp các mắt Camera (hỗ trợ cả Tri-120 và Ortho-90)
                         if (data.cameras) {
-                            for (const dir of ['FRONT', 'REAR', 'RIGHT']) {
-                                const camInfo = data.cameras[dir];
-                                const statEl = document.getElementById('camStat' + dir);
-                                const cardEl = document.getElementById('camCard' + dir);
-                                if (statEl && camInfo) {
-                                    if (camInfo.connected) {
-                                        statEl.style.color = '#00e676';
-                                        statEl.innerText = '● LIVE ' + camInfo.device + ' (' + (camInfo.fps || 0) + ' FPS • #' + (camInfo.frames || 0) + ')';
-                                        if (cardEl) cardEl.style.borderColor = 'rgba(0, 230, 118, 0.5)';
-                                    } else {
-                                        statEl.style.color = '#ffb300';
-                                        statEl.innerText = '○ Chờ kết nối USB';
-                                        if (cardEl) cardEl.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                                    }
-                                }
+                            const container = document.getElementById('camStatsContainer');
+                            const labelMap = {
+                                'FRONT':      '1. CAM TRƯỚC (0°)',
+                                'REAR_RIGHT': '2. CAM SAU-PHẢI (120°)',
+                                'REAR_LEFT':  '3. CAM SAU-TRÁI (240°)',
+                                'REAR':       '2. CAM SAU (180°)',
+                                'RIGHT':      '3. CAM PHẢI (90°)',
+                                'LEFT':       '4. CAM TRÁI (270°)'
+                            };
+
+                            let html = '';
+                            for (const [dir, camInfo] of Object.entries(data.cameras)) {
+                                const title = labelMap[dir] || ('CAM ' + dir);
+                                const isConn = camInfo && camInfo.connected;
+                                const borderStyle = isConn ? 'rgba(0, 230, 118, 0.5)' : 'rgba(255, 255, 255, 0.08)';
+                                const textVal = isConn 
+                                    ? `● LIVE ${camInfo.device} (${camInfo.fps || 0} FPS • #${camInfo.frames || 0})`
+                                    : '○ Chờ kết nối USB';
+                                const colorVal = isConn ? '#00e676' : '#ffb300';
+
+                                html += `
+                                <div class="stat-mini" style="border-color:${borderStyle};">
+                                    <div class="stat-label">${title}</div>
+                                    <div class="stat-val" style="font-size:0.86rem; color:${colorVal};">${textVal}</div>
+                                </div>`;
+                            }
+                            if (html && container) {
+                                container.innerHTML = html;
                             }
                         }
 

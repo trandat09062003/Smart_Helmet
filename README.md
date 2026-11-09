@@ -65,12 +65,12 @@ git clone https://github.com/trandat09062003/Smart_Helmet.git
 cd Smart_Helmet/smart_helmet_pi
 ```
 
-### Bước 2: Cắm Camera USB vào USB Hub & Raspberry Pi 4
-- Cắm các mắt camera USB vào cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed Hub)** theo thứ tự:
-  - Cổng **USB1**: Camera **TRƯỚC** (Front - 0°)
-  - Cổng **USB2**: Camera **SAU** (Rear - 180°)
-  - Cổng **USB3**: Camera **PHẢI** (Right - 90°)
-  *(Góc Trái được phân vùng tự động trên Camera Trước để điều khiển đủ 4 kênh haptic).*
+### Bước 2: Cắm 3 Camera USB vào USB Hub & Raspberry Pi 4 (Kiến trúc Tam Giác 120°)
+- Bố trí 3 camera thành hình tam giác đều $120^\circ$ quanh mũ:
+  - Cổng **USB1**: Camera **TRƯỚC** (`FRONT` - $0^\circ$)
+  - Cổng **USB2**: Camera **SAU-PHẢI** (`REAR_RIGHT` - $120^\circ$)
+  - Cổng **USB3**: Camera **SAU-TRÁI** (`REAR_LEFT` - $240^\circ$)
+  *(Thuật toán AI phân vùng không gian quét kín trọn vẹn 360° không điểm mù và kích hoạt đủ 4 kênh Haptic).*
 - Cắm đầu dây USB của Hub vào cổng **USB 3.0 màu xanh dương** trên Raspberry Pi 4 để đảm bảo băng thông đường truyền tối ưu.
 
 ### Bước 3: Chạy script cài đặt tự động (1-Click Setup)

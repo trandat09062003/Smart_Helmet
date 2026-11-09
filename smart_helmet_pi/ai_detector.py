@@ -68,23 +68,67 @@ class AIDetector:
 
     def _resolve_spatial_direction(self, cam_source: str, x1: int, x2: int, frame_width: int) -> str:
         """
-        Ánh xạ từ 3 Camera vật lý (FRONT, REAR, RIGHT) sang 4 hướng Motor Haptic (LEFT, FRONT, RIGHT, REAR):
-        - Nếu từ Camera TRƯỚC (FRONT):
-          + Tâm vật cản nằm ở vùng trái (< 35%) -> Kích hoạt hướng LEFT (Motor Trái)
-          + Tâm vật cản nằm ở vùng phải (> 67%) -> Kích hoạt hướng RIGHT (Motor Phải)
-          + Tâm vật cản nằm ở vùng giữa (35% - 67%) -> Kích hoạt hướng FRONT (Motor Trước)
-        - Nếu từ Camera SAU (REAR) -> Kích hoạt hướng REAR (Motor Sau)
-        - Nếu từ Camera PHẢI (RIGHT) -> Kích hoạt hướng RIGHT (Motor Phải)
+        Ánh xạ từ 3 Camera vật lý sang 4 hướng Motor Haptic (LEFT, FRONT, RIGHT, REAR).
+        Hỗ trợ cả 2 kiến trúc:
+        1. 'TRI_120' (Tam giác đều 120°: Trước 0°, Sau-Phải 120°, Sau-Trái 240°):
+           - Cam TRƯỚC (0°):
+             + Tâm < 28%: hướng chếch TRÁI -> Kích motor LEFT
+             + Tâm > 72%: hướng chếch PHẢI -> Kích motor RIGHT
+             + 28% <= Tâm <= 72%: hướng CHÍNH DIỆN -> Kích motor FRONT
+           - Cam SAU-PHẢI (120°):
+             + Tâm < 48%: hướng sườn PHẢI (90°) -> Kích motor RIGHT
+             + Tâm >= 48%: hướng sau gáy (180°) -> Kích motor REAR
+           - Cam SAU-TRÁI (240°):
+             + Tâm > 52%: hướng sườn TRÁI (270°) -> Kích motor LEFT
+             + Tâm <= 52%: hướng sau gáy (180°) -> Kích motor REAR
+
+        2. 'ORTHO_90' (Trước 0°, Sau 180°, Phải 90°):
+           - Phân vùng mép trái trên Cam Trước để bù góc Trái.
         """
-        if cam_source == 'FRONT' and frame_width > 0:
-            cx_ratio = ((x1 + x2) * 0.5) / float(frame_width)
-            left_thr = getattr(config, 'ZONE_LEFT_RATIO', 0.35)
-            right_thr = getattr(config, 'ZONE_RIGHT_RATIO', 0.67)
-            if cx_ratio < left_thr:
-                return 'LEFT'
-            elif cx_ratio > right_thr:
+        if frame_width <= 0:
+            return cam_source
+
+        cx_ratio = ((x1 + x2) * 0.5) / float(frame_width)
+        layout = getattr(config, 'CAMERA_LAYOUT', 'TRI_120')
+
+        if layout == 'TRI_120':
+            if cam_source == 'FRONT':
+                left_thr = getattr(config, 'ZONE_FRONT_LEFT_RATIO', 0.28)
+                right_thr = getattr(config, 'ZONE_FRONT_RIGHT_RATIO', 0.72)
+                if cx_ratio < left_thr:
+                    return 'LEFT'
+                elif cx_ratio > right_thr:
+                    return 'RIGHT'
+                return 'FRONT'
+
+            elif cam_source in ['REAR_RIGHT', 'RIGHT']:
+                split_thr = getattr(config, 'ZONE_REAR_SPLIT_RATIO', 0.50)
+                if cx_ratio < split_thr:
+                    return 'RIGHT'
+                return 'REAR'
+
+            elif cam_source in ['REAR_LEFT', 'LEFT']:
+                split_thr = getattr(config, 'ZONE_REAR_SPLIT_RATIO', 0.50)
+                if cx_ratio > split_thr:
+                    return 'LEFT'
+                return 'REAR'
+
+        else:
+            if cam_source == 'FRONT':
+                left_thr = getattr(config, 'ZONE_LEFT_RATIO', 0.35)
+                right_thr = getattr(config, 'ZONE_RIGHT_RATIO', 0.67)
+                if cx_ratio < left_thr:
+                    return 'LEFT'
+                elif cx_ratio > right_thr:
+                    return 'RIGHT'
+                return 'FRONT'
+            elif cam_source in ['REAR_RIGHT', 'REAR']:
+                return 'REAR'
+            elif cam_source in ['RIGHT']:
                 return 'RIGHT'
-            return 'FRONT'
+            elif cam_source in ['LEFT']:
+                return 'LEFT'
+
         return cam_source
 
     def detect_direction(self, cam_source: str, frame: np.ndarray):
