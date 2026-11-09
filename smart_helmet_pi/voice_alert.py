@@ -2,6 +2,7 @@
 SMART HELMET 360 - BỘ PHÁT CẢNH BÁO ÂM THANH TIẾNG VIỆT
 Tích hợp thuật toán lọc thông minh (Smart Filter) chống quá tải thính giác cho người khiếm thị
 """
+import os
 import time
 import queue
 import threading
@@ -62,13 +63,22 @@ class VoiceAlert:
                 if text is None:
                     continue
 
-                logger.info(f"🔊 PHÁT GIỌNG NÓI: '{text}'")
+                logger.info(f"PHÁT GIỌNG NÓI: '{text}'")
 
                 if self.engine_type in ["espeak-ng", "espeak"]:
-                    # Dùng espeak-ng với giọng tiếng Việt (vi) hoặc tiếng Anh nếu chưa cài gói vi
-                    cmd = [self.engine_type, "-v", "vi", "-s", "145", text]
+                    # Phát trực tiếp qua ALSA card 0 (bcm2835 Headphones/HDMI) với timeout 3.5s
+                    # để tuyệt đối không chạm vào card snd-usb-audio của 4 webcam Jieli trên USB Hub
                     try:
-                        subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        env = dict(os.environ)
+                        env["ALSA_CARD"] = "0"
+                        cmd = [self.engine_type, "-v", "vi", "-s", "150", text]
+                        subprocess.run(
+                            cmd,
+                            stdout=subprocess.DEVNULL,
+                            stderr=subprocess.DEVNULL,
+                            timeout=3.5,
+                            env=env
+                        )
                     except Exception:
                         pass
                 elif self.engine_type == "pyttsx3" and pyttsx_engine:

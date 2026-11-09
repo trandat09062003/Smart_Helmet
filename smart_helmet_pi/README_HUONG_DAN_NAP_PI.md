@@ -87,8 +87,10 @@ chmod +x setup.sh
 #### 1. Chạy thử nghiệm trực tiếp trên màn hình:
 ```bash
 cd ~/smart_helmet_pi
-source venv/bin/activate
-python3 main.py
+./run.sh
+# Hoặc thủ công:
+# source venv/bin/activate
+# python3 main.py
 ```
 - Khi khởi động: Mũ sẽ kêu "bíp", rung nhẹ 4 hướng và loa phát giọng nói: *"Hệ thống Mũ thông minh 360 độ đã sẵn sàng hoạt động."*
 - Đưa tay hoặc để người di chuyển xung quanh 4 hướng:
@@ -103,12 +105,19 @@ http://<Địa_chỉ_IP_con_Pi>:5000
 *(Ví dụ: `http://192.168.1.15:5000`)*
 
 **Trên Web Dashboard bạn sẽ thấy:**
-- Khung nhìn 4 Camera thời gian thực ghép toàn cảnh 360° với khung nhận diện Bounding Box AI.
+- Khung nhìn 3 Camera thời gian thực (Trước, Sau, Phải) đồng bộ cùng cơ chế phân vùng không gian góc Trái.
 - Vòng tròn Radar mô phỏng trạng thái 4 motor rung (sáng đỏ khi rung).
 - Tọa độ GPS thời gian thực.
 - Nút bấm test còi và test báo động SOS.
 
 #### 3. Quản lý Dịch vụ Tự Khởi Động:
+Có thể dùng các script tiện ích sẵn có:
+```bash
+./start_background.sh   # Bật dịch vụ chạy ngầm
+./status.sh             # Kiểm tra trạng thái dịch vụ và API
+./stop.sh               # Tắt dịch vụ chạy ngầm
+```
+Hoặc dùng trực tiếp lệnh hệ thống `systemctl`:
 - Xem trạng thái: `sudo systemctl status smart_helmet.service`
 - Khởi động lại: `sudo systemctl restart smart_helmet.service`
 - Tạm dừng: `sudo systemctl stop smart_helmet.service`

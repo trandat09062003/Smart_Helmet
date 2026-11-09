@@ -1,6 +1,7 @@
 """
 SMART HELMET 360 - CẤU HÌNH HỆ THỐNG TRÊN RASPBERRY PI
 Đề tài Nghiên Cứu Khoa Học Kỹ Thuật 2026
+Kiến trúc Triple-Camera 360° (Chạy đồng thời 3 Camera ở FPS thấp + Phân Vùng Không Gian 4 Hướng Haptic)
 """
 import os
 
@@ -19,7 +20,7 @@ PIN_BUZZER      = 24   # Chân còi báo động chủ động (Active Buzzer)
 # Nút nhấn khẩn cấp SOS (Pull-up nội bộ, nhấn nối đất GND)
 PIN_BUTTON_SOS  = 25   # Chân nút SOS khẩn cấp
 
-# Map các hướng tới chân GPIO
+# Map các hướng tới chân GPIO (Đầy đủ 4 hướng rung xúc giác trên mũ)
 MOTOR_PINS = {
     'FRONT': PIN_MOTOR_FRONT,
     'RIGHT': PIN_MOTOR_RIGHT,
@@ -28,36 +29,47 @@ MOTOR_PINS = {
 }
 
 # ==============================================================================
-# 2. CẤU HÌNH 4 CAMERA USB CẮM QUA USB HUB (CHUẨN UVC)
+# 2. CẤU HÌNH 3 CAMERA USB CHẠY ĐỒNG THỜI Ở FPS THẤP (CONTINUOUS LOW-FPS)
 # ==============================================================================
-# Thứ tự cắm dây trên Hub 4 Cổng (USB 3.0 SuperSpeed 4 Ports Hub):
-# - Cổng USB1 trên Hub: Camera TRƯỚC (Front) - Hướng nhìn chính
-# - Cổng USB2 trên Hub: Camera PHẢI (Right)   - Quan sát bên phải
-# - Cổng USB3 trên Hub: Camera SAU (Rear)     - Quan sát gáy sau lưng
-# - Cổng USB4 trên Hub: Camera TRÁI (Left)    - Quan sát bên trái
+# Danh sách các mắt camera kích hoạt:
+# - Chế độ 3 Camera đồng thời (Mặc định): ['FRONT', 'REAR', 'RIGHT']
+# - Nếu muốn quay về chế độ 2 Camera: đổi thành ['FRONT', 'REAR']
+ACTIVE_CAMERAS = ['FRONT', 'REAR', 'RIGHT']
 AUTO_DISCOVER_CAMERAS = True
 
-# Fallback index thủ công nếu không dùng auto-discovery:
-# (Lưu ý: Trên Linux mỗi webcam tạo 2 node, ví dụ video0 là hình, video1 là metadata)
+# Fallback index ưu tiên theo thứ tự cổng USB:
+# (Trên Linux mỗi webcam tạo 2 node, ví dụ video0 là hình, video1 là metadata)
 CAMERA_INDICES = {
-    'FRONT': 0,    # Thường là /dev/video0 hoặc USB1
-    'RIGHT': 2,    # Thường là /dev/video2 hoặc USB2
-    'REAR':  4,    # Thường là /dev/video4 hoặc USB3
-    'LEFT':  6     # Thường là /dev/video6 hoặc USB4
+    'FRONT': 0,    # /dev/video0 (Cổng USB 1 - Cam Chính Phía Trước 0°)
+    'REAR':  2,    # /dev/video2 (Cổng USB 2 - Cam Phía Sau 180°)
+    'RIGHT': 4     # /dev/video4 (Cổng USB 3 - Cam Bên Phải 90°)
 }
 
-CAM_WIDTH  = 640
-CAM_HEIGHT = 480
-CAM_FPS    = 15
+# Độ phân giải gốc CIF (352x240) MJPEG V4L2-MMAP với tốc độ lấy mẫu FPS thấp (6 FPS/cam)
+# Giúp cả 3 camera giữ luồng STREAMON đồng thời liên tục mà CPU vẫn mát (< 30%) và không nghẽn USB
+CAM_WIDTH    = 352
+CAM_HEIGHT   = 240
+CAM_FPS      = 6
+JPEG_QUALITY = 58
+AI_IMG_SIZE  = 256
+
+# Thời gian chờ V4L2 non-blocking (giây):
+# - Khi mới bật cảm biến CMOS (cold-start) chờ tối đa 1.8s để có frame đầu tiên
+# - Khi đang đọc luồng liên tục chờ tối đa 0.6s
+CAM_INIT_TIMEOUT_SEC = 1.80
+CAM_READ_TIMEOUT_SEC = 0.60
+
+# Phân vùng không gian ngang (Spatial Zone Splitting) trên khung hình Camera Trước:
+# Giúp bao quát luôn cả góc Trái (LEFT) để điều khiển đủ 4 Motor Haptic với 3 Camera vật lý
+ZONE_LEFT_RATIO  = 0.35   # Tâm vật thể < 35% chiều ngang Cam Trước -> Lệch TRÁI (Kích motor LEFT)
+ZONE_RIGHT_RATIO = 0.67   # Tâm vật thể > 67% chiều ngang Cam Trước -> Lệch PHẢI (Kích motor RIGHT)
 
 # ==============================================================================
 # 3. CẤU HÌNH MÔ HÌNH AI NHẬN DIỆN VẬT THỂ
 # ==============================================================================
-# Mô hình nhẹ tối ưu cho Pi: yolov8n.pt (Nano) hoặc yolov8n.onnx
 AI_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models', 'yolov8n.pt')
-CONFIDENCE_THRESHOLD = 0.40  # Ngưỡng tin cậy nhận diện
+CONFIDENCE_THRESHOLD = 0.40
 
-# Các lớp vật cản quan trọng đối với người khiếm thị (theo bộ COCO)
 TARGET_CLASSES = [
     'person',        # Người đi bộ
     'bicycle',       # Xe đạp
@@ -72,7 +84,6 @@ TARGET_CLASSES = [
     'stop sign'      # Biển báo
 ]
 
-# Dịch tên vật thể sang tiếng Việt để phát âm thanh
 VIETNAMESE_LABELS = {
     'person': 'Người',
     'bicycle': 'Xe đạp',
@@ -90,11 +101,8 @@ VIETNAMESE_LABELS = {
 # ==============================================================================
 # 4. CẤU HÌNH KHOẢNG CÁCH & BỘ LỌC CẢNH BÁO THÔNG MINH
 # ==============================================================================
-# Ước lượng khoảng cách dựa vào tỉ lệ diện tích Bounding Box so với toàn khung hình
 BBOX_RATIO_CRITICAL = 0.28   # >28% khung hình: Rất gần (< 1m) -> Báo động mức ĐỎ
 BBOX_RATIO_WARNING  = 0.12   # >12% khung hình: Gần (1m - 2m) -> Báo động mức VÀNG
-
-# Thời gian cooldown (giây) giữa 2 lần nhắc giọng nói cùng 1 hướng (tránh nói liên tục)
 VOICE_COOLDOWN_SECONDS = 3.5
 
 # ==============================================================================
@@ -106,11 +114,8 @@ WEB_PORT = 5000
 # ==============================================================================
 # 6. CẤU HÌNH SOS & TELEGRAM BOT (TÙY CHỌN)
 # ==============================================================================
-# Để trống nếu không dùng gửi tin nhắn qua mạng
 TELEGRAM_BOT_TOKEN = ""
 TELEGRAM_CHAT_ID   = ""
-
-# Tọa độ GPS mặc định (Dùng khi chưa có module GPS vật lý)
 DEFAULT_LAT = 10.7769
 DEFAULT_LON = 106.7009
-GPS_SERIAL_PORT = "/dev/ttyUSB0"  # Cổng Serial nếu cắm module GPS NEO-6M
+GPS_SERIAL_PORT = "/dev/ttyUSB0"

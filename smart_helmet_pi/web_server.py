@@ -1,5 +1,6 @@
 """
 SMART HELMET 360 - MÁY CHỦ WEB DASHBOARD GIÁM SÁT THỜI GIAN THỰC
+Kiến trúc Triple-Camera 360° (Chạy đồng thời 3 Camera ở FPS thấp + Phân Vùng 4 Hướng Haptic)
 Phục vụ thuyết trình cuộc thi KHKT và cho người thân theo dõi từ xa qua điện thoại
 """
 import time
@@ -14,14 +15,14 @@ logger = logging.getLogger("WebServer")
 def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
     app = Flask(__name__)
 
-    # HTML Giao diện Dashboard công nghệ cao
+    # HTML Giao diện Dashboard công nghệ cao (Triple-Stream 3 Camera + 4 Haptic Radar)
     HTML_TEMPLATE = """
     <!DOCTYPE html>
     <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Smart Helmet 360° - Trung Tâm Giám Sát Giám Khảo & Người Thân</title>
+        <title>Smart Helmet 360° - Trung Tâm Giám Sát 3 Camera Đồng Thời</title>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
         <style>
             :root {
@@ -78,7 +79,7 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
             
             .grid-main {
                 display: grid;
-                grid-template-columns: 2fr 1fr;
+                grid-template-columns: 1.95fr 1fr;
                 gap: 20px;
             }
             @media (max-width: 1024px) {
@@ -118,9 +119,9 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
             /* Radar 360 & Haptic */
             .radar-wrapper {
                 position: relative;
-                width: 260px;
-                height: 260px;
-                margin: 15px auto;
+                width: 240px;
+                height: 240px;
+                margin: 10px auto;
                 border-radius: 50%;
                 border: 2px dashed rgba(0, 240, 255, 0.3);
                 display: flex;
@@ -129,8 +130,8 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                 background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, transparent 70%);
             }
             .helmet-core {
-                width: 90px;
-                height: 90px;
+                width: 86px;
+                height: 86px;
                 border-radius: 50%;
                 background: #1e293b;
                 border: 2px solid var(--cyan);
@@ -138,7 +139,7 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.75rem;
+                font-size: 0.72rem;
                 font-weight: 700;
                 color: var(--cyan);
                 box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
@@ -176,14 +177,23 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                 gap: 12px;
                 margin-top: 15px;
             }
+            .cam-stats-row {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin-top: 14px;
+            }
+            @media (max-width: 768px) {
+                .cam-stats-row { grid-template-columns: 1fr; }
+            }
             .stat-mini {
                 background: rgba(255, 255, 255, 0.02);
                 border: 1px solid var(--border);
                 border-radius: 10px;
-                padding: 10px 14px;
+                padding: 12px 14px;
             }
-            .stat-label { font-size: 0.75rem; color: var(--text-dim); }
-            .stat-val { font-size: 1.15rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #fff; margin-top: 2px; }
+            .stat-label { font-size: 0.74rem; color: var(--text-dim); }
+            .stat-val { font-size: 1.02rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #fff; margin-top: 4px; }
 
             /* Action Buttons */
             .btn-group {
@@ -232,35 +242,55 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
     <body>
         <div class="header">
             <div class="title-group">
-                <h1>🪖 Smart Helmet 360° AI Dashboard</h1>
+                <h1>Smart Helmet 360° AI Dashboard</h1>
                 <p style="font-size: 0.85rem; color: var(--text-dim); margin-top: 3px;">
-                    Dự án Nghiên Cứu KHKT 2026 • Hệ thống 4 Camera Cố Định & Cảnh Báo Xúc Giác Haptic
+                    Dự án Nghiên Cứu KHKT 2026 • Hệ thống 3 Camera Chạy Đồng Thời ở FPS Thấp + Phân Vùng 4 Hướng Haptic
                 </p>
             </div>
             <div>
-                <span class="badge-live">● TRUYỀN PHÁT TRỰC TIẾP</span>
+                <span class="badge-live">● 3-CAM SIMULTANEOUS LOW-FPS</span>
             </div>
         </div>
 
         <div class="grid-main">
-            <!-- Cột Trái: Luồng Camera Ghép 4 Hướng -->
+            <!-- Cột Trái: Luồng 3 Camera Đồng Thời (Trước, Sau, Phải) -->
             <div class="card">
                 <div class="card-title">
-                    <span>📹 Luồng Thị Giác Toàn Cảnh 4 Hướng (Quad-Stream 360°)</span>
+                    <span>Luồng Thị Giác Đồng Thời 3 Camera (Trước 0° • Sau 180° • Phải 90°)</span>
                 </div>
                 <div class="video-box">
-                    <img src="/video_feed" alt="4 Camera 360 Stream">
+                    <img src="/video_feed" alt="3 Camera Triple Stream">
                 </div>
-                <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); display:flex; justify-content:space-between;">
-                    <span>Góc Trước: 0° | Góc Phải: 90° | Góc Sau: 180° | Góc Trái: 270°</span>
-                    <span id="fpsDisplay">AI FPS: 15.0</span>
+                <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-dim); display:flex; justify-content:space-between; align-items:center;">
+                    <span>Chế độ: <b>Continuous Low-FPS V4L2-MMAP (3 Cam Đồng Thời + Tách Vùng Trái/Trước)</b></span>
+                    <span id="fpsDisplay">Stream FPS: 6.0</span>
+                </div>
+                <!-- Bảng trạng thái trực tiếp 3 mắt Camera -->
+                <div class="cam-stats-row">
+                    <div class="stat-mini" id="camCardFRONT">
+                        <div class="stat-label">1. CAM TRƯỚC (0° • Trái & Chính Diện)</div>
+                        <div class="stat-val" style="font-size:0.90rem;" id="camStatFRONT">Đang kiểm tra...</div>
+                    </div>
+                    <div class="stat-mini" id="camCardREAR">
+                        <div class="stat-label">2. CAM SAU (180° • Sau Lưng)</div>
+                        <div class="stat-val" style="font-size:0.90rem;" id="camStatREAR">Đang kiểm tra...</div>
+                    </div>
+                    <div class="stat-mini" id="camCardRIGHT">
+                        <div class="stat-label">3. CAM PHẢI (90° • Điểm Mù Phải)</div>
+                        <div class="stat-val" style="font-size:0.90rem;" id="camStatRIGHT">Đang kiểm tra...</div>
+                    </div>
+                </div>
+                <div style="margin-top: 12px;">
+                    <button class="btn" style="width:100%; border-color: var(--cyan); color: var(--cyan);" onclick="rescanCameras()">
+                        QUÉT & KẾT NỐI LẠI 3 CỔNG CAMERA USB (TRƯỚC • SAU • PHẢI)
+                    </button>
                 </div>
             </div>
 
             <!-- Cột Phải: Radar Haptic & Điều Khiển -->
             <div class="card">
                 <div class="card-title">
-                    <span>🎯 Mô Phỏng Radar Mũ & 4 Motor Rung Haptic</span>
+                    <span>Mô Phỏng Radar Mũ & 4 Motor Rung Haptic</span>
                 </div>
 
                 <div class="radar-wrapper">
@@ -300,12 +330,12 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                     <button class="btn" onclick="testVibe('RIGHT')">Rung Phải</button>
                     <button class="btn" onclick="testVibe('LEFT')">Rung Trái</button>
                     <button class="btn" onclick="testVibe('REAR')">Rung Sau</button>
-                    <button class="btn btn-sos" onclick="triggerSOS()">🚨 TEST NÚT BẤM SOS KHẨN CẤP</button>
+                    <button class="btn btn-sos" onclick="triggerSOS()">TEST NÚT BẤM SOS KHẨN CẤP</button>
                 </div>
 
                 <!-- Nhật ký sự kiện AI -->
                 <div class="log-box" id="eventLogs">
-                    <div class="log-item">[HỆ THỐNG] Đã khởi động Smart Helmet 360 thành công.</div>
+                    <div class="log-item">[HỆ THỐNG] Đã khởi động Smart Helmet 360 (Chế độ 3 Camera Đồng Thời Low-FPS).</div>
                 </div>
             </div>
         </div>
@@ -316,7 +346,7 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                 fetch('/api/status')
                     .then(r => r.json())
                     .then(data => {
-                        // Cập nhật trạng thái đèn rung haptic
+                        // Cập nhật trạng thái đèn rung haptic (4 hướng)
                         for (const dir of ['FRONT', 'RIGHT', 'REAR', 'LEFT']) {
                             const el = document.getElementById('node' + dir);
                             if (el) {
@@ -335,20 +365,42 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                             document.getElementById('gpsLat').innerText = data.gps.lat;
                             document.getElementById('gpsLon').innerText = data.gps.lon;
                         }
-                        if (data.fps) document.getElementById('fpsDisplay').innerText = 'AI FPS: ' + data.fps.toFixed(1);
+                        if (data.fps) document.getElementById('fpsDisplay').innerText = 'Stream FPS: ' + data.fps.toFixed(1);
+
+                        // Cập nhật trạng thái trực tiếp cả 3 mắt Camera (FRONT, REAR, RIGHT)
+                        if (data.cameras) {
+                            for (const dir of ['FRONT', 'REAR', 'RIGHT']) {
+                                const camInfo = data.cameras[dir];
+                                const statEl = document.getElementById('camStat' + dir);
+                                const cardEl = document.getElementById('camCard' + dir);
+                                if (statEl && camInfo) {
+                                    if (camInfo.connected) {
+                                        statEl.style.color = '#00e676';
+                                        statEl.innerText = '● LIVE ' + camInfo.device + ' (' + (camInfo.fps || 0) + ' FPS • #' + (camInfo.frames || 0) + ')';
+                                        if (cardEl) cardEl.style.borderColor = 'rgba(0, 230, 118, 0.5)';
+                                    } else {
+                                        statEl.style.color = '#ffb300';
+                                        statEl.innerText = '○ Chờ kết nối USB';
+                                        if (cardEl) cardEl.style.borderColor = 'rgba(255, 255, 255, 0.08)';
+                                    }
+                                }
+                            }
+                        }
 
                         // Thêm log mới nếu có
                         if (data.recent_log) {
                             const box = document.getElementById('eventLogs');
-                            const div = document.createElement('div');
-                            div.className = 'log-item';
-                            div.innerText = data.recent_log;
-                            box.prepend(div);
-                            if (box.children.length > 20) box.removeChild(box.lastChild);
+                            if (!box.firstChild || box.firstChild.innerText !== data.recent_log) {
+                                const div = document.createElement('div');
+                                div.className = 'log-item';
+                                div.innerText = data.recent_log;
+                                box.prepend(div);
+                                if (box.children.length > 20) box.removeChild(box.lastChild);
+                            }
                         }
                     })
                     .catch(err => console.error(err));
-            }, 300);
+            }, 1000);
 
             function testVibe(direction) {
                 fetch('/api/test_vibrate?dir=' + direction, { method: 'POST' });
@@ -358,6 +410,18 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
                 if (confirm("Kích hoạt thử nghiệm báo động SOS cứu hộ?")) {
                     fetch('/api/trigger_sos', { method: 'POST' });
                 }
+            }
+
+            function rescanCameras() {
+                fetch('/api/rescan_cameras', { method: 'POST' })
+                    .then(r => r.json())
+                    .then(() => {
+                        const box = document.getElementById('eventLogs');
+                        const div = document.createElement('div');
+                        div.className = 'log-item';
+                        div.innerText = '[CAMERA] Đang quét lại 3 cổng Camera USB (Trước • Sau • Phải)...';
+                        box.prepend(div);
+                    });
             }
         </script>
     </body>
@@ -369,23 +433,26 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
         return render_template_string(HTML_TEMPLATE)
 
     def generate_video_stream():
-        """Truyền phát luồng hình ảnh MJPEG liên tục tới trình duyệt"""
+        """Truyền phát luồng hình ảnh MJPEG siêu nhẹ (dùng chung bộ đệm nén sẵn ở FPS thấp)"""
+        last_bytes = None
         while True:
             try:
-                frame = state_holder.get('quad_frame')
-                if frame is None:
-                    frame = camera_mgr.get_quad_view()
-                # Encode sang JPEG
-                ret, jpeg = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 65])
-                if not ret:
-                    time.sleep(0.04)
-                    continue
-                frame_bytes = jpeg.tobytes()
-                yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-            except Exception as e:
-                time.sleep(0.1)
-            time.sleep(0.05)
+                frame_bytes = state_holder.get('quad_jpeg')
+                if frame_bytes is None:
+                    frame = state_holder.get('quad_frame')
+                    if frame is None:
+                        frame = camera_mgr.get_triple_view()
+                    ret, jpeg = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 58])
+                    if ret:
+                        frame_bytes = jpeg.tobytes()
+
+                if frame_bytes is not None and frame_bytes is not last_bytes:
+                    last_bytes = frame_bytes
+                    yield (b'--frame\r\n'
+                           b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            except Exception:
+                time.sleep(0.15)
+            time.sleep(0.12)
 
     @app.route('/video_feed')
     def video_feed():
@@ -394,7 +461,6 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
 
     @app.route('/api/status')
     def get_status():
-        # Đọc nhiệt độ CPU thực tế trên Raspberry Pi
         cpu_temp = "--"
         try:
             if os.path.exists("/sys/class/thermal/thermal_zone0/temp"):
@@ -407,10 +473,11 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
 
         return jsonify({
             'haptic': haptic_ctrl.get_status(),
+            'cameras': camera_mgr.get_camera_status(),
             'gps': sos_mgr.gps_coords,
             'cpu_temp': cpu_temp,
-            'cpu_usage': state_holder.get('cpu_usage', '28'),
-            'fps': state_holder.get('fps', 15.0),
+            'cpu_usage': state_holder.get('cpu_usage', '22'),
+            'fps': state_holder.get('fps', 6.0),
             'recent_log': state_holder.get('latest_log', None)
         })
 
@@ -424,5 +491,12 @@ def create_app(camera_mgr, haptic_ctrl, sos_mgr, ai_detector, state_holder):
     def test_sos():
         sos_mgr.trigger_sos(source="DASHBOARD_WEB_GIAM_KHAO")
         return jsonify({'status': 'sos_activated'})
+
+    @app.route('/api/rescan_cameras', methods=['POST'])
+    def rescan_cameras():
+        if hasattr(camera_mgr, 'reset_unresponsive_devices'):
+            camera_mgr.reset_unresponsive_devices()
+        state_holder['latest_log'] = "[CAMERA] Đã yêu cầu quét lại 3 cổng Camera USB."
+        return jsonify({'status': 'rescanning'})
 
     return app

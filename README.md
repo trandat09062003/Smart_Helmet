@@ -97,8 +97,16 @@ python3 test_cameras.py
 *(Chương trình sẽ tự động dò các cổng camera, đo FPS đồng thời và xuất file ảnh ghép 4 góc `test_4cam_grid.jpg` để bạn căn chỉnh mắt cam trên mũ).*
 
 ### Bước 5: Chạy thử nghiệm hệ thống AI
+- **Chạy trực tiếp trong terminal:**
 ```bash
-python3 main.py
+./run.sh
+# hoặc: python3 main.py
+```
+- **Quản lý dịch vụ chạy ngầm:**
+```bash
+./start_background.sh   # Bật dịch vụ chạy ngầm
+./status.sh             # Kiểm tra trạng thái dịch vụ và API
+./stop.sh               # Tắt dịch vụ chạy ngầm
 ```
 
 ### Bước 6: Truy cập Web Dashboard Giám Sát
@@ -117,13 +125,18 @@ Smart_Helmet/
 ├── smart_helmet_pi/                     # Mã nguồn phần mềm trên Raspberry Pi
 │   ├── main.py                          # Bộ điều phối trung tâm hệ thống
 │   ├── config.py                        # Cấu hình GPIO, Camera, Ngưỡng AI, GPS
-│   ├── camera_manager.py                # Quản lý 4 Camera đa luồng (Zero-Latency)
-│   ├── ai_detector.py                   # Nhận diện vật thể YOLOv8n & tính cự ly
+│   ├── camera_manager.py                # Quản lý 3 Camera đồng thời V4L2-MMAP Low-FPS
+│   ├── ai_detector.py                   # Nhận diện vật thể YOLOv8n & phân vùng không gian 4 hướng
 │   ├── haptic_controller.py             # Điều khiển 4 motor rung & còi buzzer
-│   ├── voice_alert.py                   # Cảnh báo giọng nói tiếng Việt (Smart Filter)
+│   ├── voice_alert.py                   # Cảnh báo giọng nói tiếng Việt (Smart Filter, card ALSA 0)
 │   ├── sos_manager.py                   # Quản lý sự cố khẩn cấp & gửi tin Telegram
 │   ├── web_server.py                    # Giao diện Web Dashboard phục vụ thuyết trình
-│   ├── setup.sh                         # Script cài đặt 1-Click trên Ubuntu
+│   ├── test_cameras.py                  # Script chẩn đoán và chụp thử nghiệm camera
+│   ├── setup.sh                         # Script cài đặt 1-Click trên Ubuntu/Raspberry Pi OS
+│   ├── run.sh                           # Khởi chạy ứng dụng trong venv
+│   ├── start_background.sh              # Bật dịch vụ chạy ngầm systemd
+│   ├── status.sh                        # Kiểm tra trạng thái dịch vụ & API
+│   ├── stop.sh                          # Tắt dịch vụ chạy ngầm
 │   ├── requirements.txt                 # Danh sách thư viện Python
 │   └── README_HUONG_DAN_NAP_PI.md       # Cẩm nang chi tiết đấu nối phần cứng
 ├── Smart_Helmet/                        # Dự án thiết kế phần cứng Altium Designer

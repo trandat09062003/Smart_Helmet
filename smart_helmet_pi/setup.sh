@@ -76,7 +76,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable smart_helmet.service
 
 echo "=========================================================="
-echo "🎉 CHÚC MỪNG! ĐÃ CÀI ĐẶT THÀNH CÔNG SMART HELMET 360°"
+echo "CHÚC MỪNG! ĐÃ CÀI ĐẶT THÀNH CÔNG SMART HELMET 360°"
 echo "=========================================================="
 echo "1. Để kiểm tra 4 mắt camera USB cắm vào Hub:"
 echo "   source venv/bin/activate"

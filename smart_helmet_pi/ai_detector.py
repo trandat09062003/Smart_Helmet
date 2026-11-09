@@ -1,7 +1,10 @@
 """
-SMART HELMET 360 - BỘ PHÂN TÍCH THỊ GIÁC AI ĐA HƯỚNG
-Nhận diện vật thể, ước lượng khoảng cách và đánh giá nguy cơ va chạm tiệm cận
+SMART HELMET 360 - BỘ PHÂN TÍCH THỊ GIÁC AI ĐA HƯỚNG (TRIPLE-CAMERA SPATIAL 360°)
+Nhận diện vật thể từ 3 Camera chạy đồng thời (Trước 0°, Sau 180°, Phải 90°),
+kết hợp phân vùng không gian trên Camera Trước để bao quát cả góc Trái (LEFT)
+và điều khiển chính xác cả 4 kênh Motor rung Haptic (FRONT, RIGHT, REAR, LEFT) + giọng nói.
 """
+import os
 import time
 import logging
 import cv2
@@ -10,9 +13,21 @@ import config
 
 logger = logging.getLogger("AIDetector")
 
+# Giới hạn số luồng CPU của OpenCV & PyTorch để tránh treo giao diện/USB trên Raspberry Pi 4
+try:
+    cv2.setNumThreads(1)
+except Exception:
+    pass
+
 # Thử nạp thư viện Ultralytics YOLO
 YOLO_AVAILABLE = False
 try:
+    import torch
+    torch.set_num_threads(1)
+    try:
+        torch.set_num_interop_threads(1)
+    except Exception:
+        pass
     from ultralytics import YOLO
     YOLO_AVAILABLE = True
 except Exception as e:
@@ -20,9 +35,11 @@ except Exception as e:
 
 
 class DetectedObstacle:
-    """Đối tượng chướng ngại vật đã qua phân tích tình huống"""
-    def __init__(self, direction: str, class_name: str, confidence: float, bbox, distance_level: str, is_approaching: bool):
-        self.direction = direction             # 'FRONT', 'RIGHT', 'REAR', 'LEFT'
+    """Đối tượng chướng ngại vật đã qua phân tích tình huống và phân vùng không gian"""
+    def __init__(self, direction: str, class_name: str, confidence: float, bbox,
+                 distance_level: str, is_approaching: bool, cam_source: str = None):
+        self.direction = direction             # Hướng kích hoạt Haptic/Voice: 'FRONT', 'RIGHT', 'REAR', 'LEFT'
+        self.cam_source = cam_source or direction  # Camera vật lý gốc: 'FRONT', 'REAR', 'RIGHT'
         self.class_name = class_name           # 'person', 'car', 'motorcycle', ...
         self.vn_label = config.VIETNAMESE_LABELS.get(class_name, class_name)
         self.confidence = confidence           # 0.0 - 1.0
@@ -40,19 +57,39 @@ class AIDetector:
     def _init_model(self):
         if YOLO_AVAILABLE:
             try:
-                # Nạp mô hình nhẹ YOLOv8n (nếu chưa có file thì Ultralytics tự tải)
-                model_name = "yolov8n.pt"
-                logger.info(f"Đang nạp mô hình AI [{model_name}]...")
-                self.model = YOLO(model_name)
+                model_path = config.AI_MODEL_PATH if os.path.exists(config.AI_MODEL_PATH) else "yolov8n.pt"
+                logger.info(f"Đang nạp mô hình AI [{model_path}]...")
+                self.model = YOLO(model_path)
                 logger.info("Đã nạp mô hình YOLOv8n thành công.")
                 return
             except Exception as e:
                 logger.warning(f"Không thể nạp YOLOv8n ({e}). Chuyển sang detector dự phòng.")
                 self.model = None
 
-    def detect_direction(self, direction: str, frame: np.ndarray):
+    def _resolve_spatial_direction(self, cam_source: str, x1: int, x2: int, frame_width: int) -> str:
         """
-        Xử lý 1 khung hình từ một camera chỉ định:
+        Ánh xạ từ 3 Camera vật lý (FRONT, REAR, RIGHT) sang 4 hướng Motor Haptic (LEFT, FRONT, RIGHT, REAR):
+        - Nếu từ Camera TRƯỚC (FRONT):
+          + Tâm vật cản nằm ở vùng trái (< 35%) -> Kích hoạt hướng LEFT (Motor Trái)
+          + Tâm vật cản nằm ở vùng phải (> 67%) -> Kích hoạt hướng RIGHT (Motor Phải)
+          + Tâm vật cản nằm ở vùng giữa (35% - 67%) -> Kích hoạt hướng FRONT (Motor Trước)
+        - Nếu từ Camera SAU (REAR) -> Kích hoạt hướng REAR (Motor Sau)
+        - Nếu từ Camera PHẢI (RIGHT) -> Kích hoạt hướng RIGHT (Motor Phải)
+        """
+        if cam_source == 'FRONT' and frame_width > 0:
+            cx_ratio = ((x1 + x2) * 0.5) / float(frame_width)
+            left_thr = getattr(config, 'ZONE_LEFT_RATIO', 0.35)
+            right_thr = getattr(config, 'ZONE_RIGHT_RATIO', 0.67)
+            if cx_ratio < left_thr:
+                return 'LEFT'
+            elif cx_ratio > right_thr:
+                return 'RIGHT'
+            return 'FRONT'
+        return cam_source
+
+    def detect_direction(self, cam_source: str, frame: np.ndarray):
+        """
+        Xử lý 1 khung hình từ một camera vật lý ('FRONT', 'REAR' hoặc 'RIGHT'):
         Trả về: (annotated_frame, list_of_obstacles)
         """
         if frame is None:
@@ -71,7 +108,7 @@ class AIDetector:
                     conf=config.CONFIDENCE_THRESHOLD,
                     classes=None,
                     verbose=False,
-                    imgsz=320  # Tối ưu kích thước 320x320 để đạt FPS cao trên Raspberry Pi
+                    imgsz=getattr(config, 'AI_IMG_SIZE', 256)
                 )
 
                 for r in results:
@@ -80,7 +117,6 @@ class AIDetector:
                         cls_id = int(box.cls[0])
                         cls_name = self.model.names[cls_id]
 
-                        # Lọc các lớp vật cản quan trọng đối với người khiếm thị
                         if cls_name not in config.TARGET_CLASSES:
                             continue
 
@@ -100,36 +136,42 @@ class AIDetector:
                             dist_level = 'FAR'
                             box_color = (0, 255, 0)      # Xanh lá
 
+                        # Xác định hướng không gian thực tế (LEFT / FRONT / RIGHT / REAR)
+                        spatial_dir = self._resolve_spatial_direction(cam_source, x1, x2, w)
+
                         # Đánh giá tốc độ tiệm cận (Optical Expansion Rate)
-                        prev_ratio = self.history[direction].get(cls_name, ratio)
+                        prev_ratio = self.history.get(spatial_dir, {}).get(cls_name, ratio)
                         expansion = ratio - prev_ratio
-                        self.history[direction][cls_name] = ratio
-                        is_approaching = expansion > 0.03  # Diện tích tăng nhanh -> đang lao tới
+                        if spatial_dir not in self.history:
+                            self.history[spatial_dir] = {}
+                        self.history[spatial_dir][cls_name] = ratio
+                        is_approaching = expansion > 0.03
 
                         obs = DetectedObstacle(
-                            direction=direction,
+                            direction=spatial_dir,
                             class_name=cls_name,
                             confidence=conf,
                             bbox=(x1, y1, x2, y2),
                             distance_level=dist_level,
-                            is_approaching=is_approaching
+                            is_approaching=is_approaching,
+                            cam_source=cam_source
                         )
                         obstacles.append(obs)
 
                         # Vẽ Bounding Box & HUD
                         cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), box_color, 2)
-                        tag = f"{obs.vn_label} [{dist_level}]"
+                        dir_badge = {'LEFT': 'TRAI', 'FRONT': 'TRUOC', 'RIGHT': 'PHAI', 'REAR': 'SAU'}.get(spatial_dir, spatial_dir)
+                        tag = f"{obs.vn_label} [{dir_badge}-{dist_level}]"
                         if is_approaching:
-                            tag += " (!TIEM CAN)"
+                            tag += " (!)"
                         cv2.putText(annotated_frame, tag, (x1, max(20, y1 - 8)),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.55, box_color, 2)
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.48, box_color, 2)
 
             except Exception as e:
-                logger.error(f"Lỗi suy luận AI trên camera [{direction}]: {e}")
+                logger.error(f"Lỗi suy luận AI trên camera [{cam_source}]: {e}")
 
         else:
-            # 2. BỘ PHÁT HIỆN DỰ PHÒNG (NẾU CHƯA CÀI ULTRALYTICS TRÊN MÁY DEV)
-            # Phát hiện khối vật thể dựa trên chuyển động hoặc vùng nổi bật
+            # 2. BỘ PHÁT HIỆN DỰ PHÒNG (NẾU CHƯA CÀI ULTRALYTICS)
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             blurred = cv2.GaussianBlur(gray, (15, 15), 0)
             _, thresh = cv2.threshold(blurred, 60, 255, cv2.THRESH_BINARY_INV)
@@ -141,18 +183,20 @@ class AIDetector:
                 if ratio > 0.08:
                     x, y, bw, bh = cv2.boundingRect(cnt)
                     dist_level = 'CRITICAL' if ratio >= config.BBOX_RATIO_CRITICAL else 'WARNING'
+                    spatial_dir = self._resolve_spatial_direction(cam_source, x, x + bw, w)
                     obs = DetectedObstacle(
-                        direction=direction,
+                        direction=spatial_dir,
                         class_name='chair',
                         confidence=0.85,
                         bbox=(x, y, x + bw, y + bh),
                         distance_level=dist_level,
-                        is_approaching=False
+                        is_approaching=False,
+                        cam_source=cam_source
                     )
                     obstacles.append(obs)
                     color = (0, 0, 255) if dist_level == 'CRITICAL' else (0, 200, 255)
                     cv2.rectangle(annotated_frame, (x, y), (x + bw, y + bh), color, 2)
-                    cv2.putText(annotated_frame, f"Vat can [{dist_level}]", (x, max(20, y - 5)),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                    cv2.putText(annotated_frame, f"Vat can [{spatial_dir}]", (x, max(20, y - 5)),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.48, color, 2)
 
         return annotated_frame, obstacles

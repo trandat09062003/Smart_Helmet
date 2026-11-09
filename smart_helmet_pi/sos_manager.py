@@ -92,7 +92,7 @@ class SOSManager:
 
         self.last_sos_time = now
         self.is_sos_active = True
-        logger.warning(f"🚨 [CẢNH BÁO SOS ĐƯỢC KÍCH HOẠT TỪ: {source}] 🚨")
+        logger.warning(f"[CẢNH BÁO SOS ĐƯỢC KÍCH HOẠT TỪ: {source}] 🚨")
 
         # 1. Bật còi báo động khẩn cấp
         self.haptic_ctrl.buzz(duration=0.3, count=4)
@@ -113,11 +113,11 @@ class SOSManager:
         maps_link = f"https://www.google.com/maps?q={lat},{lon}"
 
         msg = (
-            "🚨 *CẢNH BÁO KHẨN CẤP TỪ MŨ THÔNG MINH SMART HELMET* 🚨\n\n"
+            "*CẢNH BÁO KHẨN CẤP TỪ MŨ THÔNG MINH SMART HELMET* 🚨\n\n"
             "Người dùng vừa nhấn nút SOS khẩn cấp trên mũ!\n"
-            f"📍 *Tọa độ hiện tại:* `{lat}, {lon}`\n"
-            f"🗺️ *Xem vị trí trên Google Maps:* {maps_link}\n"
-            f"⏰ *Thời gian:* {time.strftime('%H:%M:%S %d/%m/%Y')}\n\n"
+            f"*Tọa độ hiện tại:* `{lat}, {lon}`\n"
+            f"*Xem vị trí trên Google Maps:* {maps_link}\n"
+            f"*Thời gian:* {time.strftime('%H:%M:%S %d/%m/%Y')}\n\n"
             "Vui lòng liên lạc hoặc kiểm tra an toàn ngay!"
         )
 
