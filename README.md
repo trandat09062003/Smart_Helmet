@@ -42,6 +42,8 @@ Hệ thống được thiết kế tối ưu để triển khai trên bo mạch 
 
 ## 🔌 Sơ Đồ Đấu Nối Chân GPIO (Raspberry Pi 4)
 
+> 💡 **CẨM NANG ĐẤU DÂY TƯƠNG TÁC:** Mở trực tiếp file **[HUONG_DAN_NOI_CHAN.html](HUONG_DAN_NOI_CHAN.html)** trên trình duyệt để xem sơ đồ 40 chân GPIO trực quan, bấm chọn từng chân xem màu dây, mạch đệm và mã lệnh test terminal!
+
 | Thiết Bị | Chân BCM (GPIO) | Chân Vật Lý (Physical Pin) | Ghi Chú |
 | :--- | :--- | :--- | :--- |
 | **Motor Trước (Front)** | GPIO 17 | Pin 11 | Kích qua cổng đệm ULN2003A |
@@ -140,9 +142,9 @@ Smart_Helmet/
 ├── Smart_Helmet/                        # Dự án thiết kế phần cứng Altium Designer
 │   ├── Smart_Helmet.PrjPcb              # Project Altium Carrier Board
 │   └── Smart_Helmet.SchDoc              # Bản vẽ nguyên lý mạch phụ trợ mũ
+├── HUONG_DAN_NOI_CHAN.html              # Cẩm nang tương tác đấu nối chân GPIO & ngoại vi
 ├── SCHEMATIC_PCB_VIEWER.html            # Trình tra cứu linh kiện BOM & CAD Altium
-├── index.html                           # Trang web tổng quan kế hoạch & mô phỏng FOV
-└── ke_hoach_trien_khai_smart_helmet_4cam.md # Bản thuyết minh kế hoạch triển khai KHKT
+└── index.html                           # Trang web tổng quan kế hoạch & mô phỏng FOV 360°
 ```
 
 ---

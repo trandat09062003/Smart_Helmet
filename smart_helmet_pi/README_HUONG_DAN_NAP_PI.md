@@ -7,6 +7,8 @@ Tài liệu này hướng dẫn chi tiết từng bước từ đấu nối châ
 
 ### BƯỚC 1: SƠ ĐỒ ĐẤU NỐI DÂY PHẦN CỨNG (GPIO PINOUT)
 
+> 💡 **CẨM NANG ĐẤU DÂY TƯƠNG TÁC:** Bạn có thể mở trực tiếp file **`HUONG_DAN_NOI_CHAN.html`** ở thư mục gốc để xem sơ đồ 40 chân màu sắc trực quan, bấm chọn từng chân để copy mã test terminal!
+
 Trên đầu nối 40 chân GPIO của Raspberry Pi:
 
 | Thiết Bị | Chân GPIO (BCM) | Chân Vật Lý (Physical Pin) | Ghi Chú Đấu Nối |
