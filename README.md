@@ -30,38 +30,35 @@ Hệ thống được thiết kế tối ưu để triển khai trên bo mạch 
 
 - **Bo mạch chủ:** Raspberry Pi 4 Model B (Khuyên dùng bản 4GB hoặc 8GB RAM).
 - **Hệ điều hành:** Ubuntu 22.04 LTS (64-bit Server hoặc Desktop).
-- **Camera:** 3x Module USB Camera cảm biến OV2710 hoặc GC2053 (FOV $120^\circ - 130^\circ$ M12 lens) lắp tam giác đều $120^\circ$ bao quát $360^\circ$.
-- **Hub USB:** Bo mạch USB Hub 4 cổng IC FE1.1s hoặc GL850G (chuẩn USB 3.0 cắm vào cổng USB 3.0 xanh dương Pi 4).
-- **Rung Haptic:** 4x Motor rung đồng xu 1027 hoặc 1234 (3V-5V).
-- **Mạch đệm điều khiển:** IC đệm Darlington ULN2003A kích 4 motor rung định hướng.
-- **Âm thanh & Còi:** Còi chip Active Buzzer 5V kích qua Transistor S8050 NPN + Tai nghe dẫn truyền xương jack 3.5mm.
-- **Cảm biến phụ trợ:** Module GPS NEO-6M/8M (UART) và cảm biến Laser ToF VL53L0X (I2C).
-- **Nguồn cấp:** Pin Li-ion 7.4V (2S) kết hợp mạch hạ áp DC-DC Buck XL4015 / LM2596S (5.10V / 5A).
+- **Hệ thống Camera:** 3x Module USB Camera cảm biến OV2710 hoặc GC2053 (FOV $120^\circ - 130^\circ$ M12 lens) lắp tam giác đều $120^\circ$ bao quát $360^\circ$.
+- **Hub USB:** Bo mạch USB Hub 4 cổng (chuẩn USB 3.0 cắm vào cổng USB 3.0 xanh dương Pi 4).
+- **Mạch Còi Báo Động:** Còi chip Active Buzzer 5V kích qua **Transistor S8050 NPN** (vỏ TO-92) + Trở 1kΩ + Diode 1N4148.
+- **Mạch Nút Bấm Khẩn Cấp:** Nút bấm vật lý SOS nối chân Pin 22 (GPIO 25) và Pin 20 (GND) + Tụ gốm 100nF (104) chống dội.
+- **Định Vị GPS:** Module GPS NEO-6M kết nối giao tiếp Serial UART (Pin 8 TXD, Pin 10 RXD).
+- **Nguồn Cấp:** Pin Li-ion 7.4V (2S) kết hợp mạch hạ áp DC-DC Buck XL4015 / LM2596S (5.10V / 5A) cắm trực tiếp vào Pin 2 (+5V) và Pin 6 (GND).
 
 ---
 
 ## 🔌 Sơ Đồ Cắm Dây & Đấu Nối Chân GPIO (Raspberry Pi 4)
 
 > ⚡ **SƠ ĐỒ CẮM DÂY DUPONT TƯƠNG TÁC (DUY NHẤT 1 FILE HTML):** Mở trực tiếp file **[so_do_noi_chan_smart_helmet_pi.html](so_do_noi_chan_smart_helmet_pi.html)** trên trình duyệt:
-> - Hướng dẫn cắm dây Dupont trực tiếp giữa Raspberry Pi 4 và các module có sẵn (không cần làm mạch in PCB).
-> - Module đệm ULN2003A & Transistor S8050 NPN (vỏ TO-92) kích còi và 4 motor rung định hướng.
+> - Hướng dẫn cắm dây Dupont trực tiếp giữa Raspberry Pi 4 và 5 khối phần cứng thực tế (không cần làm mạch in PCB).
+> - Mạch còi Transistor S8050 NPN (vỏ TO-92) kích còi buzzer 5V qua Pin 18 (GPIO 24).
+> - Mạch nút bấm SOS qua Pin 22 (GPIO 25) và GND.
 > - Cụm 3 Camera tam giác đều $120^\circ$ cắm vào Hub USB 3.0 kết nối cổng USB 3.0 xanh dương Pi 4.
-> - Bật/tắt phát sáng làm nổi bật từng tuyến dây cắm (Haptic, Buzzer, SOS, Cam, GPS, ToF, Nguồn).
-> - Bảng tra cứu cắm dây 40 chân GPIO có bộ lọc tìm kiếm thời gian thực.
+> - Module GPS NEO-6M cắm 4 dây Dupont UART (Pin 8, 10, 4, 9).
+> - Bật/tắt phát sáng làm nổi bật từng tuyến dây cắm (Còi S8050, Nút SOS, Nguồn Buck 5V, GPS, Cam USB).
 > - 1-Click sao chép script Python test phần cứng hoàn chỉnh (`test_hardware_pi.py`).
 
-| Thiết Bị | Chân BCM (GPIO) | Chân Vật Lý (Physical Pin) | Ghi Chú |
+| Khối Thiết Bị | Chân BCM (GPIO) | Chân Vật Lý (Physical Pin) | Hướng Dẫn Cắm Dây |
 | :--- | :--- | :--- | :--- |
-| **Motor Trước (Front)** | GPIO 17 | Pin 11 | Kích qua cổng đệm ULN2003A |
-| **Motor Phải (Right)** | GPIO 27 | Pin 13 | Vị trí thái dương phải |
-| **Motor Sau (Rear)** | GPIO 22 | Pin 15 | Vị trí gáy sau đầu |
-| **Motor Trái (Left)** | GPIO 23 | Pin 16 | Vị trí thái dương trái |
-| **Còi Báo Buzzer** | GPIO 24 | Pin 18 | Còi chíp 5V chủ động |
-| **Nút Bấm Khẩn Cấp SOS** | GPIO 25 | Pin 22 | Kéo lên nội bộ, nhấn nối về GND (Pin 20) |
-| **GPS UART (TX / RX)** | GPIO 14 / 15 | Pin 8 / Pin 10 | Kết nối module GPS NEO-6M |
-| **Cảm Biến ToF (SDA / SCL)**| GPIO 2 / 3 | Pin 3 / Pin 5 | Giao tiếp I2C cảm biến Laser VL53L0X |
-| **Nguồn Cấp 5V** | +5V | Pin 2, Pin 4 | Cấp nguồn 5V ổn áp từ mạch Buck |
-| **Nối Đất Chung (GND)** | GND | Pin 6, 9, 14, 20 | Mass chung toàn hệ thống |
+| **Mạch Còi (Transistor S8050)** | GPIO 24 | Pin 18 | Qua trở 1kΩ vào chân B (giữa) S8050, chân C vào (-) Còi, chân E vào GND |
+| **Nút Bấm Khẩn Cấp SOS** | GPIO 25 | Pin 22 | 1 chân cắm Pin 22, 1 chân cắm Pin 20 (GND), kẹp tụ 100nF song song |
+| **GPS UART (TXD)** | GPIO 14 | Pin 8 | Dây Dupont Cái-Cái cắm sang chân RXD của GPS NEO-6M |
+| **GPS UART (RXD)** | GPIO 15 | Pin 10 | Dây Dupont Cái-Cái cắm sang chân TXD của GPS NEO-6M |
+| **Nguồn Cấp 5.1V (Buck XL4015)**| +5V | Pin 2, Pin 4 | Cọc OUT+ từ Buck cắm vào Pin 2 (+5V Pi), Pin 4 cấp cho (+) Còi & GPS |
+| **Nối Đất Chung (GND)** | GND | Pin 6, Pin 9, Pin 20 | Cọc OUT- từ Buck cắm Pin 6, Pin 9 cho GPS, Pin 20 cho SOS & S8050 |
+| **Cụm 3 Camera USB (360°)** | USB 3.0 | Cổng Xanh Dương | 3 Cam cắm vào Hub USB 3.0, cáp Hub cắm vào cổng USB 3.0 màu xanh Pi 4 |
 
 ---
 
