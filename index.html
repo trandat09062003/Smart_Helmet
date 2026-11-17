@@ -678,14 +678,24 @@
     <div class="badge-bar">
       <span class="badge cyan">Đề Tài KHKT 2026</span>
       <span class="badge green">Smart Helmet Cho Người Khiếm Thị</span>
-      <span class="badge">Hệ Thống 4 Cam Cố Định 360°</span>
-      <span class="badge red">Không Sử Dụng Cam Xoay</span>
+      <span class="badge">Cụm 3 Cam Tam Giác 120° (360° FOV)</span>
+      <span class="badge" style="background: rgba(239, 68, 68, 0.2); color: #f87171; border-color: rgba(239, 68, 68, 0.4);">Raspberry Pi 4 40-Pin</span>
     </div>
     
     <h1>Kế Hoạch & Thiết Kế Kỹ Thuật: Smart Helmet 360°</h1>
     <p class="hero-subtitle">
-      Giải pháp thị giác nhân tạo toàn cảnh không góc chết cho người khiếm thị sử dụng hệ thống 4 camera góc rộng cố định ($120^\circ-130^\circ$ FOV), phản hồi đa kênh bằng 4 motor rung định hướng và giọng nói AI thông minh.
+      Giải pháp thị giác nhân tạo toàn cảnh không góc chết cho người khiếm thị sử dụng hệ thống cụm 3 camera góc rộng 120° dạng tam giác đều, phản hồi đa kênh bằng 4 motor rung định hướng (ULN2003A), còi buzzer (S8050 NPN) và giọng nói AI thông minh.
     </p>
+
+    <!-- Prominent Schematic Button -->
+    <div style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+      <a href="so_do_noi_chan_smart_helmet_pi.html" class="btn btn-primary" style="font-weight: 800; font-size: 0.95rem; text-decoration: none; padding: 12px 24px;">
+        ⚡ MỞ SƠ ĐỒ ĐẤU NỐI CHÂN ALTIUM EDA (FULL VECTOR INTERACTIVE)
+      </a>
+      <a href="HUONG_DAN_NOI_CHAN.html" class="btn btn-outline" style="text-decoration: none; padding: 12px 20px;">
+        📋 Hướng Dẫn Đấu Nối 40-Pin GPIO
+      </a>
+    </div>
 
     <div class="stats-grid">
       <div class="stat-card">
@@ -709,8 +719,9 @@
 
   <!-- Navigation -->
   <div class="nav-tabs">
+    <a href="so_do_noi_chan_smart_helmet_pi.html" class="nav-btn" style="background: rgba(239, 68, 68, 0.25); border-color: #ef4444; color: #fecaca; text-decoration: none;">⚡ Sơ Đồ Altium EDA</a>
     <button class="nav-btn active" onclick="scrollToSection('sim')">🎯 Mô Phỏng Góc Phủ 360°</button>
-    <button class="nav-btn" onclick="scrollToSection('comp')">⚖️ So Sánh: 4 Cam vs Cam Xoay</button>
+    <button class="nav-btn" onclick="scrollToSection('comp')">⚖️ So Sánh: 3 Cam vs Cam Xoay</button>
     <button class="nav-btn" onclick="scrollToSection('hardware')">📷 Lựa Chọn Module Camera</button>
     <button class="nav-btn" onclick="scrollToSection('arch')">⚡ Kiến Trúc Phần Cứng & AI</button>
     <button class="nav-btn" onclick="scrollToSection('roadmap')">📅 Lộ Trình 8 Tuần</button>

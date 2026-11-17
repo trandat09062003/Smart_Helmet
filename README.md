@@ -30,19 +30,24 @@ Hệ thống được thiết kế tối ưu để triển khai trên bo mạch 
 
 - **Bo mạch chủ:** Raspberry Pi 4 Model B (Khuyên dùng bản 4GB hoặc 8GB RAM).
 - **Hệ điều hành:** Ubuntu 22.04 LTS (64-bit Server hoặc Desktop).
-- **Camera:** 4x Module USB Camera cảm biến OV2710 hoặc GC2053 (FOV $120^\circ - 130^\circ$ M12 lens).
-- **Hub USB:** Bo mạch USB Hub 4 cổng IC FE1.1s hoặc GL850G.
+- **Camera:** 3x Module USB Camera cảm biến OV2710 hoặc GC2053 (FOV $120^\circ - 130^\circ$ M12 lens) lắp tam giác đều $120^\circ$ bao quát $360^\circ$.
+- **Hub USB:** Bo mạch USB Hub 4 cổng IC FE1.1s hoặc GL850G (chuẩn USB 3.0 cắm vào cổng USB 3.0 xanh dương Pi 4).
 - **Rung Haptic:** 4x Motor rung đồng xu 1027 hoặc 1234 (3V-5V).
-- **Mạch đệm điều khiển:** IC đệm Darlington ULN2003A (hoặc transistor MOSFET).
-- **Âm thanh & Còi:** Còi chip Active Buzzer 5V 12mm + Loa mini hoặc tai nghe dẫn truyền xương jack 3.5mm.
+- **Mạch đệm điều khiển:** IC đệm Darlington ULN2003A kích 4 motor rung định hướng.
+- **Âm thanh & Còi:** Còi chip Active Buzzer 5V kích qua Transistor S8050 NPN + Tai nghe dẫn truyền xương jack 3.5mm.
 - **Cảm biến phụ trợ:** Module GPS NEO-6M/8M (UART) và cảm biến Laser ToF VL53L0X (I2C).
-- **Nguồn cấp:** Pin Li-ion 7.4V (2S) kết hợp mạch hạ áp DC-DC Buck LM2596S-5.0 / XL4015 (5V/5A).
+- **Nguồn cấp:** Pin Li-ion 7.4V (2S) kết hợp mạch hạ áp DC-DC Buck XL4015 / LM2596S (5.10V / 5A).
 
 ---
 
-## 🔌 Sơ Đồ Đấu Nối Chân GPIO (Raspberry Pi 4)
+## 🔌 Sơ Đồ Đấu Nối Chân GPIO & Bản Vẽ Altium EDA
 
-> 💡 **CẨM NANG ĐẤU DÂY TƯƠNG TÁC:** Mở trực tiếp file **[HUONG_DAN_NOI_CHAN.html](HUONG_DAN_NOI_CHAN.html)** trên trình duyệt để xem sơ đồ 40 chân GPIO trực quan, bấm chọn từng chân xem màu dây, mạch đệm và mã lệnh test terminal!
+> ⚡ **BẢN VẼ SCHEMATIC VECTOR TƯƠNG TÁC CHUẨN ALTIUM EDA:** Mở ngay file **[so_do_noi_chan_smart_helmet_pi.html](so_do_noi_chan_smart_helmet_pi.html)** (hoặc **[HUONG_DAN_NOI_CHAN.html](HUONG_DAN_NOI_CHAN.html)**) trên trình duyệt để xem sơ đồ toàn diện:
+> - Bo phíp mạch đệm ULN2003A & Transistor S8050 NPN (vỏ TO-92) kích còi và 4 motor rung.
+> - Cụm 3 Camera tam giác đều $120^\circ$ bao quát $360^\circ$ không điểm mù.
+> - Bật/tắt phát sáng từng tuyến tín hiệu (Haptic, Buzzer, SOS, Cam, GPS, ToF, Nguồn).
+> - Bảng tra cứu 40 chân GPIO có bộ lọc tìm kiếm thời gian thực.
+> - 1-Click sao chép script Python test phần cứng hoàn chỉnh (`test_hardware_pi.py`).
 
 | Thiết Bị | Chân BCM (GPIO) | Chân Vật Lý (Physical Pin) | Ghi Chú |
 | :--- | :--- | :--- | :--- |
