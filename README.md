@@ -40,13 +40,14 @@ Hệ thống được thiết kế tối ưu để triển khai trên bo mạch 
 
 ---
 
-## 🔌 Sơ Đồ Đấu Nối Chân GPIO & Bản Vẽ Altium EDA
+## 🔌 Sơ Đồ Cắm Dây & Đấu Nối Chân GPIO (Raspberry Pi 4)
 
-> ⚡ **BẢN VẼ SCHEMATIC VECTOR TƯƠNG TÁC CHUẨN ALTIUM EDA:** Mở ngay file **[so_do_noi_chan_smart_helmet_pi.html](so_do_noi_chan_smart_helmet_pi.html)** (hoặc **[HUONG_DAN_NOI_CHAN.html](HUONG_DAN_NOI_CHAN.html)**) trên trình duyệt để xem sơ đồ toàn diện:
-> - Bo phíp mạch đệm ULN2003A & Transistor S8050 NPN (vỏ TO-92) kích còi và 4 motor rung.
-> - Cụm 3 Camera tam giác đều $120^\circ$ bao quát $360^\circ$ không điểm mù.
-> - Bật/tắt phát sáng từng tuyến tín hiệu (Haptic, Buzzer, SOS, Cam, GPS, ToF, Nguồn).
-> - Bảng tra cứu 40 chân GPIO có bộ lọc tìm kiếm thời gian thực.
+> ⚡ **SƠ ĐỒ CẮM DÂY DUPONT TƯƠNG TÁC (DUY NHẤT 1 FILE HTML):** Mở trực tiếp file **[so_do_noi_chan_smart_helmet_pi.html](so_do_noi_chan_smart_helmet_pi.html)** trên trình duyệt:
+> - Hướng dẫn cắm dây Dupont trực tiếp giữa Raspberry Pi 4 và các module có sẵn (không cần làm mạch in PCB).
+> - Module đệm ULN2003A & Transistor S8050 NPN (vỏ TO-92) kích còi và 4 motor rung định hướng.
+> - Cụm 3 Camera tam giác đều $120^\circ$ cắm vào Hub USB 3.0 kết nối cổng USB 3.0 xanh dương Pi 4.
+> - Bật/tắt phát sáng làm nổi bật từng tuyến dây cắm (Haptic, Buzzer, SOS, Cam, GPS, ToF, Nguồn).
+> - Bảng tra cứu cắm dây 40 chân GPIO có bộ lọc tìm kiếm thời gian thực.
 > - 1-Click sao chép script Python test phần cứng hoàn chỉnh (`test_hardware_pi.py`).
 
 | Thiết Bị | Chân BCM (GPIO) | Chân Vật Lý (Physical Pin) | Ghi Chú |
