@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sơ Đồ Cắm Dây 6 Khối Phần Cứng Mũ Bảo Hiểm Thông Minh 360° - Raspberry Pi 4</title>
+  <title>Cẩm Nang Đấu Nối Phần Cứng & Sơ Đồ Cắm Dây Chi Tiết - Smart Helmet 360°</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap');
     
     :root {
       --bg-dark: #070b13;
@@ -31,7 +31,7 @@
     
     .wire-trace:hover {
       stroke-width: 7px !important;
-      filter: drop-shadow(0 0 10px currentColor) brightness(1.35);
+      filter: drop-shadow(0 0 12px currentColor) brightness(1.4);
       opacity: 1 !important;
       cursor: pointer;
     }
@@ -45,13 +45,23 @@
     }
 
     .dimmed-trace {
-      opacity: 0.10 !important;
+      opacity: 0.08 !important;
     }
 
     .active-trace {
       stroke-width: 5.5px !important;
       filter: drop-shadow(0 0 12px currentColor);
       opacity: 1 !important;
+    }
+
+    .card-component {
+      background: linear-gradient(145deg, #0f172a 0%, #0a0f1d 100%);
+      border: 1px solid #1e293b;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .card-component:hover {
+      border-color: #3b82f6;
+      box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.15);
     }
 
     @media print {
@@ -62,425 +72,93 @@
       .no-print {
         display: none !important;
       }
-      .schematic-scroll {
-        overflow: visible !important;
+      .card-component {
+        border: 1px solid #ccc !important;
+        background: #fff !important;
+        color: #000 !important;
       }
     }
   </style>
 </head>
 <body class="p-3 md:p-6 lg:p-8 min-h-screen">
-  <div class="max-w-[1720px] mx-auto space-y-6">
+  <div class="max-w-[1750px] mx-auto space-y-8">
 
-    <!-- HEADER: TIÊU ĐỀ & CHẾ ĐỘ LỌC DÂY TƯƠNG TÁC -->
-    <header class="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 shadow-2xl flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-      <div>
+    <!-- ==================== HEADER: TIÊU ĐỀ & ĐIỀU HƯỚNG TƯƠNG TÁC ==================== -->
+    <header class="bg-[#0f172a] border border-slate-800 rounded-3xl p-6 shadow-2xl flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+      <div class="space-y-2">
         <div class="flex items-center gap-2.5 flex-wrap">
-          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase tracking-wider rounded-md bg-blue-500/20 text-blue-400 border border-blue-500/40">RASPBERRY PI 4 MODEL B (40-PIN)</span>
-          <span class="px-2.5 py-1 text-xs font-bold font-mono-code rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">CỤM 3 CAM TAM GIÁC 120° (360° FOV)</span>
-          <span class="px-2.5 py-1 text-xs font-bold font-mono-code rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">4 MOTOR RUNG HAPTIC (S8050 / ULN2003A)</span>
-          <span class="px-2.5 py-1 text-xs font-bold font-mono-code rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40">CÂU DÂY DUPONT THỰC TẾ (KHÔNG CẦN PCB)</span>
-          <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30">CHUẨN VECTOR ALTIUM EDA</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/40">RASPBERRY PI 4 MODEL B (40-PIN)</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">CỤM 3 CAM TAM GIÁC 120° (360° FOV)</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">4 ĐỘNG CƠ RUNG (S8050 / ULN2003A)</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40">CÒI S8050</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">NÚT BẤM SOS</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40">GPS NEO-6M</span>
+          <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase rounded-lg bg-red-500/20 text-red-300 border border-red-500/40">PIN 2S & BUCK 5.1V</span>
         </div>
-        <h1 class="text-2xl md:text-3xl font-black mt-2 text-white tracking-tight flex items-center gap-3">
-          Sơ Đồ Cắm Dây & Đấu Nối 6 Khối Phần Cứng Mũ Bảo Hiểm Thông Minh 360° AI
+        <h1 class="text-2xl md:text-3xl lg:text-4xl font-black text-white tracking-tight flex items-center gap-3">
+          Cẩm Nang Hướng Dẫn Cắm Dây & Đấu Nối Chi Tiết Từng Linh Kiện
         </h1>
-        <p class="text-slate-400 text-xs md:text-sm mt-1">
-          Bản vẽ cắm dây chi tiết: <b>Raspberry Pi 4</b> + <b>Động Cơ Rung Haptic (GPIO 17,27,22,23)</b> + <b>Còi Buzzer S8050 (GPIO 24)</b> + <b>Nút Bấm SOS (GPIO 25 & GND)</b> + <b>Nguồn Pin 2S & Buck 5.1V</b> + <b>GPS NEO-6M</b> + <b>3 Camera USB 120°</b>
+        <p class="text-slate-400 text-xs md:text-sm max-w-4xl leading-relaxed">
+          Tài liệu kỹ thuật thực chiến dành cho việc <b>câu dây trực tiếp (Point-to-Point Hand Wiring) bằng dây cắm Dupont và gen co nhiệt</b>, không cần chế tạo mạch in PCB. Mỗi linh kiện đều có hình vẽ nhận diện chân, màu dây chuẩn, bảng kết nối và lệnh kiểm tra Terminal độc lập.
         </p>
       </div>
 
-      <!-- Quick Filter Buttons -->
-      <div class="flex flex-wrap items-center gap-2 no-print">
-        <button onclick="highlightNet('ALL')" id="btn-net-all" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-blue-600 text-white hover:bg-blue-500 transition shadow-lg shadow-blue-600/30 ring-2 ring-white">
-          Hiện Tất Cả Tuyến
+      <!-- Quick Action Controls -->
+      <div class="flex flex-wrap items-center gap-2 self-start xl:self-auto no-print">
+        <button onclick="window.print()" class="px-4 py-2.5 text-xs font-bold font-mono-code rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition flex items-center gap-2 shadow">
+          <span>🖨️</span> In Cẩm Nang / Lưu PDF
         </button>
-        <button onclick="highlightNet('HAPTIC')" id="btn-net-haptic" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500 hover:bg-emerald-900 transition">
-          📳 Motor Rung (Pin 11,13,15,16)
-        </button>
-        <button onclick="highlightNet('BUZZER')" id="btn-net-buzzer" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-rose-950/80 text-rose-300 border border-rose-500 hover:bg-rose-900 transition">
-          🔔 Mạch Còi S8050 (Pin 18)
-        </button>
-        <button onclick="highlightNet('SOS')" id="btn-net-sos" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-amber-950/80 text-amber-300 border border-amber-500 hover:bg-amber-900 transition">
-          🚨 Nút Bấm SOS (Pin 22 & 20)
-        </button>
-        <button onclick="highlightNet('PWR')" id="btn-net-pwr" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-red-950/80 text-red-300 border border-red-500 hover:bg-red-900 transition">
-          ⚡ Nguồn Pin & Buck 5.1V
-        </button>
-        <button onclick="highlightNet('GPS')" id="btn-net-gps" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-purple-950/80 text-purple-300 border border-purple-500 hover:bg-purple-900 transition">
-          🛰️ GPS NEO-6M (Pin 8, 10)
-        </button>
-        <button onclick="highlightNet('CAM')" id="btn-net-cam" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-cyan-950/80 text-cyan-300 border border-cyan-500 hover:bg-cyan-900 transition">
-          📷 3 Cam USB Hub 3.0
+        <button onclick="highlightNet('ALL')" id="btn-net-all" class="px-4 py-2.5 text-xs font-bold font-mono-code rounded-xl bg-blue-600 text-white hover:bg-blue-500 transition shadow-lg shadow-blue-600/30 ring-2 ring-white">
+          Hiện Toàn Bộ Tuyến Dây
         </button>
       </div>
     </header>
 
-    <!-- QUICK SPECS BANNER (6 KHỐI PHẦN CỨNG THỰC TẾ) -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Bo Mạch Xử Lý</div>
-        <div class="text-sm font-bold text-blue-400 mt-0.5">Raspberry Pi 4 B</div>
-        <div class="text-[11px] text-slate-500">40-Pin Header • USB 3.0</div>
-      </div>
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Phản Hồi Xúc Giác</div>
-        <div class="text-sm font-bold text-emerald-400 mt-0.5">4 Động Cơ Rung</div>
-        <div class="text-[11px] text-slate-500">Đệm S8050 / ULN2003A</div>
-      </div>
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Cảnh Báo Âm Thanh</div>
-        <div class="text-sm font-bold text-rose-400 mt-0.5">Còi Buzzer S8050</div>
-        <div class="text-[11px] text-slate-500">Pin 18 (GPIO 24) • Diode 1N4148</div>
-      </div>
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Báo Động Khẩn Cấp</div>
-        <div class="text-sm font-bold text-amber-400 mt-0.5">Mạch Nút Bấm SOS</div>
-        <div class="text-[11px] text-slate-500">Pin 22 & Pin 20 • Tụ 100nF</div>
-      </div>
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Khối Nguồn Ổn Áp</div>
-        <div class="text-sm font-bold text-red-400 mt-0.5">Pin 2S + Buck 5.1V</div>
-        <div class="text-[11px] text-slate-500">Dòng 5A • Nuôi Pi 4 & Motor</div>
-      </div>
-      <div class="bg-[#0f172a] border border-slate-800 rounded-xl p-3">
-        <div class="text-[10px] font-mono-code text-slate-400 uppercase">Thị Giác & GPS</div>
-        <div class="text-sm font-bold text-cyan-400 mt-0.5">3 Cam 120° + GPS</div>
-        <div class="text-[11px] text-slate-500">Tam giác 360° • NEO-6M UART</div>
-      </div>
+    <!-- ==================== BỘ LỌC TƯƠNG TÁC THEO LINH KIỆN ==================== -->
+    <div class="bg-[#0b0f19] p-3 rounded-2xl border border-slate-800 flex flex-wrap items-center gap-2.5 shadow-lg no-print">
+      <span class="text-xs font-bold font-mono-code text-slate-400 px-3 uppercase tracking-wider">Lọc nhanh từng linh kiện:</span>
+      <button onclick="highlightNet('HAPTIC')" id="btn-net-haptic" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500 hover:bg-emerald-900 transition flex items-center gap-1.5">
+        <span>📳</span> 4 Động Cơ Rung (Pin 11, 13, 15, 16)
+      </button>
+      <button onclick="highlightNet('BUZZER')" id="btn-net-buzzer" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-rose-950/80 text-rose-300 border border-rose-500 hover:bg-rose-900 transition flex items-center gap-1.5">
+        <span>🔔</span> Còi Buzzer S8050 (Pin 18)
+      </button>
+      <button onclick="highlightNet('SOS')" id="btn-net-sos" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-amber-950/80 text-amber-300 border border-amber-500 hover:bg-amber-900 transition flex items-center gap-1.5">
+        <span>🚨</span> Nút Báo Động SOS (Pin 22 & Pin 20)
+      </button>
+      <button onclick="highlightNet('PWR')" id="btn-net-pwr" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-red-950/80 text-red-300 border border-red-500 hover:bg-red-900 transition flex items-center gap-1.5">
+        <span>⚡</span> Nguồn Pin 2S & Buck 5.1V (Pin 2, 4, 6)
+      </button>
+      <button onclick="highlightNet('GPS')" id="btn-net-gps" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-purple-950/80 text-purple-300 border border-purple-500 hover:bg-purple-900 transition flex items-center gap-1.5">
+        <span>🛰️</span> GPS NEO-6M UART (Pin 1, 8, 10)
+      </button>
+      <button onclick="highlightNet('CAM')" id="btn-net-cam" class="px-3.5 py-2 text-xs font-bold font-mono-code rounded-xl bg-cyan-950/80 text-cyan-300 border border-cyan-500 hover:bg-cyan-900 transition flex items-center gap-1.5">
+        <span>📷</span> 3 Camera USB Tam Giác 120° (Hub 3.0)
+      </button>
     </div>
 
-    <!-- HERO CALLOUT 1: HƯỚNG DẪN CÂU DÂY TRANSISTOR S8050 KÍCH CÒI BUZZER 5V -->
-    <section class="bg-gradient-to-r from-rose-950/40 via-[#0f172a] to-slate-900 border-2 border-rose-500/60 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-rose-500/30 pb-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-black text-xl shadow-lg shadow-rose-600/40">
-            🔔
-          </div>
-          <div>
-            <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-              HƯỚNG DẪN CÂU DÂY TRANSISTOR S8050 KÍCH CÒI BUZZER 5V
-            </h2>
-            <p class="text-xs text-rose-300">Không cần làm mạch in PCB - Cầm đúng hướng transistor và câu dây trực tiếp bằng ống gen co nhiệt hoặc băng dính</p>
-          </div>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono-code bg-rose-500/20 text-rose-300 border border-rose-500/40 self-start md:self-auto">
-          TRANSISTOR S8050 NPN (VỎ TO-92)
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <!-- Cột 1: Nhận diện S8050 -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 class="font-bold text-amber-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-            <span>🔍</span> XÁC ĐỊNH HƯỚNG CẦM S8050
-          </h3>
-          <div class="p-3 bg-slate-900 rounded-lg text-center space-y-2 border border-slate-800">
-            <svg viewBox="0 0 160 110" class="w-36 h-auto mx-auto select-none">
-              <path d="M 20 20 L 140 20 A 60 60 0 0 1 20 20 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
-              <text x="80" y="38" fill="#ffffff" font-size="14" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">S8050</text>
-              <text x="80" y="52" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle">MẶT PHẲNG CÓ CHỮ</text>
-              <rect x="35" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
-              <rect x="76" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
-              <rect x="117" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
-              <text x="39" y="108" fill="#34d399" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:E</text>
-              <text x="80" y="108" fill="#fb7185" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:B</text>
-              <text x="121" y="108" fill="#60a5fa" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">3:C</text>
-            </svg>
-            <p class="text-[11px] text-slate-300 leading-tight">
-              Cầm mặt phẳng có chữ <b class="text-white">"S8050"</b> quay về phía mắt bạn, 3 chân chúc xuống dưới.
-            </p>
-          </div>
-        </div>
-
-        <!-- Cột 2: Cách đấu 3 chân S8050 -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-2 lg:col-span-2">
-          <h3 class="font-bold text-rose-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-            <span>⚡</span> CÁCH NỐI 3 CHÂN CỦA S8050 & CÒI VÀO PI 4
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-            <!-- Chân 1 -->
-            <div class="bg-slate-900/90 p-3 rounded-xl border-2 border-emerald-500/50 space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs px-2 py-0.5 rounded font-mono-code font-extrabold bg-emerald-500/20 text-emerald-400">CHÂN 1 (TRÁI)</span>
-                <span class="font-bold text-white text-xs font-mono-code">CỰC E</span>
-              </div>
-              <div class="text-emerald-400 font-extrabold text-sm">
-                ➔ NỐI VÀO GND PI
-              </div>
-              <p class="text-[11px] text-slate-400 leading-snug">
-                Nối thẳng chân 1 này vào chân <b>Pin 20 (GND)</b> hoặc Pin 6 của Pi.
-              </p>
-            </div>
-
-            <!-- Chân 2 -->
-            <div class="bg-slate-900/90 p-3 rounded-xl border-2 border-rose-500/70 space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs px-2 py-0.5 rounded font-mono-code font-extrabold bg-rose-500/20 text-rose-400">CHÂN 2 (GIỮA)</span>
-                <span class="font-bold text-white text-xs font-mono-code">CỰC B</span>
-              </div>
-              <div class="text-rose-400 font-extrabold text-sm">
-                ➔ QUA TRỞ 1kΩ VÀO PIN 18
-              </div>
-              <p class="text-[11px] text-slate-400 leading-snug">
-                Hàn nối tiếp qua điện trở <b>1 kΩ</b> rồi cắm vào chân <b>Pin 18 (GPIO 24)</b> của Pi.
-              </p>
-            </div>
-
-            <!-- Chân 3 -->
-            <div class="bg-slate-900/90 p-3 rounded-xl border-2 border-blue-500/50 space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-xs px-2 py-0.5 rounded font-mono-code font-extrabold bg-blue-500/20 text-blue-400">CHÂN 3 (PHẢI)</span>
-                <span class="font-bold text-white text-xs font-mono-code">CỰC C</span>
-              </div>
-              <div class="text-blue-400 font-extrabold text-sm">
-                ➔ NỐI VÀO CỰC (-) CÒI
-              </div>
-              <p class="text-[11px] text-slate-400 leading-snug">
-                Nối vào dây âm (-) của còi Buzzer. Cực dương (+) của còi cắm vào <b>Pin 4 (+5V)</b>.
-              </p>
-            </div>
-          </div>
-
-          <div class="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-[11px] text-slate-300 flex flex-wrap items-center justify-between gap-2 mt-2">
-            <span><b>• Diode 1N4148:</b> Mắc ngược song song còi: Vạch trắng vào <span class="text-red-400 font-bold">+5V (Pin 4)</span>, đầu đen vào <span class="text-blue-400 font-bold">Chân 3 (C) S8050</span> (bảo vệ transistor khi ngắt dòng).</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HERO CALLOUT 2: HƯỚNG DẪN ĐẤU NỐI NÚT BẤM SOS CHI TIẾT (2 CHÂN & 4 CHÂN) -->
-    <section class="bg-gradient-to-r from-amber-950/40 via-[#0f172a] to-slate-900 border-2 border-amber-500/60 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-amber-500/30 pb-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-600 text-white flex items-center justify-center font-black text-xl shadow-lg shadow-amber-600/40">
-            🚨
-          </div>
-          <div>
-            <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-              HƯỚNG DẪN ĐẤU NỐI NÚT BẤM SOS: CHÂN NÀO VÀO ĐÂU? (CẢ NÚT 2 CHÂN & 4 CHÂN)
-            </h2>
-            <p class="text-xs text-amber-300">Không cần trở kéo ngoài - 2 chân cắm nằm ngay cạnh nhau trên hàng ngoài cùng của Raspberry Pi 4</p>
-          </div>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono-code bg-amber-500/20 text-amber-300 border border-amber-500/40 self-start md:self-auto">
-          CẮM PIN 22 & PIN 20 • KẸP TỤ 100nF (104)
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <!-- Cột 1: Sơ đồ nối nút 2 chân & 4 chân -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-3">
-          <h3 class="font-bold text-amber-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-            <span>🔘</span> BƯỚC 1: XÁC ĐỊNH LOẠI NÚT BẤM CỦA BẠN
-          </h3>
-          <div class="p-3 bg-slate-900 rounded-lg space-y-3 border border-slate-800 text-center">
-            
-            <!-- Graphic Nút 4 Chân Quy Tắc Chéo Góc -->
-            <svg viewBox="0 0 200 130" class="w-48 h-auto mx-auto select-none">
-              <!-- Nút vuông 4 chân -->
-              <rect x="50" y="20" width="100" height="80" rx="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-              <circle cx="100" cy="60" r="26" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
-              <text x="100" y="65" fill="#ffffff" font-size="11" font-weight="900" text-anchor="middle">SOS</text>
-              
-              <!-- 4 Chân cắm -->
-              <!-- Chân 1 (Trên-Trái) -->
-              <rect x="25" y="28" width="25" height="6" rx="2" fill="#eab308"/>
-              <circle cx="20" cy="31" r="5" fill="#eab308"/>
-              <text x="12" y="20" fill="#fde047" font-size="8.5" font-weight="900">1: Pin 22</text>
-
-              <!-- Chân 2 (Trên-Phải) -->
-              <rect x="150" y="28" width="25" height="6" rx="2" fill="#64748b"/>
-              <circle cx="180" cy="31" r="4" fill="#64748b"/>
-
-              <!-- Chân 3 (Dưới-Trái) -->
-              <rect x="25" y="85" width="25" height="6" rx="2" fill="#64748b"/>
-              <circle cx="20" cy="88" r="4" fill="#64748b"/>
-
-              <!-- Chân 4 (Dưới-Phải) -->
-              <rect x="150" y="85" width="25" height="6" rx="2" fill="#94a3b8"/>
-              <circle cx="180" cy="88" r="5" fill="#cbd5e1"/>
-              <text x="188" y="105" fill="#cbd5e1" font-size="8.5" font-weight="900">4: Pin 20</text>
-
-              <!-- Mũi tên chéo góc -->
-              <line x1="45" y1="36" x2="155" y2="84" stroke="#22c55e" stroke-width="2" stroke-dasharray="3,3"/>
-              <text x="100" y="118" fill="#22c55e" font-size="8.5" font-weight="800" text-anchor="middle">★ CẮM CHÉO GÓC (CHÂN 1 &amp; 4)</text>
-            </svg>
-
-            <div class="text-[11px] text-slate-300 text-left space-y-1">
-              <div>• <b>Nếu là nút 2 chân:</b> Cắm mỗi chân vào 1 dây (không phân cực).</div>
-              <div>• <b>Nếu là nút 4 chân:</b> Cắm vào <b class="text-emerald-400">2 chân chéo góc nhau</b> (Chân Trên-Trái và Dưới-Phải) để 100% không bao giờ bị chập nhầm!</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Cột 2: Cắm vào đâu trên Raspberry Pi 4 -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-2 lg:col-span-2">
-          <h3 class="font-bold text-amber-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-            <span>⚡</span> BƯỚC 2: CẮM VÀO ĐÂU TRÊN RASPBERRY PI 4?
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            
-            <!-- Chân 1 của nút -->
-            <div class="bg-slate-900/90 p-3.5 rounded-xl border-2 border-amber-500/70 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs px-2.5 py-0.5 rounded font-mono-code font-extrabold bg-amber-500/20 text-amber-300">DÂY THỨ NHẤT (VÀNG)</span>
-                <span class="font-bold text-white text-xs font-mono-code">TÍN HIỆU SOS</span>
-              </div>
-              <div class="text-amber-400 font-extrabold text-base">
-                ➔ CẮM VÀO PIN 22 (GPIO 25)
-              </div>
-              <p class="text-xs text-slate-300 leading-snug">
-                Cắm dây cái Dupont vào chân <b>Pin 22 (GPIO 25)</b> trên Pi 4. Chân này nằm ở hàng ngoài cùng, ngay cạnh chân Pin 20.
-              </p>
-            </div>
-
-            <!-- Chân 2 của nút -->
-            <div class="bg-slate-900/90 p-3.5 rounded-xl border-2 border-slate-600 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="text-xs px-2.5 py-0.5 rounded font-mono-code font-extrabold bg-slate-700 text-slate-200">DÂY THỨ HAI (ĐEN)</span>
-                <span class="font-bold text-white text-xs font-mono-code">MASS GND</span>
-              </div>
-              <div class="text-slate-200 font-extrabold text-base">
-                ➔ CẮM VÀO PIN 20 (GND)
-              </div>
-              <p class="text-xs text-slate-300 leading-snug">
-                Cắm dây cái Dupont vào chân <b>Pin 20 (GND)</b> trên Pi 4. Khi nhấn nút, chân Pin 22 sẽ được nối tắt xuống GND (mức 0V).
-              </p>
-            </div>
-          </div>
-
-          <!-- Chi tiết vị trí liền kề & Tụ 104 -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-              <div class="text-xs font-bold text-emerald-400">💡 CỰC TIỆN: PIN 20 VÀ PIN 22 NẰM SÁT CẠNH NHAU!</div>
-              <p class="text-[11px] text-slate-300 leading-relaxed">
-                Nhìn vào hàng chân ngoài cùng (hàng chẵn) của Pi: <b>... Pin 18 (Còi) ── Pin 20 (GND) ── Pin 22 (Nút SOS) ...</b><br>
-                Bạn chỉ việc cắm 2 đầu dây cái Dupont vào <b>2 chân liền kề nhau</b> là xong!
-              </p>
-            </div>
-
-            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1">
-              <div class="text-xs font-bold text-amber-400">🛡️ TỤ GỐM 100nF (MÃ 104) CHỐNG DỘI PHẦN CỨNG:</div>
-              <p class="text-[11px] text-slate-300 leading-relaxed">
-                Hàn kẹp 2 chân của <b>tụ gốm 100nF (104)</b> song song trực tiếp vào 2 chân nút bấm. Tụ sẽ dập tắt tia nhiễu cơ học, bấm 1 lần chỉ ăn đúng 1 lần, không bị gửi tin nhắn SOS liên tục!
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- HERO CALLOUT 3: HƯỚNG DẪN CÂU DÂY ĐỘNG CƠ RUNG (HAPTIC MOTOR) -->
-    <section class="bg-gradient-to-r from-emerald-950/40 via-[#0f172a] to-slate-900 border-2 border-emerald-500/60 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-emerald-500/30 pb-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xl shadow-lg shadow-emerald-600/40">
-            📳
-          </div>
-          <div>
-            <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-              HƯỚNG DẪN CÂU DÂY ĐỘNG CƠ RUNG (HAPTIC VIBRATION MOTOR)
-            </h2>
-            <p class="text-xs text-emerald-300">⚠️ LƯU Ý SỐNG CÒN: Tuyệt đối KHÔNG cắm motor trực tiếp vào chân GPIO Pi 4 (motor ăn dòng 60-100mA, GPIO Pi chỉ chịu 16mA)!</p>
-          </div>
-        </div>
-        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono-code bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 self-start md:self-auto">
-          DÙNG TRANSISTOR S8050 HOẶC MODULE ULN2003A
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <!-- Phương án 1: Dùng Transistor S8050 rời (Giống mạch còi) -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <h3 class="font-bold text-emerald-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-              <span>🔧</span> CÁCH 1: DÙNG TRANSISTOR S8050 NPN (CÂU DÂY RỜI)
-            </h3>
-            <span class="text-[10px] text-slate-400">Phù hợp khi làm 1 motor hoặc dùng linh kiện có sẵn</span>
-          </div>
-
-          <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
-            <p>Mỗi động cơ rung được điều khiển y hệt mạch còi Buzzer qua 1 con Transistor S8050 NPN:</p>
-            <div class="grid grid-cols-3 gap-2 text-center pt-1 font-mono-code text-[11px]">
-              <div class="p-2 bg-slate-900 rounded border border-slate-800">
-                <div class="text-emerald-400 font-bold">Chân 1 (E)</div>
-                <div class="text-slate-400 text-[10px] mt-0.5">Nối GND Pi</div>
-              </div>
-              <div class="p-2 bg-slate-900 rounded border border-slate-800">
-                <div class="text-rose-400 font-bold">Chân 2 (B)</div>
-                <div class="text-slate-400 text-[10px] mt-0.5">Qua trở 1kΩ vào GPIO</div>
-              </div>
-              <div class="p-2 bg-slate-900 rounded border border-slate-800">
-                <div class="text-blue-400 font-bold">Chân 3 (C)</div>
-                <div class="text-slate-400 text-[10px] mt-0.5">Vào cực (-) Motor</div>
-              </div>
-            </div>
-            <ul class="space-y-1.5 pt-1 text-[11px] text-slate-300">
-              <li>• <b>Cực dương (+) Motor rung (dây đỏ):</b> Nối vào nguồn <b>+5V</b> (Pin 2 hoặc Pin 4 của Pi 4).</li>
-              <li>• <b>Cực âm (-) Motor rung (dây đen/xanh):</b> Nối vào <b>Chân 3 (C)</b> của Transistor S8050.</li>
-              <li>• <b>Diode 1N4148 dập xung ngược:</b> Mắc ngược song song 2 đầu motor (Vạch trắng vào +5V, đầu đen vào chân C) để chống xung cảm ứng đánh thủng transistor khi ngắt rung!</li>
-              <li>• <b>Chân tín hiệu kích:</b> Nối chân 2 (B) qua trở 1kΩ vào các chân GPIO theo hướng (M1-Trước: Pin 11, M2-Phải: Pin 13, M3-Sau: Pin 15, M4-Trái: Pin 16; hoặc chân Pin 11 nếu chỉ có 1 motor).</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Phương án 2: Dùng Bo Module Đệm IC ULN2003A (Rất khuyên dùng cho 4 Motor) -->
-        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-3">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <h3 class="font-bold text-cyan-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
-              <span>⚡</span> CÁCH 2: DÙNG BO MODULE ULN2003A (TIỆN NHẤT KHI CẮM DÂY DUPONT)
-            </h3>
-            <span class="text-[10px] text-emerald-400 font-bold">★ KHUYÊN DÙNG CHO 4 MOTOR</span>
-          </div>
-
-          <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
-            <p>Bo mạch module đệm ULN2003A bán sẵn (10.000đ - 15.000đ) có sẵn 7 kênh Darlington 500mA, tích hợp sẵn điện trở kích và diode dập xung bên trong chip. Cắm dây Dupont cái-cái cực kỳ nhanh gọn:</p>
-            <div class="grid grid-cols-2 gap-2 text-[11px]">
-              <div class="p-2 bg-slate-900 rounded border border-slate-800 space-y-1">
-                <div class="text-amber-300 font-bold">4 CHÂN ĐẦU VÀO (INPUTS):</div>
-                <div>• <b>IN1:</b> Cắm vào <b>Pin 11 (GPIO 17)</b> - Motor Trước (Trán)</div>
-                <div>• <b>IN2:</b> Cắm vào <b>Pin 13 (GPIO 27)</b> - Motor Phải (Thái dương)</div>
-                <div>• <b>IN3:</b> Cắm vào <b>Pin 15 (GPIO 22)</b> - Motor Sau (Gáy)</div>
-                <div>• <b>IN4:</b> Cắm vào <b>Pin 16 (GPIO 23)</b> - Motor Trái (Thái dương)</div>
-              </div>
-              <div class="p-2 bg-slate-900 rounded border border-slate-800 space-y-1">
-                <div class="text-cyan-300 font-bold">NGUỒN & ĐẦU RA MOTOR:</div>
-                <div>• <b>Chân GND bo:</b> Cắm vào <b>Pin 6 (GND)</b> của Pi.</div>
-                <div>• <b>Chân VCC/COM (+):</b> Cắm vào <b>Pin 2 (+5V)</b> của Pi.</div>
-                <div>• <b>OUT1..OUT4:</b> Cắm vào cực (-) của 4 motor.</div>
-                <div>• <b>Cực (+) của 4 motor:</b> Chụm chung cắm vào +5V.</div>
-              </div>
-            </div>
-            <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[10.5px] text-slate-400">
-              💡 <b>Lợi ích:</b> Không cần hàn bất kỳ một con trở hay diode nào! Chỉ cần cắm các đầu dây cắm Dupont là hệ thống 4 motor rung định hướng 360° hoạt động hoàn hảo.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SƠ ĐỒ ĐỒ HỌA MẠCH VECTOR ALTIUM EDA (SVG SCHEMATIC) -->
-    <section class="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-2xl space-y-4">
+    <!-- ==================== PHẦN 1: BẢN VẼ SƠ ĐỒ VECTOR TỔNG THỂ (ALTIUM EDA) ==================== -->
+    <section class="bg-[#0f172a] border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div>
           <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-            <span>📐</span> BẢN VẼ SƠ ĐỒ CẮM DÂY 6 KHỐI PHẦN CỨNG (CHUẨN ALTIUM EDA VECTOR)
+            <span>📐</span> BẢN VẼ SƠ ĐỒ ĐẤU NỐI VECTOR TOÀN HỆ THỐNG (ALTIUM EDA)
           </h2>
-          <p class="text-xs text-slate-400">Bản vẽ trực quan không gian thực tế: Rê chuột hoặc bấm nút filter ở trên để làm sáng từng tuyến dây tương ứng</p>
+          <p class="text-xs text-slate-400">Rê chuột hoặc bấm các nút lọc ở trên để làm sáng rực rỡ từng tuyến dây nối giữa Raspberry Pi 4 và các linh kiện</p>
         </div>
         <div class="flex items-center gap-3 self-end sm:self-auto text-xs font-mono-code text-slate-400">
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-400"></span> Động Cơ Rung</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-400"></span> Còi S8050</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-400"></span> Nút SOS</span>
-          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-red-400"></span> Nguồn Buck 5.1V</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-red-400"></span> Nguồn Buck</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-purple-400"></span> GPS</span>
           <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-cyan-400"></span> 3 Cam USB</span>
         </div>
       </div>
 
       <!-- SVG Canvas Wrapper -->
-      <div class="schematic-scroll overflow-x-auto bg-[#070b13] p-2 md:p-4 rounded-xl border border-slate-800/80">
-        <svg id="eda-schematic" viewBox="0 0 1720 980" class="w-full min-w-[1450px] h-auto select-none font-sans">
+      <div class="overflow-x-auto bg-[#070b13] p-2 md:p-4 rounded-2xl border border-slate-800/80">
+        <svg id="eda-schematic" viewBox="0 0 1740 990" class="w-full min-w-[1450px] h-auto select-none font-sans">
           <defs>
             <filter id="pcb-shadow" x="-5%" y="-5%" width="110%" height="110%">
               <feDropShadow dx="3" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.7"/>
@@ -703,7 +381,7 @@
 
           <!-- ================= 3. KHỐI CÒI TRANSISTOR S8050 (BOTTOM LEFT) ================= -->
           <g id="buzzer-node" transform="translate(30, 500)">
-            <rect x="0" y="0" width="340" height="430" rx="14" fill="#1c0711" stroke="#f43f5e" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+            <rect x="0" y="0" width="340" height="440" rx="14" fill="#1c0711" stroke="#f43f5e" stroke-width="2.5" filter="url(#pcb-shadow)"/>
             <rect x="0" y="0" width="340" height="34" rx="12" fill="#881337"/>
             <text x="170" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH KÍCH CÒI TRANSISTOR S8050 NPN</text>
 
@@ -759,17 +437,18 @@
 
             <!-- Hộp tóm tắt cắm dây nhanh -->
             <g transform="translate(20, 310)">
-              <rect x="0" y="0" width="300" height="105" rx="6" fill="#090d16" stroke="#475569"/>
+              <rect x="0" y="0" width="300" height="115" rx="6" fill="#090d16" stroke="#475569"/>
               <text x="12" y="20" fill="#34d399" font-size="9.5" font-weight="800">• Chân 1 (E): Cắm GND Pi (Pin 6/20)</text>
               <text x="12" y="42" fill="#fb7185" font-size="9.5" font-weight="800">• Chân 2 (B): Qua trở 1kΩ cắm Pin 18 (GPIO 24)</text>
               <text x="12" y="64" fill="#60a5fa" font-size="9.5" font-weight="800">• Chân 3 (C): Cắm cực (-) Còi</text>
               <text x="12" y="86" fill="#f87171" font-size="9.5" font-weight="800">• Cực (+) Còi: Cắm Pin 4 (+5V)</text>
+              <text x="12" y="106" fill="#eab308" font-size="8.5">• Diode 1N4148 vạch trắng vào +5V, đen vào chân 3</text>
             </g>
           </g>
 
           <!-- ================= 4. KHỐI NÚT BÁO ĐỘNG SOS (BOTTOM CENTER-LEFT) ================= -->
           <g id="sos-node" transform="translate(390, 500)">
-            <rect x="0" y="0" width="330" height="430" rx="14" fill="#181105" stroke="#eab308" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+            <rect x="0" y="0" width="330" height="440" rx="14" fill="#181105" stroke="#eab308" stroke-width="2.5" filter="url(#pcb-shadow)"/>
             <rect x="0" y="0" width="330" height="34" rx="12" fill="#78350f"/>
             <text x="165" y="22" fill="#fef08a" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH NÚT BÁO ĐỘNG SOS (PIN 22 & 20)</text>
 
@@ -809,21 +488,22 @@
             </g>
 
             <g transform="translate(20, 205)">
-              <rect x="0" y="0" width="290" height="210" rx="8" fill="#0b0f19" stroke="#334155"/>
+              <rect x="0" y="0" width="290" height="220" rx="8" fill="#0b0f19" stroke="#334155"/>
               <text x="145" y="24" fill="#fde047" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">HƯỚNG DẪN CẮM DÂY SOS NHANH</text>
               <text x="15" y="52" fill="#cbd5e1" font-size="9.5" font-weight="700">1. Chân 1 nút: Cắm dây vào <tspan fill="#fde047" font-weight="900">Pin 22 (GPIO 25)</tspan></text>
-              <text x="15" y="78" fill="#cbd5e1" font-size="9.5" font-weight="700">2. Chân 2 nút: Cắm dây vào <tspan fill="#cbd5e1" font-weight="900">Pin 20 (GND)</tspan></text>
-              <text x="15" y="104" fill="#34d399" font-size="9.5" font-weight="800">💡 2 chân cắm nằm sát cạnh nhau ở hàng ngoài!</text>
-              <text x="15" y="130" fill="#cbd5e1" font-size="9">• Tụ 100nF kẹp 2 chân nút lọc dội (debounce)</text>
-              <text x="15" y="152" fill="#cbd5e1" font-size="9">• Pi 4 kích hoạt pull-up nội: Thả = 3.3V, Nhấn = 0V</text>
-              <text x="15" y="174" fill="#38bdf8" font-size="9">• Không cần gắn thêm bất kỳ con trở nào bên ngoài</text>
-              <text x="15" y="196" fill="#f87171" font-size="9">• Nhấn giữ 1.2s: Hú còi + Gửi tọa độ GPS cứu hộ</text>
+              <text x="15" y="76" fill="#cbd5e1" font-size="9.5" font-weight="700">2. Chân 2 nút: Cắm dây vào <tspan fill="#cbd5e1" font-weight="900">Pin 20 (GND)</tspan></text>
+              <text x="15" y="100" fill="#34d399" font-size="9.5" font-weight="800">💡 2 chân cắm nằm sát cạnh nhau ở hàng ngoài!</text>
+              <text x="15" y="124" fill="#cbd5e1" font-size="9">• Tụ 100nF kẹp 2 chân nút lọc dội (debounce)</text>
+              <text x="15" y="146" fill="#cbd5e1" font-size="9">• Pi 4 kích hoạt pull-up nội: Thả = 3.3V, Nhấn = 0V</text>
+              <text x="15" y="168" fill="#38bdf8" font-size="9">• Không cần gắn thêm bất kỳ con trở nào bên ngoài</text>
+              <text x="15" y="190" fill="#f87171" font-size="9">• Nhấn giữ 1.2s: Hú còi + Gửi tọa độ GPS cứu hộ</text>
+              <text x="15" y="210" fill="#fde047" font-size="8.5">• Nút 2 chân: Cắm 2 đầu dây tự do, không phân cực</text>
             </g>
           </g>
 
           <!-- ================= 5. KHỐI ĐỘNG CƠ RUNG HAPTIC (BOTTOM CENTER-RIGHT) ================= -->
           <g id="haptic-node" transform="translate(740, 500)">
-            <rect x="0" y="0" width="510" height="430" rx="14" fill="#071b12" stroke="#10b981" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+            <rect x="0" y="0" width="510" height="440" rx="14" fill="#071b12" stroke="#10b981" stroke-width="2.5" filter="url(#pcb-shadow)"/>
             <rect x="0" y="0" width="510" height="34" rx="12" fill="#064e3b"/>
             <text x="255" y="22" fill="#34d399" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH 4 ĐỘNG CƠ RUNG HAPTIC (ĐỆM S8050 / ULN2003A)</text>
 
@@ -915,21 +595,22 @@
 
             <!-- Hộp lưu ý quan trọng bên dưới -->
             <g transform="translate(20, 280)">
-              <rect x="0" y="0" width="470" height="135" rx="8" fill="#09140f" stroke="#10b981" stroke-width="1.2"/>
+              <rect x="0" y="0" width="470" height="145" rx="8" fill="#09140f" stroke="#10b981" stroke-width="1.2"/>
               <text x="15" y="22" fill="#34d399" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace">QUY TẮC ĐẤU NỐI MOTOR RUNG AN TOÀN:</text>
               <text x="15" y="44" fill="#cbd5e1" font-size="9">• <b>Tuyệt đối không nối thẳng GPIO:</b> Motor ăn dòng 80mA, GPIO Pi chỉ chịu 16mA.</text>
               <text x="15" y="64" fill="#cbd5e1" font-size="9">• <b>Nếu dùng ULN2003A:</b> IN1..IN4 cắm Pin 11, 13, 15, 16. GND cắm Pin 6. COM cắm +5V.</text>
               <text x="15" y="84" fill="#cbd5e1" font-size="9">• <b>Nếu dùng S8050:</b> Chân 1 (E) nối GND, Chân 2 (B) qua trở 1kΩ vào GPIO, Chân 3 (C) vào cực (-) motor.</text>
               <text x="15" y="104" fill="#cbd5e1" font-size="9">• <b>Cực (+) 4 motor:</b> Chụm chung nối vào nguồn +5V. Nhớ mắc Diode 1N4148 dập xung.</text>
               <text x="15" y="124" fill="#38bdf8" font-size="9">• <b>Nếu chỉ dùng 1 motor rung cảnh báo:</b> Chỉ cần nối kênh IN1 vào Pin 11 (GPIO 17).</text>
+              <text x="15" y="140" fill="#fde047" font-size="8.5">• Dây motor dẹt: Dây đỏ là cực dương (+), dây đen/xanh là cực âm (-).</text>
             </g>
           </g>
 
           <!-- ================= 6. KHỐI GPS NEO-6M (BOTTOM RIGHT) ================= -->
           <g id="gps-node" transform="translate(1270, 500)">
-            <rect x="0" y="0" width="420" height="430" rx="14" fill="#1e102a" stroke="#a855f7" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="420" height="34" rx="12" fill="#3b0764"/>
-            <text x="210" y="22" fill="#e9d5ff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE ĐỊNH VỊ VỆ TINH GPS NEO-6M</text>
+            <rect x="0" y="0" width="440" height="440" rx="14" fill="#1e102a" stroke="#a855f7" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+            <rect x="0" y="0" width="440" height="34" rx="12" fill="#3b0764"/>
+            <text x="220" y="22" fill="#e9d5ff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE ĐỊNH VỊ VỆ TINH GPS NEO-6M</text>
 
             <g transform="translate(30, 60)">
               <rect x="0" y="0" width="110" height="110" rx="10" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
@@ -966,8 +647,8 @@
             </g>
 
             <g transform="translate(25, 200)">
-              <rect x="0" y="0" width="370" height="215" rx="8" fill="#0b0f19" stroke="#334155"/>
-              <text x="185" y="24" fill="#c084fc" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">HƯỚNG DẪN CẮM DÂY GPS NEO-6M</text>
+              <rect x="0" y="0" width="390" height="225" rx="8" fill="#0b0f19" stroke="#334155"/>
+              <text x="195" y="24" fill="#c084fc" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">HƯỚNG DẪN CẮM DÂY GPS NEO-6M</text>
               <text x="15" y="52" fill="#cbd5e1" font-size="9.5">• <b>VCC GPS:</b> Cắm vào <tspan fill="#fed7aa" font-weight="800">Pin 1 (3.3V)</tspan> hoặc Pin 4 (5V)</text>
               <text x="15" y="76" fill="#cbd5e1" font-size="9.5">• <b>GND GPS:</b> Cắm vào <tspan fill="#cbd5e1" font-weight="800">Pin 6 (GND)</tspan></text>
               <text x="15" y="100" fill="#cbd5e1" font-size="9.5">• <b>TXD GPS (Truyền):</b> Cắm vào <tspan fill="#d8b4fe" font-weight="800">Pin 10 (RXD0 - GPIO 15)</tspan></text>
@@ -975,14 +656,15 @@
               <text x="15" y="152" fill="#fbbf24" font-size="9">⚠️ <b>Nguyên tắc bắt chéo UART:</b> TX thiết bị này vào RX thiết bị kia!</text>
               <text x="15" y="174" fill="#cbd5e1" font-size="9">• Tốc độ truyền mặc định: <b>9600 baud</b> (/dev/ttyAMA0 hoặc ttyS0)</text>
               <text x="15" y="196" fill="#34d399" font-size="9">• Đặt nắp anten gốm ngửa lên trời ở đỉnh mũ để bắt sóng vệ tinh</text>
+              <text x="15" y="216" fill="#94a3b8" font-size="8.5">• LED PPS trên bo nhấp nháy = đã khóa định vị vệ tinh thành công</text>
             </g>
           </g>
 
           <!-- ================= 7. KHỐI 3 CAMERA USB TAM GIÁC 120° (TOP RIGHT) ================= -->
           <g id="cam-hub-node" transform="translate(1080, 70)">
-            <rect x="0" y="0" width="610" height="390" rx="14" fill="#082f49" stroke="#06b6d4" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="610" height="34" rx="12" fill="#0e7490"/>
-            <text x="305" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">HỆ THỐNG 3 CAMERA USB TAM GIÁC ĐỀU 120° & BỘ CHIA USB 3.0</text>
+            <rect x="0" y="0" width="630" height="390" rx="14" fill="#082f49" stroke="#06b6d4" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+            <rect x="0" y="0" width="630" height="34" rx="12" fill="#0e7490"/>
+            <text x="315" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">HỆ THỐNG 3 CAMERA USB TAM GIÁC ĐỀU 120° & BỘ CHIA USB 3.0</text>
 
             <!-- USB Hub 3.0 Box -->
             <g transform="translate(25, 55)">
@@ -1008,7 +690,7 @@
             <!-- 3 Mắt Camera Góc Rộng Bố Trí Tam Giác 120° -->
             <g transform="translate(210, 50)">
               <!-- Cam 1: Trước -->
-              <g transform="translate(110, 0)">
+              <g transform="translate(120, 0)">
                 <rect x="0" y="0" width="140" height="60" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.8"/>
                 <circle cx="28" cy="30" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
                 <circle cx="28" cy="30" r="7" fill="#0284c7"/>
@@ -1018,7 +700,7 @@
               </g>
 
               <!-- Cam 2: Sau-Phải -->
-              <g transform="translate(200, 75)">
+              <g transform="translate(215, 75)">
                 <rect x="0" y="0" width="140" height="60" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.8"/>
                 <circle cx="28" cy="30" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
                 <circle cx="28" cy="30" r="7" fill="#0284c7"/>
@@ -1028,7 +710,7 @@
               </g>
 
               <!-- Cam 3: Sau-Trái -->
-              <g transform="translate(20, 75)">
+              <g transform="translate(25, 75)">
                 <rect x="0" y="0" width="140" height="60" rx="6" fill="#0f172a" stroke="#22d3ee" stroke-width="1.8"/>
                 <circle cx="28" cy="30" r="18" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
                 <circle cx="28" cy="30" r="7" fill="#0284c7"/>
@@ -1039,7 +721,7 @@
             </g>
 
             <g transform="translate(25, 220)">
-              <rect x="0" y="0" width="560" height="150" rx="8" fill="#031d2e" stroke="#0284c7"/>
+              <rect x="0" y="0" width="580" height="150" rx="8" fill="#031d2e" stroke="#0284c7"/>
               <text x="15" y="24" fill="#38bdf8" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace">ƯU ĐIỂM ĐỘT PHÁ CỦA CỤM 3 CAMERA TAM GIÁC ĐỀU 120°:</text>
               <text x="15" y="48" fill="#e0f2fe" font-size="9">• <b>Phủ kín 100% không gian 360° không góc chết:</b> Mỗi camera có góc nhìn 120°–130°, 3 mắt xòe đều tạo vòng quét khép kín quanh mũ.</text>
               <text x="15" y="70" fill="#e0f2fe" font-size="9">• <b>Không nghẽn băng thông USB:</b> Cắm qua USB 3.0 Hub và lấy mẫu 6 FPS/cam qua bộ đệm V4L2-MMAP xả rác liên tục, CPU mát (< 30%).</text>
@@ -1118,232 +800,794 @@
       </div>
     </section>
 
-    <!-- BẢNG TRA CỨU CHÂN GPIO RASPBERRY PI 4 ĐẦY ĐỦ CHO CẢ 6 KHỐI -->
-    <section class="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
+    <!-- ==================== PHẦN 2: HƯỚNG DẪN CỰC KỲ CHI TIẾT TỪNG LINH KIỆN (COMPONENT-BY-COMPONENT) ==================== -->
+    <div class="space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+            <span>🔬</span> HƯỚNG DẪN ĐẤU NỐI CHI TIẾT TỪNG LINH KIỆN THỰC TẾ
+          </h2>
+          <p class="text-xs text-slate-400">Hình ảnh minh họa chân thực, nhận diện chân, cách đấu nối, lỗi thường gặp và lệnh test độc lập</p>
+        </div>
+        <span class="text-xs font-mono-code px-3 py-1 rounded bg-slate-800 text-slate-300">6 Khối Độc Lập</span>
+      </div>
+
+      <!-- GRID 6 KHỐI LINH KIỆN -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- ================= CARD 1: CÒI BUZZER & TRANSISTOR S8050 NPN ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-rose-500/30">
+          <div class="flex items-center justify-between border-b border-rose-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-rose-600/30 text-rose-400 border border-rose-500/50 flex items-center justify-center font-black text-xl">
+                🔔
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">1. Mạch Còi Buzzer 5V & Transistor S8050</h3>
+                <p class="text-xs text-rose-300">Còi chủ động (Active Buzzer) + Transistor NPN + Trở 1kΩ + Diode 1N4148</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-rose-500/20 text-rose-300 rounded border border-rose-500/40">PIN 18 (GPIO 24)</span>
+          </div>
+
+          <!-- Graphic & Pin Identification -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#070b13] p-4 rounded-xl border border-slate-800">
+            <!-- S8050 Visual -->
+            <div class="text-center space-y-2">
+              <div class="text-[11px] font-bold font-mono-code text-amber-400">HÌNH THỰC TẾ TRANSISTOR S8050 (TO-92)</div>
+              <svg viewBox="0 0 170 120" class="w-40 h-auto mx-auto select-none">
+                <!-- Vỏ bán nguyệt dẹt -->
+                <path d="M 25 25 L 145 25 A 60 60 0 0 1 25 25 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+                <text x="85" y="42" fill="#ffffff" font-size="14" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">S8050</text>
+                <text x="85" y="56" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle">MẶT PHẲNG CÓ CHỮ</text>
+                
+                <!-- 3 Chân -->
+                <rect x="40" y="60" width="8" height="42" fill="#cbd5e1" rx="1"/>
+                <rect x="81" y="60" width="8" height="42" fill="#cbd5e1" rx="1"/>
+                <rect x="122" y="60" width="8" height="42" fill="#cbd5e1" rx="1"/>
+
+                <!-- Nhãn chân -->
+                <text x="44" y="114" fill="#34d399" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:E</text>
+                <text x="85" y="114" fill="#fb7185" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:B</text>
+                <text x="126" y="114" fill="#60a5fa" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3:C</text>
+              </svg>
+              <p class="text-[10.5px] text-slate-400">Cầm mặt phẳng có chữ S8050 quay vào mắt, 3 chân hướng xuống: Trái là <b>1(E)</b>, Giữa là <b>2(B)</b>, Phải là <b>3(C)</b>.</p>
+            </div>
+
+            <!-- Resistor & Diode Visual -->
+            <div class="space-y-3 flex flex-col justify-center">
+              <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                <div class="text-[11px] font-bold text-rose-300 font-mono-code flex items-center justify-between">
+                  <span>ĐIỆN TRỞ 1 kΩ (R_BASE)</span>
+                  <span class="text-[10px] text-slate-400">NÂU - ĐEN - ĐỎ</span>
+                </div>
+                <!-- Resistor Bar Graphic -->
+                <svg viewBox="0 0 150 24" class="w-full h-5">
+                  <line x1="10" y1="12" x2="140" y2="12" stroke="#cbd5e1" stroke-width="2.5"/>
+                  <rect x="35" y="4" width="80" height="16" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+                  <!-- Bands -->
+                  <rect x="48" y="4" width="7" height="16" fill="#78350f"/> <!-- Brown: 1 -->
+                  <rect x="62" y="4" width="7" height="16" fill="#0f172a"/> <!-- Black: 0 -->
+                  <rect x="76" y="4" width="7" height="16" fill="#dc2626"/> <!-- Red: x100 -->
+                  <rect x="94" y="4" width="7" height="16" fill="#eab308"/> <!-- Gold: 5% -->
+                </svg>
+                <p class="text-[10px] text-slate-400">Nối tiếp giữa <b>Pin 18 (GPIO 24)</b> và <b>Chân 2 (B)</b> của S8050 để hạn dòng bảo vệ Pi.</p>
+              </div>
+
+              <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                <div class="text-[11px] font-bold text-amber-300 font-mono-code flex items-center justify-between">
+                  <span>DIODE DẬP XUNG 1N4148</span>
+                  <span class="text-[10px] text-slate-400">VẠCH ĐEN = CATHODE</span>
+                </div>
+                <p class="text-[10px] text-slate-400">
+                  Mắc <b>ngược song song với còi</b>: Đầu có vạch nối vào <b>+5V</b>, đầu kia nối vào <b>Chân 3 (C)</b>. Dập tia xung tự cảm khi ngắt dòng, tránh làm nổ S8050.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connection Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono-code">
+              <thead>
+                <tr class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                  <th class="py-2 px-3">Chân Linh Kiện</th>
+                  <th class="py-2 px-3">Cắm Vào Đâu Trên Pi / Nguồn</th>
+                  <th class="py-2 px-3">Màu Dây</th>
+                  <th class="py-2 px-3">Chức Năng</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-[11px]">
+                <tr>
+                  <td class="py-2 px-3 text-emerald-400 font-bold">Chân 1 (E) S8050</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 20 (GND) hoặc Pin 6</td>
+                  <td class="py-2 px-3 text-slate-400">Đen</td>
+                  <td class="py-2 px-3 text-slate-300">Nối thẳng xuống mass</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-rose-400 font-bold">Chân 2 (B) S8050</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 18 (GPIO 24) qua trở 1kΩ</td>
+                  <td class="py-2 px-3 text-rose-300">Hồng</td>
+                  <td class="py-2 px-3 text-slate-300">Tín hiệu mở còi từ Pi</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-blue-400 font-bold">Chân 3 (C) S8050</td>
+                  <td class="py-2 px-3 text-white font-bold">Nối cực ÂM (-) của Còi Buzzer</td>
+                  <td class="py-2 px-3 text-blue-300">Xanh dương</td>
+                  <td class="py-2 px-3 text-slate-300">Đóng ngắt mass cho còi</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-red-400 font-bold">Cực DƯƠNG (+) Còi</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 4 (+5V)</td>
+                  <td class="py-2 px-3 text-red-400">Đỏ</td>
+                  <td class="py-2 px-3 text-slate-300">Nguồn nuôi 5V còi</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Terminal Test Command -->
+          <div class="bg-black/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-rose-400 font-mono-code">LỆNH TEST CÒI TRÊN TERMINAL PI:</span>
+              <button onclick="copyCode('test-cmd-buzzer')" class="text-[10px] text-slate-400 hover:text-white transition">Copy Lệnh</button>
+            </div>
+            <pre id="test-cmd-buzzer" class="text-[10.5px] font-mono-code text-rose-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); G.setup(24, G.OUT); [G.output(24, 1) or time.sleep(0.15) or G.output(24, 0) or time.sleep(0.15) for _ in range(2)]; G.cleanup()"</pre>
+          </div>
+        </div>
+
+        <!-- ================= CARD 2: MẠCH NÚT BẤM SOS (TACTILE SWITCH) ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-amber-500/30">
+          <div class="flex items-center justify-between border-b border-amber-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-600/30 text-amber-400 border border-amber-500/50 flex items-center justify-center font-black text-xl">
+                🚨
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">2. Mạch Nút Bấm Khẩn Cấp SOS</h3>
+                <p class="text-xs text-amber-300">Nút nhấn nhả (2 chân hoặc 4 chân tactile) + Tụ gốm 100nF (104)</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-amber-500/20 text-amber-300 rounded border border-amber-500/40">PIN 22 & PIN 20</span>
+          </div>
+
+          <!-- Graphic & Pin Identification -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#070b13] p-4 rounded-xl border border-slate-800">
+            <!-- 4-Pin Tactile Graphic with Diagonal Rule -->
+            <div class="text-center space-y-2">
+              <div class="text-[11px] font-bold font-mono-code text-amber-400">QUY TẮC CẮM NÚT 4 CHÂN CHÉO GÓC</div>
+              <svg viewBox="0 0 180 120" class="w-44 h-auto mx-auto select-none">
+                <rect x="40" y="15" width="100" height="85" rx="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+                <circle cx="90" cy="57" r="28" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+                <text x="90" y="63" fill="#ffffff" font-size="12" font-weight="900" text-anchor="middle">SOS</text>
+                
+                <!-- Chân 1 (Trên-Trái) -->
+                <circle cx="15" cy="28" r="6" fill="#eab308" stroke="#ffffff" stroke-width="1.5"/>
+                <line x1="21" y1="28" x2="40" y2="28" stroke="#cbd5e1" stroke-width="3"/>
+                <text x="12" y="18" fill="#fde047" font-size="9" font-weight="900">1: Pin 22</text>
+
+                <!-- Chân 2 (Trên-Phải) -->
+                <circle cx="165" cy="28" r="4" fill="#64748b"/>
+                <line x1="140" y1="28" x2="161" y2="28" stroke="#64748b" stroke-width="2"/>
+
+                <!-- Chân 3 (Dưới-Trái) -->
+                <circle cx="15" cy="85" r="4" fill="#64748b"/>
+                <line x1="21" y1="85" x2="40" y2="85" stroke="#64748b" stroke-width="2"/>
+
+                <!-- Chân 4 (Dưới-Phải) -->
+                <circle cx="165" cy="85" r="6" fill="#94a3b8" stroke="#ffffff" stroke-width="1.5"/>
+                <line x1="140" y1="85" x2="159" y2="85" stroke="#cbd5e1" stroke-width="3"/>
+                <text x="168" y="105" fill="#cbd5e1" font-size="9" font-weight="900">4: Pin 20</text>
+
+                <!-- Mũi tên chéo -->
+                <line x1="20" y1="34" x2="160" y2="80" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="4,3"/>
+                <text x="90" y="112" fill="#22c55e" font-size="9" font-weight="800" text-anchor="middle">★ CẮM CHÉO GÓC (1 & 4)</text>
+              </svg>
+              <p class="text-[10.5px] text-slate-400">Cắm vào 2 chân chéo nhau để không bao giờ bị dính 2 chân thông sẵn bên trong nút!</p>
+            </div>
+
+            <!-- Pin Layout Proximity & Capacitor -->
+            <div class="space-y-3 flex flex-col justify-center">
+              <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                <div class="text-[11px] font-bold text-emerald-400 font-mono-code">💡 2 CHÂN CẮM SÁT CẠNH NHAU!</div>
+                <p class="text-[10.5px] text-slate-300 leading-snug">
+                  Trên hàng chân ngoài cùng của Pi: <b>Pin 18 (Còi) ── Pin 20 (GND) ── Pin 22 (Nút SOS)</b>.<br>
+                  Bạn chỉ cần cắm 2 đầu dây cái Dupont vào <b>Pin 20 và Pin 22 liền kề nhau</b>, cực kỳ gọn gàng!
+                </p>
+              </div>
+
+              <div class="p-2.5 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                <div class="text-[11px] font-bold text-amber-400 font-mono-code">TỤ GỐM 100nF (MÃ 104) CHỐNG DỘI</div>
+                <p class="text-[10.5px] text-slate-300 leading-snug">
+                  Hàn kẹp song song trực tiếp 2 chân tụ vào 2 chân nút. Dập tắt tiếng lách cách cơ học, bấm 1 lần ăn đúng 1 lần, không bị spam gửi tin nhắn SOS liên tục!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connection Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono-code">
+              <thead>
+                <tr class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                  <th class="py-2 px-3">Đầu Dây Nút</th>
+                  <th class="py-2 px-3">Cắm Vào Đâu Trên Pi</th>
+                  <th class="py-2 px-3">Màu Dây</th>
+                  <th class="py-2 px-3">Ghi Chú & Kỹ Thuật</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-[11px]">
+                <tr>
+                  <td class="py-2 px-3 text-amber-400 font-bold">Dây thứ 1 (Chân 1 nút)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 22 (GPIO 25)</td>
+                  <td class="py-2 px-3 text-amber-400">Vàng</td>
+                  <td class="py-2 px-3 text-slate-300">Tín hiệu nút (Pull-up nội 3.3V)</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-slate-300 font-bold">Dây thứ 2 (Chân 4 nút)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 20 (GND)</td>
+                  <td class="py-2 px-3 text-slate-400">Đen</td>
+                  <td class="py-2 px-3 text-slate-300">Mass (Nhấn nút kéo xuống 0V)</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-cyan-400 font-bold">Tụ gốm 100nF (104)</td>
+                  <td class="py-2 px-3 text-white font-bold">Hàn kẹp song song nút</td>
+                  <td class="py-2 px-3 text-cyan-400">Vàng cam</td>
+                  <td class="py-2 px-3 text-slate-300">Lọc dội tiếp điểm (Hardware Debounce)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Terminal Test Command -->
+          <div class="bg-black/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-amber-400 font-mono-code">LỆNH TEST NÚT BẤM TRÊN TERMINAL PI:</span>
+              <button onclick="copyCode('test-cmd-sos')" class="text-[10px] text-slate-400 hover:text-white transition">Copy Lệnh</button>
+            </div>
+            <pre id="test-cmd-sos" class="text-[10.5px] font-mono-code text-amber-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); G.setup(25, G.IN, pull_up_down=G.PUD_UP); print('Bấm nút SOS trên mũ...'); [print('⚠️ ĐÃ BẤM NÚT SOS THÀNH CÔNG!') if G.input(25)==0 else None or time.sleep(0.2) for _ in range(50)]"</pre>
+          </div>
+        </div>
+
+        <!-- ================= CARD 3: ĐỘNG CƠ RUNG HAPTIC (4 MOTOR) ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-emerald-500/30">
+          <div class="flex items-center justify-between border-b border-emerald-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-600/30 text-emerald-400 border border-emerald-500/50 flex items-center justify-center font-black text-xl">
+                📳
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">3. Mạch Động Cơ Rung (4 Kênh Haptic)</h3>
+                <p class="text-xs text-emerald-300">Động cơ rung đồng xu 1027/1234 • Mạch đệm ULN2003A hoặc 4x S8050</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-emerald-500/20 text-emerald-300 rounded border border-emerald-500/40">PIN 11, 13, 15, 16</span>
+          </div>
+
+          <!-- Safety Warning Callout -->
+          <div class="p-3 bg-red-950/40 border border-red-500/40 rounded-xl space-y-1">
+            <div class="text-xs font-bold text-red-400 flex items-center gap-1.5">
+              <span>⚠️</span> LƯU Ý KỸ THUẬT SỐNG CÒN:
+            </div>
+            <p class="text-[11px] text-red-200 leading-snug">
+              Tuyệt đối <b>KHÔNG CẮM TRỰC TIẾP</b> motor rung vào chân GPIO của Pi 4! Motor ăn dòng khởi động 60-100mA, GPIO của Pi chỉ cấp tối đa 16mA. Nối trực tiếp sẽ gây sụt nguồn sập Pi hoặc <b>cháy hỏng cổng GPIO vĩnh viễn</b>.
+            </p>
+          </div>
+
+          <!-- 2 Driving Options: ULN2003A vs S8050 -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+              <div class="font-bold text-cyan-400 font-mono-code flex items-center justify-between">
+                <span>CÁCH 1: DÙNG BO ULN2003A</span>
+                <span class="text-[10px] text-emerald-400">★ TIỆN NHẤT</span>
+              </div>
+              <p class="text-[10.5px] text-slate-300 leading-relaxed">
+                Bo mạch module ULN2003A (giá 10k–15k) tích hợp sẵn 7 transistor Darlington công suất 500mA, có sẵn trở kích và diode dập xung flyback bên trong. Chỉ cần cắm dây Dupont là chạy!
+              </p>
+              <div class="text-[10.5px] text-slate-400 space-y-0.5">
+                <div>• <b>IN1..IN4:</b> Cắm vào Pin 11, 13, 15, 16</div>
+                <div>• <b>GND:</b> Cắm vào Pin 6 (GND)</div>
+                <div>• <b>VCC / COM:</b> Cắm vào Pin 2 (+5V)</div>
+                <div>• <b>OUT1..OUT4:</b> Cắm vào cực (-) 4 motor</div>
+                <div>• <b>Cực (+) 4 motor:</b> Chụm chung vào +5V</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+              <div class="font-bold text-emerald-400 font-mono-code">
+                CÁCH 2: DÙNG TRANSISTOR S8050
+              </div>
+              <p class="text-[10.5px] text-slate-300 leading-relaxed">
+                Nếu bạn chỉ lắp 1 motor rung cảnh báo (hoặc có sẵn transistor S8050 rời):
+              </p>
+              <div class="text-[10.5px] text-slate-400 space-y-0.5">
+                <div>• <b>Chân 1 (E):</b> Nối GND (Pin 6/20)</div>
+                <div>• <b>Chân 2 (B):</b> Qua trở 1kΩ vào Pin 11 (GPIO 17)</div>
+                <div>• <b>Chân 3 (C):</b> Nối cực (-) motor rung (dây đen)</div>
+                <div>• <b>Cực (+) motor:</b> Cắm vào Pin 4 (+5V)</div>
+                <div>• <b>Diode 1N4148:</b> Mắc ngược song song 2 đầu motor</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Motor Positions Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono-code">
+              <thead>
+                <tr class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                  <th class="py-2 px-3">Vị Trí Vành Mũ</th>
+                  <th class="py-2 px-3">Chân Pi (BCM)</th>
+                  <th class="py-2 px-3">Chân Đệm ULN2003A</th>
+                  <th class="py-2 px-3">Màu Dây Gợi Ý</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-[11px]">
+                <tr>
+                  <td class="py-2 px-3 text-emerald-400 font-bold">M1: TRƯỚC (TRÁN - 0°)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 11 (GPIO 17)</td>
+                  <td class="py-2 px-3 text-slate-300">IN1 ➔ OUT1</td>
+                  <td class="py-2 px-3 text-emerald-400">Xanh lá</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-emerald-400 font-bold">M2: PHẢI (THÁI DƯƠNG - 90°)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 13 (GPIO 27)</td>
+                  <td class="py-2 px-3 text-slate-300">IN2 ➔ OUT2</td>
+                  <td class="py-2 px-3 text-cyan-400">Xanh ngọc</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-emerald-400 font-bold">M3: SAU (GÁY - 180°)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 15 (GPIO 22)</td>
+                  <td class="py-2 px-3 text-slate-300">IN3 ➔ OUT3</td>
+                  <td class="py-2 px-3 text-blue-400">Xanh dương</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-emerald-400 font-bold">M4: TRÁI (THÁI DƯƠNG - 270°)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 16 (GPIO 23)</td>
+                  <td class="py-2 px-3 text-slate-300">IN4 ➔ OUT4</td>
+                  <td class="py-2 px-3 text-lime-400">Xanh chuối</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Terminal Test Command -->
+          <div class="bg-black/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-emerald-400 font-mono-code">LỆNH TEST 4 MOTOR RUNG TRÊN TERMINAL PI:</span>
+              <button onclick="copyCode('test-cmd-haptic')" class="text-[10px] text-slate-400 hover:text-white transition">Copy Lệnh</button>
+            </div>
+            <pre id="test-cmd-haptic" class="text-[10.5px] font-mono-code text-emerald-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); [G.setup(p, G.OUT) or G.output(p, 1) or time.sleep(0.5) or G.output(p, 0) or time.sleep(0.2) for p in [17, 27, 22, 23]]; G.cleanup()"</pre>
+          </div>
+        </div>
+
+        <!-- ================= CARD 4: MẠCH NGUỒN PIN 2S & BUCK XL4015 ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-red-500/30">
+          <div class="flex items-center justify-between border-b border-red-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-red-600/30 text-red-400 border border-red-500/50 flex items-center justify-center font-black text-xl">
+                ⚡
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">4. Khối Nguồn Pin 2S & Hạ Áp Buck 5.1V</h3>
+                <p class="text-xs text-red-300">Pack Pin 2S Li-ion (7.4V–8.4V) + Công tắc + Mạch Buck XL4015 (5A)</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-red-500/20 text-red-300 rounded border border-red-500/40">PIN 2 (+5V) & PIN 6 (GND)</span>
+          </div>
+
+          <!-- Graphic of Power Flow -->
+          <div class="p-3 bg-[#070b13] rounded-xl border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono-code text-slate-400">
+              <span>SƠ ĐỒ DÒNG ĐIỆN TỔNG THỂ:</span>
+              <span class="text-red-400 font-bold">5.10V / 5A CỰC KỲ ỔN ĐỊNH</span>
+            </div>
+            <div class="flex items-center justify-between gap-2 text-center text-[10.5px] font-mono-code">
+              <div class="p-2 bg-slate-900 rounded border border-slate-800 flex-1">
+                <div class="text-amber-400 font-bold">PIN 2S</div>
+                <div class="text-slate-400 text-[9px]">7.4V - 8.4V</div>
+              </div>
+              <span class="text-slate-500">➔</span>
+              <div class="p-2 bg-slate-900 rounded border border-slate-800 flex-1">
+                <div class="text-rose-400 font-bold">CÔNG TẮC</div>
+                <div class="text-slate-400 text-[9px]">BẬT / TẮT</div>
+              </div>
+              <span class="text-slate-500">➔</span>
+              <div class="p-2 bg-slate-900 rounded border border-slate-800 flex-1">
+                <div class="text-yellow-400 font-bold">BUCK XL4015</div>
+                <div class="text-slate-400 text-[9px]">Chỉnh 5.10V</div>
+              </div>
+              <span class="text-slate-500">➔</span>
+              <div class="p-2 bg-slate-900 rounded border border-slate-800 flex-1">
+                <div class="text-blue-400 font-bold">PI 4 & MOTOR</div>
+                <div class="text-slate-400 text-[9px]">Pin 2 & Pin 6</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tuning Instruction -->
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 text-xs">
+            <div class="font-bold text-amber-300 flex items-center gap-1.5">
+              <span>🔧</span> HƯỚNG DẪN ĐO ĐỒNG HỒ & CHỈNH BIẾN TRỞ BUCK:
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              1. Chưa cắm dây vào Pi 4. Bật công tắc nguồn pin.<br>
+              2. Đặt que đo đồng hồ vạn năng (VOM) vào 2 cổng <b>OUT+</b> và <b>OUT-</b> của mạch Buck.<br>
+              3. Dùng tua-vít vặn núm biến trở màu xanh dương ngược chiều kim đồng hồ cho đến khi đồng hồ chỉ <b>chính xác 5.10V</b> (khoảng 5.08V – 5.15V).<br>
+              4. Tắt công tắc, cắm dây từ OUT+ vào <b>Pin 2 (+5V)</b> và OUT- vào <b>Pin 6 (GND)</b> của Pi 4.
+            </p>
+          </div>
+
+          <!-- Connection Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono-code">
+              <thead>
+                <tr class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                  <th class="py-2 px-3">Cổng Buck XL4015</th>
+                  <th class="py-2 px-3">Nối Vào Đâu</th>
+                  <th class="py-2 px-3">Màu Dây</th>
+                  <th class="py-2 px-3">Quy Tắc An Toàn</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-[11px]">
+                <tr>
+                  <td class="py-2 px-3 text-red-400 font-bold">IN+</td>
+                  <td class="py-2 px-3 text-white font-bold">Cực (+) Pin 2S (qua công tắc)</td>
+                  <td class="py-2 px-3 text-red-400">Đỏ</td>
+                  <td class="py-2 px-3 text-slate-300">Điện áp 7.4V - 8.4V</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-slate-300 font-bold">IN-</td>
+                  <td class="py-2 px-3 text-white font-bold">Cực (-) Pin 2S</td>
+                  <td class="py-2 px-3 text-slate-400">Đen</td>
+                  <td class="py-2 px-3 text-slate-300">Mass nguồn pin</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-red-400 font-bold">OUT+ (5.10V)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 2 (+5V) Pi 4 & Pin 4</td>
+                  <td class="py-2 px-3 text-red-400">Đỏ</td>
+                  <td class="py-2 px-3 text-slate-300">Tuyệt đối không để quá 5.25V</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-slate-300 font-bold">OUT- (GND)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 6 (GND) Pi 4 (Mass chung)</td>
+                  <td class="py-2 px-3 text-slate-400">Đen</td>
+                  <td class="py-2 px-3 text-slate-300">Nối thông mass toàn bộ hệ thống</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ================= CARD 5: MODULE ĐỊNH VỊ GPS NEO-6M ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-purple-500/30">
+          <div class="flex items-center justify-between border-b border-purple-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-400 border border-purple-500/50 flex items-center justify-center font-black text-xl">
+                🛰️
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">5. Module Định Vị Vệ Tinh GPS NEO-6M</h3>
+                <p class="text-xs text-purple-300">Chuẩn giao tiếp UART (9600 bps) • Anten gốm bắt sóng ngoài trời</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-purple-500/20 text-purple-300 rounded border border-purple-500/40">PIN 1, 6, 8, 10</span>
+          </div>
+
+          <!-- UART Crossover Rule Callout -->
+          <div class="p-3 bg-purple-950/40 border border-purple-500/40 rounded-xl space-y-1">
+            <div class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+              <span>⚠️</span> NGUYÊN TẮC BẮT CHÉO UART (TX ➔ RX):
+            </div>
+            <p class="text-[11px] text-purple-200 leading-snug">
+              Chân <b>TXD</b> (Truyền) của GPS phải cắm vào chân <b>RXD</b> (Nhận) của Pi 4. Ngược lại, chân <b>RXD</b> của GPS cắm vào chân <b>TXD</b> của Pi 4. Nếu cắm thẳng TX vào TX sẽ không bao giờ nhận được dữ liệu!
+            </p>
+          </div>
+
+          <!-- Connection Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono-code">
+              <thead>
+                <tr class="bg-slate-900/80 text-slate-300 border-b border-slate-800">
+                  <th class="py-2 px-3">Chân Trên GPS NEO-6M</th>
+                  <th class="py-2 px-3">Cắm Vào Chân Pi 4</th>
+                  <th class="py-2 px-3">Màu Dây Gợi Ý</th>
+                  <th class="py-2 px-3">Chức Năng</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-800/60 text-[11px]">
+                <tr>
+                  <td class="py-2 px-3 text-orange-400 font-bold">VCC</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 1 (3.3V) hoặc Pin 4 (5V)</td>
+                  <td class="py-2 px-3 text-orange-400">Cam</td>
+                  <td class="py-2 px-3 text-slate-300">Nguồn nuôi module GPS</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-slate-300 font-bold">GND</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 6 (GND)</td>
+                  <td class="py-2 px-3 text-slate-400">Đen</td>
+                  <td class="py-2 px-3 text-slate-300">Nối đất hệ thống</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-purple-400 font-bold">TXD (Truyền)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 10 (GPIO 15 - RXD0)</td>
+                  <td class="py-2 px-3 text-purple-300">Trắng / Tím</td>
+                  <td class="py-2 px-3 text-slate-300">Pi nhận chuỗi tọa độ NMEA $GPGGA</td>
+                </tr>
+                <tr>
+                  <td class="py-2 px-3 text-purple-400 font-bold">RXD (Nhận)</td>
+                  <td class="py-2 px-3 text-white font-bold">Pin 8 (GPIO 14 - TXD0)</td>
+                  <td class="py-2 px-3 text-purple-400">Tím đậm</td>
+                  <td class="py-2 px-3 text-slate-300">Pi gửi lệnh cấu hình baudrate</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Terminal Test Command -->
+          <div class="bg-black/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-purple-400 font-mono-code">LỆNH TEST GPS TRÊN TERMINAL PI:</span>
+              <button onclick="copyCode('test-cmd-gps')" class="text-[10px] text-slate-400 hover:text-white transition">Copy Lệnh</button>
+            </div>
+            <pre id="test-cmd-gps" class="text-[10.5px] font-mono-code text-purple-300 overflow-x-auto">python3 -c "import serial; s=serial.Serial('/dev/ttyAMA0', 9600, timeout=1); [print(s.readline().decode('ascii', errors='ignore').strip()) for _ in range(10)]"</pre>
+          </div>
+        </div>
+
+        <!-- ================= CARD 6: CỤM 3 CAMERA USB & HUB USB 3.0 ================= -->
+        <div class="card-component rounded-2xl p-5 md:p-6 space-y-4 border-cyan-500/30">
+          <div class="flex items-center justify-between border-b border-cyan-500/30 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-600/30 text-cyan-400 border border-cyan-500/50 flex items-center justify-center font-black text-xl">
+                📷
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white uppercase">6. Cụm 3 Camera USB Tam Giác 120°</h3>
+                <p class="text-xs text-cyan-300">Bố trí đẳng giác 120° quanh đỉnh mũ • Cắm qua Bộ chia USB 3.0 Hub</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 text-xs font-bold font-mono-code bg-cyan-500/20 text-cyan-300 rounded border border-cyan-500/40">CỔNG USB 3.0 (XANH DƯƠNG)</span>
+          </div>
+
+          <!-- Camera Triangle Layout Graphic -->
+          <div class="p-3 bg-[#070b13] rounded-xl border border-slate-800 space-y-2">
+            <div class="text-[11px] font-bold font-mono-code text-cyan-400">BỐ TRÍ 3 MẮT CAM TRÊN VÀNH MŨ (360° FOV):</div>
+            <div class="grid grid-cols-3 gap-2 text-center text-[10.5px] font-mono-code">
+              <div class="p-2 bg-slate-900 rounded border border-cyan-500/30">
+                <div class="text-cyan-300 font-bold">CAM 1: TRƯỚC</div>
+                <div class="text-slate-400 text-[9px]">Góc 0° • Chính diện</div>
+                <div class="text-slate-500 text-[8.5px]">Cắm Cổng USB 1</div>
+              </div>
+              <div class="p-2 bg-slate-900 rounded border border-cyan-500/30">
+                <div class="text-cyan-300 font-bold">CAM 2: SAU-PHẢI</div>
+                <div class="text-slate-400 text-[9px]">Góc 120° • Vai phải</div>
+                <div class="text-slate-500 text-[8.5px]">Cắm Cổng USB 2</div>
+              </div>
+              <div class="p-2 bg-slate-900 rounded border border-cyan-500/30">
+                <div class="text-cyan-300 font-bold">CAM 3: SAU-TRÁI</div>
+                <div class="text-slate-400 text-[9px]">Góc 240° • Vai trái</div>
+                <div class="text-slate-500 text-[8.5px]">Cắm Cổng USB 3</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connection Guide -->
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 text-xs">
+            <div class="font-bold text-cyan-300 flex items-center gap-1.5">
+              <span>🔌</span> QUY TRÌNH CẮM CÁP USB:
+            </div>
+            <p class="text-[11px] text-slate-300 leading-relaxed">
+              1. Cắm 3 đầu dây USB của 3 camera vào 3 cổng trên <b>Bộ chia USB 3.0 Hub</b>.<br>
+              2. Cắm cáp ngõ ra của USB Hub vào <b>cổng USB 3.0 màu xanh dương</b> trên Raspberry Pi 4 để đảm bảo băng thông 5Gbps tối đa.<br>
+              3. Hệ thống chạy ở độ phân giải 352x240 @ 6 FPS/cam giúp CPU chạy mát mẻ (< 30%) và không bao giờ bị nghẽn bus USB.
+            </p>
+          </div>
+
+          <!-- Terminal Test Command -->
+          <div class="bg-black/60 p-3 rounded-xl border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-cyan-400 font-mono-code">LỆNH TEST 3 CAMERA ĐỒNG THỜI TRÊN TERMINAL PI:</span>
+              <button onclick="copyCode('test-cmd-cam')" class="text-[10px] text-slate-400 hover:text-white transition">Copy Lệnh</button>
+            </div>
+            <pre id="test-cmd-cam" class="text-[10.5px] font-mono-code text-cyan-300 overflow-x-auto">cd ~/smart_helmet_pi && python3 test_cameras.py</pre>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== PHẦN 3: BẢNG TRA CỨU ĐẦY ĐỦ 40 CHÂN GPIO RASPBERRY PI 4 ==================== -->
+    <section class="bg-[#0f172a] border border-slate-800 rounded-3xl p-5 md:p-6 shadow-2xl space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
         <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-          <span>📋</span> BẢNG TRA CỨU CẮM DÂY PHẦN CỨNG RASPBERRY PI 4 (40-PIN PINOUT)
+          <span>📋</span> BẢNG TRA CỨU TẤT CẢ CHÂN CẮM RASPBERRY PI 4 (PINOUT MASTER TABLE)
         </h2>
-        <span class="text-xs font-mono-code text-slate-400">Không bỏ sót chân nào • Chuẩn bị dây Dupont đực-cái & cái-cái</span>
+        <span class="text-xs font-mono-code text-slate-400">Đầy đủ 100% các chân kết nối trong dự án</span>
       </div>
 
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse">
+        <table class="w-full text-left text-xs border-collapse font-mono-code">
           <thead>
-            <tr class="bg-slate-900 border-b border-slate-800 text-slate-300 font-mono-code">
-              <th class="py-3 px-3">Chân Pi (Physical)</th>
-              <th class="py-3 px-3">Tên BCM GPIO</th>
-              <th class="py-3 px-3">Tên Khối Phần Cứng</th>
-              <th class="py-3 px-4">Cách Đấu Nối Vào Linh Kiện</th>
-              <th class="py-3 px-3">Màu Dây Gợi Ý</th>
-              <th class="py-3 px-3">Lệnh Test Terminal</th>
+            <tr class="bg-slate-900 border-b border-slate-800 text-slate-300">
+              <th class="py-3 px-3">Chân Vật Lý (Pin)</th>
+              <th class="py-3 px-3">Tên BCM</th>
+              <th class="py-3 px-3">Khối Phần Cứng</th>
+              <th class="py-3 px-4">Cách Đấu Nối Vào Linh Kiện Thực Tế</th>
+              <th class="py-3 px-3">Màu Dây Khuyên Dùng</th>
+              <th class="py-3 px-3">Trạng Thái Logic</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/60 font-mono-code">
-            <!-- Nguồn 5V Pin 2 & 4 -->
+          <tbody class="divide-y divide-slate-800/60 text-[11px]">
+            <!-- Pin 1 -->
+            <tr class="hover:bg-slate-800/30">
+              <td class="py-2.5 px-3 font-bold text-orange-400">Pin 1</td>
+              <td class="py-2.5 px-3 text-slate-400">3V3_POWER</td>
+              <td class="py-2.5 px-3 font-bold text-purple-300">GPS NEO-6M</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm dây cái Dupont vào chân <b>VCC</b> của module GPS NEO-6M.</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">Cam</span></td>
+              <td class="py-2.5 px-3 text-slate-400">+3.3V DC (Dòng < 50mA)</td>
+            </tr>
+            <!-- Pin 2 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-red-400">Pin 2</td>
               <td class="py-2.5 px-3 text-slate-400">5V_POWER</td>
-              <td class="py-2.5 px-3 font-bold text-red-300">Khối Nguồn Buck 5.1V</td>
+              <td class="py-2.5 px-3 font-bold text-red-300">Nguồn Buck XL4015</td>
               <td class="py-2.5 px-4 text-slate-300 font-sans">Nối từ ngõ ra <b>OUT+ (5.10V)</b> của mạch Buck XL4015 cấp nguồn nuôi Pi 4.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800">Đỏ</span></td>
-              <td class="py-2.5 px-3 text-slate-500">Đo đồng hồ 5.10V</td>
+              <td class="py-2.5 px-3 text-slate-400">+5.10V DC (Dòng tải tới 3A)</td>
             </tr>
+            <!-- Pin 4 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-red-400">Pin 4</td>
               <td class="py-2.5 px-3 text-slate-400">5V_POWER</td>
-              <td class="py-2.5 px-3 font-bold text-rose-300">Nguồn 5V Còi & Motor</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>cực dương (+) Còi Buzzer</b> và <b>chân COM / (+) 4 Motor rung</b>.</td>
+              <td class="py-2.5 px-3 font-bold text-rose-300">Nguồn Còi & Motor (+)</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cấp nguồn dương cho <b>cực dương (+) Còi Buzzer</b> và <b>COM / (+) 4 Motor rung</b>.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-800">Đỏ cam</span></td>
-              <td class="py-2.5 px-3 text-slate-500">Đo đồng hồ 5.10V</td>
+              <td class="py-2.5 px-3 text-slate-400">+5.10V DC</td>
             </tr>
-            <!-- GND Pin 6 -->
+            <!-- Pin 6 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-slate-300">Pin 6</td>
-              <td class="py-2.5 px-3 text-slate-400">GND (Mass)</td>
-              <td class="py-2.5 px-3 font-bold text-slate-300">Mass Chung Toàn Hệ Thống</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối từ ngõ ra <b>OUT- (GND)</b> của Buck, nối GND ULN2003A và GND GPS.</td>
+              <td class="py-2.5 px-3 text-slate-400">GND (Ground)</td>
+              <td class="py-2.5 px-3 font-bold text-slate-300">Mass Chung Toàn Mạch</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối ngõ ra <b>OUT- (GND)</b> của Buck, nối GND bo ULN2003A và GND module GPS.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Đen</span></td>
-              <td class="py-2.5 px-3 text-slate-500">Thông mạch 0Ω</td>
+              <td class="py-2.5 px-3 text-slate-400">0V (Common Ground)</td>
             </tr>
-            <!-- GPS Pin 1, 8, 10 -->
-            <tr class="hover:bg-slate-800/30">
-              <td class="py-2.5 px-3 font-bold text-purple-400">Pin 1</td>
-              <td class="py-2.5 px-3 text-slate-400">3V3_POWER</td>
-              <td class="py-2.5 px-3 font-bold text-purple-300">Nguồn GPS NEO-6M</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Cấp vào chân <b>VCC</b> của module GPS NEO-6M (3.3V an toàn).</td>
-              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">Cam</span></td>
-              <td class="py-2.5 px-3 text-slate-500">Đo 3.3V</td>
-            </tr>
+            <!-- Pin 8 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-purple-400">Pin 8</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 14 (TXD0)</td>
-              <td class="py-2.5 px-3 font-bold text-purple-300">UART Truyền Lệnh GPS</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào chân <b>RXD</b> của module GPS (Nguyên tắc bắt chéo TX-RX).</td>
-              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">Tím</span></td>
-              <td class="py-2.5 px-3 text-slate-500">UART 9600 bps</td>
+              <td class="py-2.5 px-3 font-bold text-purple-300">GPS NEO-6M</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào chân <b>RXD</b> của GPS NEO-6M (Nguyên tắc bắt chéo TX-RX).</td>
+              <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">Tím đậm</span></td>
+              <td class="py-2.5 px-3 text-slate-400">UART 9600 baud</td>
             </tr>
+            <!-- Pin 10 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-purple-400">Pin 10</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 15 (RXD0)</td>
-              <td class="py-2.5 px-3 font-bold text-purple-300">UART Nhận Tọa Độ GPS</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào chân <b>TXD</b> của module GPS để nhận chuỗi định vị NMEA $GPGGA.</td>
+              <td class="py-2.5 px-3 font-bold text-purple-300">GPS NEO-6M</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào chân <b>TXD</b> của GPS NEO-6M (Nhận chuỗi tọa độ vệ tinh NMEA).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">Trắng</span></td>
-              <td class="py-2.5 px-3 text-slate-500">cat /dev/ttyAMA0</td>
+              <td class="py-2.5 px-3 text-slate-400">UART 9600 baud</td>
             </tr>
-            <!-- 4 Motor Rung Haptic Pin 11, 13, 15, 16 -->
+            <!-- Pin 11 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-emerald-400">Pin 11</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 17</td>
               <td class="py-2.5 px-3 font-bold text-emerald-300">📳 Motor 1: TRƯỚC (TRÁN)</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>IN1 ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ). OUT1 nối cực (-) Motor 1.</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào <b>IN1 của bo ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Xanh Lá</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_motor 17</code></td>
+              <td class="py-2.5 px-3 text-slate-400">3.3V = Rung, 0V = Tắt</td>
             </tr>
+            <!-- Pin 13 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-emerald-400">Pin 13</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 27</td>
               <td class="py-2.5 px-3 font-bold text-emerald-300">📳 Motor 2: PHẢI (THÁI DƯƠNG)</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>IN2 ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ). OUT2 nối cực (-) Motor 2.</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào <b>IN2 của bo ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Xanh Ngọc</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_motor 27</code></td>
+              <td class="py-2.5 px-3 text-slate-400">3.3V = Rung, 0V = Tắt</td>
             </tr>
+            <!-- Pin 15 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-emerald-400">Pin 15</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 22</td>
               <td class="py-2.5 px-3 font-bold text-emerald-300">📳 Motor 3: SAU (GÁY)</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>IN3 ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ). OUT3 nối cực (-) Motor 3.</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào <b>IN3 của bo ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Xanh Dương</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_motor 22</code></td>
+              <td class="py-2.5 px-3 text-slate-400">3.3V = Rung, 0V = Tắt</td>
             </tr>
+            <!-- Pin 16 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-emerald-400">Pin 16</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 23</td>
               <td class="py-2.5 px-3 font-bold text-emerald-300">📳 Motor 4: TRÁI (THÁI DƯƠNG)</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>IN4 ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ). OUT4 nối cực (-) Motor 4.</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm vào <b>IN4 của bo ULN2003A</b> (hoặc Chân 2 Base S8050 qua trở 1kΩ).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">Xanh Chuối</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_motor 23</code></td>
+              <td class="py-2.5 px-3 text-slate-400">3.3V = Rung, 0V = Tắt</td>
             </tr>
-            <!-- Còi Buzzer S8050 Pin 18 -->
+            <!-- Pin 18 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-rose-400">Pin 18</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 24</td>
-              <td class="py-2.5 px-3 font-bold text-rose-300">🔔 Còi Buzzer Báo Động</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Hàn qua <b>điện trở 1 kΩ</b> rồi nối vào <b>Chân 2 (B) Transistor S8050</b>.</td>
+              <td class="py-2.5 px-3 font-bold text-rose-300">🔔 Còi Buzzer 5V</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Hàn nối tiếp qua <b>điện trở 1 kΩ</b> rồi nối vào <b>Chân 2 (B) S8050</b>.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">Hồng đậm</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_buzzer</code></td>
+              <td class="py-2.5 px-3 text-slate-400">3.3V = Kêu, 0V = Ngắt</td>
             </tr>
-            <!-- GND Pin 20 & Nút SOS Pin 22 -->
+            <!-- Pin 20 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-slate-300">Pin 20</td>
-              <td class="py-2.5 px-3 text-slate-400">GND (Mass)</td>
-              <td class="py-2.5 px-3 font-bold text-amber-300">Mass Nút Bấm SOS & S8050</td>
+              <td class="py-2.5 px-3 text-slate-400">GND (Ground)</td>
+              <td class="py-2.5 px-3 font-bold text-amber-300">Mass Nút SOS & S8050</td>
               <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>Chân 4 (Dưới-Phải) của nút SOS</b> và <b>Chân 1 (E) của S8050</b>.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">Đen</span></td>
-              <td class="py-2.5 px-3 text-slate-500">Sát cạnh Pin 22</td>
+              <td class="py-2.5 px-3 text-slate-400">0V (Nằm cạnh Pin 22)</td>
             </tr>
+            <!-- Pin 22 -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-amber-400">Pin 22</td>
               <td class="py-2.5 px-3 text-slate-400">GPIO 25</td>
               <td class="py-2.5 px-3 font-bold text-amber-300">🚨 Tín Hiệu Nút Bấm SOS</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>Chân 1 (Trên-Trái) của nút SOS</b> (Kẹp song song tụ gốm 100nF).</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Nối vào <b>Chân 1 (Trên-Trái) của nút SOS</b> (kẹp song song tụ 104).</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">Vàng</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_sos</code></td>
+              <td class="py-2.5 px-3 text-slate-400">Thả: 3.3V, Nhấn: 0V</td>
             </tr>
-            <!-- USB 3.0 Hub Camera -->
+            <!-- USB 3.0 Hub -->
             <tr class="hover:bg-slate-800/30">
               <td class="py-2.5 px-3 font-bold text-cyan-400">Cổng USB 3.0</td>
-              <td class="py-2.5 px-3 text-slate-400">USB 3.0 Bus</td>
-              <td class="py-2.5 px-3 font-bold text-cyan-300">📷 3 Camera USB Tam Giác 120°</td>
-              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm cáp từ <b>Bộ chia USB 3.0 Hub (4 cổng)</b> vào cổng USB màu xanh dương trên Pi 4.</td>
+              <td class="py-2.5 px-3 text-slate-400">USB 3.0 Host</td>
+              <td class="py-2.5 px-3 font-bold text-cyan-300">📷 3 Camera USB Tam Giác</td>
+              <td class="py-2.5 px-4 text-slate-300 font-sans">Cắm cáp ngõ ra của <b>Bộ chia USB 3.0 Hub (4 cổng)</b> vào cổng USB màu xanh của Pi.</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">Xanh Biển</span></td>
-              <td class="py-2.5 px-3 text-slate-300"><code>python3 test_cameras.py</code></td>
+              <td class="py-2.5 px-3 text-slate-400">SuperSpeed 5Gbps</td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- QUY TRÌNH NỐI DÂY AN TOÀN & BỘ LỆNH TEST TERMINAL TRÊN PI 4 -->
-    <section class="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
-      <div class="border-b border-slate-800 pb-3">
-        <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
-          <span>⚡</span> QUY TRÌNH THỰC HIỆN & BỘ LỆNH TEST TERMINAL RASPBERRY PI 4
-        </h2>
-        <p class="text-xs text-slate-400">Chạy thử độc lập từng khối phần cứng để đảm bảo 100% không chạm chập trước khi bật hệ thống AI</p>
+    <!-- ==================== PHẦN 4: KHỞI ĐỘNG HỆ THỐNG AI TỔNG THỂ ==================== -->
+    <section class="bg-gradient-to-r from-blue-950/40 via-[#0f172a] to-emerald-950/40 border-2 border-blue-500/60 rounded-3xl p-6 shadow-2xl space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-xl md:text-2xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+            <span>🚀</span> KHỞI ĐỘNG HỆ THỐNG SMART HELMET 360° AI
+          </h2>
+          <p class="text-xs text-slate-300">Sau khi đã test độc lập từng linh kiện thành công, chạy lệnh dưới đây để khởi động toàn bộ hệ thống:</p>
+        </div>
+        <button onclick="copyCode('run-full-cmd')" class="px-4 py-2 text-xs font-bold font-mono-code bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition shadow-lg shadow-blue-600/30 self-start md:self-auto">
+          Sao Chép Lệnh Chạy
+        </button>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Test Motor Rung Haptic -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-emerald-400">[1/5] TEST 4 MOTOR RUNG</span>
-            <span class="text-[10px] text-slate-400">GPIO 17, 27, 22, 23</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Lần lượt kích rung thử từng motor (hoặc kích rung motor trước GPIO 17):</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-emerald-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); [G.setup(p, G.OUT) or G.output(p, 1) or time.sleep(0.5) or G.output(p, 0) or time.sleep(0.2) for p in [17, 27, 22, 23]]; G.cleanup()"</pre>
+      <div class="bg-black/70 p-4 rounded-xl border border-slate-800 font-mono-code text-xs text-emerald-400 overflow-x-auto">
+        <code id="run-full-cmd">cd ~/smart_helmet_pi && ./run.sh</code>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-300 pt-2">
+        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="text-cyan-400 font-bold mb-1">1. AI 360° Vision</div>
+          <div>3 Luồng video MMAP quét liên tục phát hiện người, xe cộ, chướng ngại vật tiệm cận.</div>
         </div>
-
-        <!-- Test Còi S8050 -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-rose-400">[2/5] TEST CÒI BUZZER S8050</span>
-            <span class="text-[10px] text-slate-400">Pin 18 • GPIO 24</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Kích còi kêu bíp bíp 2 tiếng đứt quãng qua Transistor S8050:</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-rose-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); G.setup(24, G.OUT); [G.output(24, 1) or time.sleep(0.15) or G.output(24, 0) or time.sleep(0.15) for _ in range(2)]; G.cleanup()"</pre>
+        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="text-emerald-400 font-bold mb-1">2. 4-Direction Haptic</div>
+          <div>Tự động rung định hướng 4 phía cảnh báo vị trí vật cản cho người khiếm thị.</div>
         </div>
-
-        <!-- Test Nút SOS -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-amber-400">[3/5] TEST NÚT BẤM SOS</span>
-            <span class="text-[10px] text-slate-400">Pin 22 • GPIO 25</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Nhấn nút trên vành mũ để kiểm tra màn hình in ra kết quả:</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-amber-300 overflow-x-auto">python3 -c "import RPi.GPIO as G, time; G.setmode(G.BCM); G.setup(25, G.IN, pull_up_down=G.PUD_UP); print('Bấm nút SOS...'); [print('⚠️ ĐÃ BẤM NÚT SOS!') if G.input(25)==0 else None or time.sleep(0.2) for _ in range(50)]"</pre>
-        </div>
-
-        <!-- Test 3 Camera 120° -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-cyan-400">[4/5] TEST CỤM 3 CAMERA USB</span>
-            <span class="text-[10px] text-slate-400">Hub USB 3.0 • 360°</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Khởi chạy script chẩn đoán FPS đồng thời cả 3 camera:</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-cyan-300 overflow-x-auto">cd ~/smart_helmet_pi && python3 test_cameras.py</pre>
-        </div>
-
-        <!-- Test GPS NEO-6M -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-purple-400">[5/5] TEST GPS NEO-6M UART</span>
-            <span class="text-[10px] text-slate-400">Pin 8, 10 • 9600 bps</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Kiểm tra chuỗi dữ liệu tọa độ vệ tinh NMEA đổ về cổng nối tiếp:</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-purple-300 overflow-x-auto">python3 -c "import serial; s=serial.Serial('/dev/ttyAMA0', 9600, timeout=1); [print(s.readline().decode('ascii', errors='ignore').strip()) for _ in range(10)]"</pre>
-        </div>
-
-        <!-- Khởi động toàn hệ thống AI -->
-        <div class="p-3.5 bg-slate-900 rounded-xl border-2 border-blue-500/60 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold font-mono-code text-blue-400">🚀 CHẠY TOÀN HỆ THỐNG AI</span>
-            <span class="text-[10px] text-emerald-400 font-bold">SMART HELMET 360°</span>
-          </div>
-          <p class="text-[11px] text-slate-300">Khởi chạy chương trình AI tổng thể kết hợp 3 Cam, Rung, Còi, SOS:</p>
-          <pre class="bg-black/60 p-2.5 rounded font-mono-code text-[10.5px] text-white overflow-x-auto">cd ~/smart_helmet_pi && ./run.sh</pre>
+        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800">
+          <div class="text-amber-400 font-bold mb-1">3. SOS & Web Dashboard</div>
+          <div>Nhấn nút cứu hộ gửi tin nhắn kèm tọa độ GPS qua Telegram & mở Dashboard xem trực tuyến.</div>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="text-center text-xs text-slate-500 font-mono-code py-4 border-t border-slate-800">
-      Đề tài Nghiên cứu Khoa học Kỹ thuật 2026 • Hệ thống Mũ Bảo Hiểm Thông Minh 360° Hỗ Trợ Người Khiếm Thị • Bản vẽ cắm dây Raspberry Pi 4 Model B
+    <footer class="text-center text-xs text-slate-500 font-mono-code py-6 border-t border-slate-800">
+      Đề tài Nghiên cứu Khoa học Kỹ thuật 2026 • Hệ thống Mũ Bảo Hiểm Thông Minh 360° Hỗ Trợ Người Khiếm Thị • Bản vẽ kỹ thuật cắm dây Raspberry Pi 4 Model B
     </footer>
 
   </div>
 
-  <!-- INTERACTIVE JAVASCRIPT FOR NET FILTERING -->
+  <!-- JAVASCRIPT LOGIC CHO BỘ LỌC DÂY & SAO CHÉP MÃ -->
   <script>
     function highlightNet(net) {
       const groups = ['HAPTIC', 'BUZZER', 'SOS', 'PWR', 'GPS', 'CAM'];
@@ -1395,6 +1639,17 @@
           }
         });
       }
+    }
+
+    function copyCode(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Đã sao chép lệnh kiểm tra vào bộ nhớ tạm: \n" + text);
+      }).catch(err => {
+        console.error("Lỗi sao chép:", err);
+      });
     }
   </script>
 </body>
