@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sơ Đồ Đấu Nối Chuẩn Smart Helmet 360° AI - Raspberry Pi 4</title>
+  <title>Sơ Đồ Đấu Nối Chuẩn Smart Helmet 360° AI - Raspberry Pi 4 Model B</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -25,21 +25,20 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Style for SVG wire traces */
-    .wire-trace {
+    .pcb-trace {
       transition: stroke-width 0.25s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.25s, opacity 0.25s, filter 0.25s;
     }
     
-    .wire-trace:hover {
+    .pcb-trace:hover {
       stroke-width: 7.5px !important;
-      filter: drop-shadow(0 0 12px currentColor) brightness(1.4);
+      filter: drop-shadow(0 0 10px currentColor) brightness(1.4);
       opacity: 1 !important;
       cursor: pointer;
     }
 
     .net-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
+      font-size: 9px;
       font-weight: 800;
       letter-spacing: 0.5px;
       pointer-events: none;
@@ -54,8 +53,8 @@
     }
 
     .active-trace {
-      stroke-width: 6px !important;
-      filter: drop-shadow(0 0 10px currentColor);
+      stroke-width: 6.5px !important;
+      filter: drop-shadow(0 0 12px currentColor);
       opacity: 1 !important;
     }
 
@@ -71,22 +70,22 @@
   </style>
 </head>
 <body class="p-3 md:p-6 antialiased">
-  <div class="max-w-[1720px] mx-auto space-y-6">
+  <div class="max-w-[1600px] mx-auto space-y-6">
 
-    <!-- Top Navigation Bar & Action Toolbar -->
+    <!-- TOP NAVIGATION BAR & ACTION TOOLBAR -->
     <header class="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 shadow-2xl flex flex-col xl:flex-row xl:items-center justify-between gap-4">
       <div>
         <div class="flex items-center gap-2.5 flex-wrap">
           <span class="px-3 py-1 text-xs font-bold font-mono-code uppercase tracking-wider rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">RASPBERRY PI 4 MODEL B (EDGE AI)</span>
           <span class="px-2.5 py-1 text-xs font-bold font-mono-code rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/40">MẠCH CÒI TRAN S8050 NPN</span>
           <span class="px-2.5 py-1 text-xs font-bold font-mono-code rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40">NÚT SOS PULL-UP NỘI</span>
-          <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">CHUẨN BẢN VẼ VECTOR ALTIUM EDA</span>
+          <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">CHUẨN BẢN VẼ ALTIUM EDA</span>
         </div>
         <h1 class="text-2xl md:text-3xl font-black mt-2 text-white tracking-tight flex items-center gap-3">
-          Sơ Đồ Đấu Nối Toàn Hệ Thống Nón Bảo Hiểm Thông Minh (Smart Helmet 360° AI)
+          Sơ Đồ Đấu Nối Phần Cứng Toàn Hệ Thống Nón Bảo Hiểm Thông Minh (Smart Helmet 360° AI)
         </h1>
         <p class="text-slate-400 text-xs md:text-sm mt-1">
-          Bản vẽ kỹ thuật 100% dây nối liên tục từ chân <b>Raspberry Pi 4</b> đến <b>6 Khối Linh Kiện Ngoại Vi</b>: Buck XL4015 (5.1V/5A), Mạch Còi S8050 NPN, Nút Bấm SOS (Pin 22 & 20), 4 Motor Rung Haptic (ULN2003A), GPS NEO-6M, Cụm 3 Camera USB Hub 3.0.
+          Bản vẽ kỹ thuật chuẩn Altium: Raspberry Pi 4 Model B kết nối 100% dây thông suốt đến <b>6 Khối Ngoại Vi</b>: Buck XL4015 (5.10V/5A), Mạch Còi S8050 NPN, Nút Báo Động SOS (Pin 22 & 20), 4 Motor Rung Haptic (ULN2003A), GPS NEO-6M, Cụm 3 Camera USB Hub 3.0.
         </p>
       </div>
 
@@ -111,7 +110,7 @@
           🛰️ GPS NEO-6M
         </button>
         <button onclick="highlightNet('CAM')" id="btn-net-cam" class="px-3 py-2 text-xs font-bold font-mono-code rounded-xl bg-cyan-950/80 text-cyan-300 border border-cyan-500/50 hover:bg-cyan-900 transition">
-          📷 3 Camera USB 3.0
+          📷 3 Camera USB
         </button>
         <button onclick="window.print()" class="px-3 py-2 text-xs font-bold rounded-xl bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
@@ -120,822 +119,801 @@
       </div>
     </header>
 
-    <!-- KHỐI BẢN VẼ VECTOR SVG CHÍNH: 1680 x 980 (CHUẨN ALTIUM EDA TẤT CẢ MODULE & DÂY NỐI RÕ RÀNG) -->
-    <section class="bg-[#0b0f19] border-2 border-slate-800 rounded-2xl p-3 md:p-5 shadow-2xl overflow-x-auto">
-      <div class="flex items-center justify-between mb-3 text-xs text-slate-400 font-mono-code">
-        <span class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          BẢN VẼ MẠCH NGUYÊN LÝ VECTOR (VIEWBOX 1680 x 980) - TẤT CẢ DÂY NỐI ĐỀU THÔNG SUỐT
+    <!-- HỘP HƯỚNG DẪN CẤU HÌNH CHÂN TRAN S8050 & NÚT SOS NỔI BẬT DÀNH CHO BÀN HÀN -->
+    <section class="bg-gradient-to-r from-rose-950/40 via-[#0f172a] to-slate-900 border-2 border-rose-500/60 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-rose-500/30 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-black text-xl shadow-lg shadow-rose-600/40">
+            !
+          </div>
+          <div>
+            <h2 class="text-lg md:text-xl font-black text-white uppercase tracking-wide flex items-center gap-2">
+              HƯỚNG DẪN ĐẤU CHÂN TRANSISTOR S8050 & NÚT SOS (NHÌN LÀ HÀN ĐƯỢC NGAY)
+            </h2>
+            <p class="text-xs text-rose-300">Không cần nhớ ký hiệu phức tạp - Chỉ cần cầm linh kiện đúng hướng là đấu chuẩn 100%</p>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-bold font-mono-code bg-rose-500/20 text-rose-300 border border-rose-500/40 self-start md:self-auto">
+          LOẠI: NPN • VỎ TO-92
         </span>
-        <span class="hidden md:inline text-slate-500">Mẹo: Rê chuột hoặc bấm các nút phía trên để làm nổi bật từng tuyến dây</span>
       </div>
 
-      <div class="w-full flex justify-center bg-[#070b13] rounded-xl p-2 border border-slate-900">
-        <svg id="eda-schematic" viewBox="0 0 1680 980" class="w-full min-w-[1400px] h-auto select-none font-sans">
-          <defs>
-            <filter id="pcb-shadow" x="-5%" y="-5%" width="110%" height="110%">
-              <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.8"/>
-            </filter>
-            <pattern id="eda-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-              <path d="M 28 0 L 0 0 0 28" fill="none" stroke="#1e293b" stroke-width="0.75" stroke-opacity="0.45"/>
-              <circle cx="0" cy="0" r="1.1" fill="#334155" opacity="0.6"/>
-            </pattern>
-          </defs>
-
-          <!-- EDA Grid Background -->
-          <rect width="1680" height="980" fill="url(#eda-grid)"/>
-
-          <!-- ========================================================================= -->
-          <!-- HÀNG 1 (TOP ROW): NGUỒN PIN & BUCK (LEFT) | PI 4 (CENTER) | 3 CAM HUB (RIGHT) -->
-          <!-- ========================================================================= -->
-
-          <!-- 1. KHỐI NGUỒN PIN 2S & HẠ ÁP BUCK XL4015 (TOP-LEFT: x=40, y=45, w=390, h=380) -->
-          <g id="power-node" transform="translate(40, 45)">
-            <rect x="0" y="0" width="390" height="380" rx="14" fill="#180a0a" stroke="#ef4444" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="390" height="34" rx="12" fill="#7f1d1d"/>
-            <text x="195" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">KHỐI NGUỒN PIN 2S & HẠ ÁP BUCK XL4015</text>
-
-            <!-- Pack Pin 2S Li-ion -->
-            <g transform="translate(20, 50)">
-              <rect x="0" y="0" width="160" height="80" rx="8" fill="#0f172a" stroke="#eab308" stroke-width="2"/>
-              <text x="80" y="24" fill="#facc15" font-size="10" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">PACK PIN 2S LI-ION</text>
-              <text x="80" y="46" fill="#ffffff" font-size="13" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">7.4V - 8.4V</text>
-              <text x="80" y="66" fill="#94a3b8" font-size="8.5" text-anchor="middle">Dung lượng 3000-5000mAh</text>
-              <circle cx="20" cy="80" r="5" fill="#ef4444"/>
-              <text x="20" y="93" fill="#f87171" font-size="8.5" font-weight="800" text-anchor="middle">(+)</text>
-              <circle cx="140" cy="80" r="5" fill="#64748b"/>
-              <text x="140" y="93" fill="#cbd5e1" font-size="8.5" font-weight="800" text-anchor="middle">(-)</text>
-            </g>
-
-            <!-- Công tắc bập bênh KCD11 -->
-            <g transform="translate(205, 52)">
-              <rect x="0" y="0" width="165" height="76" rx="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.8"/>
-              <rect x="15" y="15" width="46" height="46" rx="5" fill="#ef4444"/>
-              <circle cx="38" cy="38" r="9" fill="#ffffff"/>
-              <text x="110" y="36" fill="#ffffff" font-size="11" font-weight="900">BẬT / TẮT</text>
-              <text x="110" y="52" fill="#94a3b8" font-size="8">Công tắc chính</text>
-            </g>
-
-            <!-- Module Hạ Áp Buck XL4015 -->
-            <g transform="translate(20, 155)">
-              <rect x="0" y="0" width="350" height="205" rx="10" fill="#0b1720" stroke="#f59e0b" stroke-width="2"/>
-              <text x="175" y="24" fill="#fbbf24" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE HẠ ÁP BUCK XL4015 (5A MAX)</text>
-
-              <!-- Chiết áp vi chỉnh & Cuộn cảm & Tụ lọc -->
-              <g transform="translate(25, 45)">
-                <rect x="0" y="0" width="55" height="40" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.5"/>
-                <circle cx="27" cy="20" r="8" fill="#eab308"/>
-                <text x="27" y="54" fill="#fde047" font-size="8.5" font-weight="800" text-anchor="middle">BIẾN TRỞ</text>
-                <text x="27" y="65" fill="#94a3b8" font-size="7.5" text-anchor="middle">Chỉnh 5.10V</text>
-              </g>
-
-              <g transform="translate(115, 40)">
-                <circle cx="30" cy="25" r="22" fill="#451a03" stroke="#f59e0b" stroke-width="2"/>
-                <text x="30" y="28" fill="#fde047" font-size="8.5" font-weight="900" text-anchor="middle">CUỘN DÂY</text>
-                <text x="30" y="58" fill="#94a3b8" font-size="7.5" text-anchor="middle">Lõi Ferrite</text>
-              </g>
-
-              <g transform="translate(205, 40)">
-                <circle cx="25" cy="25" r="22" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
-                <text x="25" y="29" fill="#38bdf8" font-size="8.5" font-weight="900" text-anchor="middle">1000uF</text>
-                <text x="25" y="58" fill="#94a3b8" font-size="7.5" text-anchor="middle">Tụ lọc ra</text>
-              </g>
-
-              <!-- IN+ & IN- Input Pins (Internal wiring from Pin/Switch) -->
-              <g transform="translate(30, 165)">
-                <circle cx="0" cy="0" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
-                <text x="12" y="3" fill="#f87171" font-size="9" font-weight="800">IN+ (Từ Pin qua Switch)</text>
-              </g>
-              <g transform="translate(170, 165)">
-                <circle cx="0" cy="0" r="6" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
-                <text x="12" y="3" fill="#cbd5e1" font-size="9" font-weight="800">IN- (Mass Pin)</text>
-              </g>
-
-              <!-- OUT+ & OUT- Output Terminals (x=280, 320 rel to buck -> x=40+20+280=340, x=40+20+320=380, y=45+155+190=390) -->
-              <g transform="translate(280, 190)">
-                <circle cx="0" cy="0" r="8" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
-                <text x="0" y="-12" fill="#ef4444" font-size="10" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">OUT+ (5.10V)</text>
-              </g>
-              <g transform="translate(320, 190)">
-                <circle cx="0" cy="0" r="8" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
-                <text x="0" y="-12" fill="#cbd5e1" font-size="10" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">OUT- (GND)</text>
-              </g>
-            </g>
-          </g>
-
-          <!-- 2. RASPBERRY PI 4 MODEL B (TOP-CENTER: x=465, y=45, w=690, h=380) -->
-          <g id="rpi4-node" transform="translate(465, 45)">
-            <rect x="0" y="0" width="690" height="380" rx="16" fill="#08331e" stroke="#15803d" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="690" height="34" rx="14" fill="#14532d"/>
-            <text x="345" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">RASPBERRY PI 4 MODEL B - BO MẠCH XỬ LÝ TRUNG TÂM (EDGE AI)</text>
-
-            <!-- SoC Broadcom BCM2711 Chip (Center) -->
-            <rect x="230" y="65" width="150" height="135" rx="6" fill="#0f172a" stroke="#475569" stroke-width="2"/>
-            <text x="305" y="115" fill="#f8fafc" font-size="13" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">BROADCOM</text>
-            <text x="305" y="135" fill="#38bdf8" font-size="11" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="middle">BCM2711</text>
-            <text x="305" y="155" fill="#94a3b8" font-size="9" text-anchor="middle">Quad-Core Cortex-A72 @ 1.5GHz</text>
-            <text x="305" y="175" fill="#22c55e" font-size="8.5" font-weight="700" text-anchor="middle">RAM 4GB / 8GB LPDDR4</text>
-
-            <!-- USB Type-C Port (Left) -->
-            <rect x="-14" y="90" width="22" height="45" rx="4" fill="#94a3b8" stroke="#cbd5e1" stroke-width="1.5"/>
-            <text x="18" y="118" fill="#94a3b8" font-size="8" font-weight="800">TYPE-C</text>
-
-            <!-- Micro HDMI Ports (Left) -->
-            <rect x="-12" y="170" width="18" height="30" rx="3" fill="#64748b"/>
-            <rect x="-12" y="220" width="18" height="30" rx="3" fill="#64748b"/>
-            <text x="16" y="200" fill="#64748b" font-size="7.5" font-weight="700">HDMI 0/1</text>
-
-            <!-- USB Ports (Right Edge) -->
-            <!-- 2x USB 3.0 Blue Ports (Connects to Camera Hub) -->
-            <g transform="translate(674, 55)">
-              <rect x="0" y="0" width="26" height="52" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.8"/>
-              <rect x="4" y="8" width="18" height="36" rx="2" fill="#075985"/>
-              <text x="-8" y="32" fill="#38bdf8" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="end">USB 3.0 (Cổng Trên)</text>
-            </g>
-            <g transform="translate(674, 118)">
-              <rect x="0" y="0" width="26" height="52" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.8"/>
-              <rect x="4" y="8" width="18" height="36" rx="2" fill="#075985"/>
-              <text x="-8" y="32" fill="#38bdf8" font-size="8" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="end">USB 3.0 (Cổng Dưới)</text>
-            </g>
-
-            <!-- 2x USB 2.0 Black Ports -->
-            <g transform="translate(674, 182)">
-              <rect x="0" y="0" width="26" height="48" rx="4" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
-              <text x="-8" y="30" fill="#64748b" font-size="8" font-weight="700" text-anchor="end">USB 2.0</text>
-            </g>
-
-            <!-- Gigabit Ethernet RJ45 -->
-            <g transform="translate(674, 245)">
-              <rect x="0" y="0" width="26" height="55" rx="4" fill="#475569" stroke="#94a3b8" stroke-width="1.5"/>
-              <text x="-8" y="34" fill="#94a3b8" font-size="8" font-weight="700" text-anchor="end">ETHERNET</text>
-            </g>
-
-            <!-- 40-PIN GPIO HEADER (J8) TẠI ĐÁY PI 4 (y=305..370 trong nhóm Pi 4 -> y_global=350..415) -->
-            <g id="gpio-header-40" transform="translate(35, 305)">
-              <rect x="0" y="0" width="620" height="66" rx="8" fill="#0b1720" stroke="#334155" stroke-width="1.8"/>
-              <text x="310" y="16" fill="#facc15" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">
-                ĐẦU CỌC 40 CHÂN GPIO (J8): HÀNG TRÊN (CHẴN y=375), HÀNG DƯỚI (LẺ y=400)
-              </text>
-
-              <!-- HÀNG TRÊN: EVEN PINS (y=30 trong header -> y_global = 45 + 305 + 30 = 380) -->
-              <!-- dx = 28. Base x = 30 -> x_global = 465 + 35 + 30 = 530 -->
-              <!-- Pin 2: 5V Power IN (x=530, y=380) -->
-              <g transform="translate(30, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#ef4444" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:5V</text>
-              </g>
-              <!-- Pin 4: 5V Power OUT (x=558, y=380) -->
-              <g transform="translate(58, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#ef4444" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">4:5V</text>
-              </g>
-              <!-- Pin 6: GND (x=586, y=380) -->
-              <g transform="translate(86, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#cbd5e1" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">6:GND</text>
-              </g>
-              <!-- Pin 8: GPIO 14 (UART TXD) (x=614, y=380) -->
-              <g transform="translate(114, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#7e22ce" stroke="#d8b4fe" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#d8b4fe" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">8:TX</text>
-              </g>
-              <!-- Pin 10: GPIO 15 (UART RXD) (x=642, y=380) -->
-              <g transform="translate(142, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#7e22ce" stroke="#d8b4fe" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#d8b4fe" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">10:RX</text>
-              </g>
-              <!-- Pin 12, 14 (x=670, 698) -->
-              <g transform="translate(170, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#64748b"/></g>
-              <g transform="translate(198, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#64748b"/></g>
-              <!-- Pin 16: GPIO 23 (MOTOR TRÁI) (x=726, y=380) -->
-              <g transform="translate(226, 30)">
-                <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
-                <text x="0" y="-10" fill="#34d399" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">16:M4</text>
-              </g>
-              <!-- Pin 18: GPIO 24 (CÒI S8050) (x=754, y=380) -->
-              <g transform="translate(254, 30)">
-                <circle cx="0" cy="0" r="8" fill="#e11d48" stroke="#ffffff" stroke-width="2"/>
-                <text x="0" y="-10" fill="#fb7185" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">18:CÒI</text>
-              </g>
-              <!-- Pin 20: GND CHUNG (x=782, y=380) -->
-              <g transform="translate(282, 30)">
-                <circle cx="0" cy="0" r="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-                <text x="0" y="-10" fill="#cbd5e1" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">20:GND</text>
-              </g>
-              <!-- Pin 22: GPIO 25 (NÚT SOS) (x=810, y=380) -->
-              <g transform="translate(310, 30)">
-                <circle cx="0" cy="0" r="8" fill="#ca8a04" stroke="#ffffff" stroke-width="2"/>
-                <text x="0" y="-10" fill="#fde047" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">22:SOS</text>
-              </g>
-              <!-- Remaining Even Pins 24..40 -->
-              <g transform="translate(338, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(366, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(394, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(422, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(450, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(478, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(506, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(534, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(562, 30)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-
-              <!-- HÀNG DƯỚI: ODD PINS (y=52 trong header -> y_global = 45 + 305 + 52 = 402) -->
-              <!-- Pin 1: 3.3V Power OUT (GPS) (x=530, y=402) -->
-              <g transform="translate(30, 52)">
-                <circle cx="0" cy="0" r="7.5" fill="#ea580c" stroke="#fed7aa" stroke-width="1.8"/>
-                <text x="0" y="15" fill="#fed7aa" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:3V3</text>
-              </g>
-              <!-- Pin 3, 5, 7, 9 -->
-              <g transform="translate(58, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(86, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(114, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(142, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <!-- Pin 11: GPIO 17 (MOTOR TRƯỚC) (x=670, y=402) -->
-              <g transform="translate(170, 52)">
-                <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
-                <text x="0" y="15" fill="#34d399" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">11:M1</text>
-              </g>
-              <!-- Pin 13: GPIO 27 (MOTOR PHẢI) (x=698, y=402) -->
-              <g transform="translate(198, 52)">
-                <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
-                <text x="0" y="15" fill="#34d399" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">13:M2</text>
-              </g>
-              <!-- Pin 15: GPIO 22 (MOTOR SAU) (x=726, y=402) -->
-              <g transform="translate(226, 52)">
-                <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
-                <text x="0" y="15" fill="#34d399" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">15:M3</text>
-              </g>
-              <!-- Remaining Odd Pins 17..39 -->
-              <g transform="translate(254, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(282, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(310, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(338, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(366, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(394, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(422, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(450, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(478, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(506, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(534, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-              <g transform="translate(562, 52)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
-            </g>
-          </g>
-
-          <!-- 3. CỤM 3 CAMERA USB TAM GIÁC ĐỀU 120° & HUB USB 3.0 (TOP-RIGHT: x=1190, y=45, w=450, h=380) -->
-          <g id="cam-hub-node" transform="translate(1190, 45)">
-            <rect x="0" y="0" width="450" height="380" rx="14" fill="#082f49" stroke="#0284c7" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="450" height="34" rx="12" fill="#0369a1"/>
-            <text x="225" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3 CAMERA USB TAM GIÁC ĐỀU 120° & HUB USB 3.0</text>
-
-            <!-- Bộ Chia USB 3.0 Hub (Left inside card) -->
-            <g transform="translate(20, 55)">
-              <rect x="0" y="0" width="130" height="150" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
-              <text x="65" y="24" fill="#38bdf8" font-size="10" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">USB 3.0 HUB</text>
-              <text x="65" y="40" fill="#94a3b8" font-size="8" text-anchor="middle">SuperSpeed 5Gbps</text>
-              <!-- 3 USB Female Ports receiving 3 cams -->
-              <rect x="20" y="55" width="90" height="20" rx="3" fill="#0284c7"/>
-              <text x="65" y="69" fill="#ffffff" font-size="8.5" font-weight="700" text-anchor="middle">CỔNG 1 (CAM 1)</text>
-              <rect x="20" y="85" width="90" height="20" rx="3" fill="#0284c7"/>
-              <text x="65" y="99" fill="#ffffff" font-size="8.5" font-weight="700" text-anchor="middle">CỔNG 2 (CAM 2)</text>
-              <rect x="20" y="115" width="90" height="20" rx="3" fill="#0284c7"/>
-              <text x="65" y="129" fill="#ffffff" font-size="8.5" font-weight="700" text-anchor="middle">CỔNG 3 (CAM 3)</text>
-            </g>
-
-            <!-- 3 Camera Cards with lens graphic -->
-            <!-- Cam 1: Hướng Trước (0°) -->
-            <g transform="translate(170, 50)">
-              <rect x="0" y="0" width="125" height="100" rx="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
-              <circle cx="62" cy="45" r="22" fill="#082f49" stroke="#0ea5e9" stroke-width="2"/>
-              <circle cx="62" cy="45" r="10" fill="#0284c7"/>
-              <circle cx="58" cy="41" r="3.5" fill="#ffffff"/>
-              <text x="62" y="82" fill="#bae6fd" font-size="9" font-weight="900" text-anchor="middle">CAM 1: TRƯỚC</text>
-              <text x="62" y="93" fill="#7dd3fc" font-size="7.5" text-anchor="middle">Góc 0° (Chính diện)</text>
-            </g>
-
-            <!-- Cam 2: Hướng Trái (120°) -->
-            <g transform="translate(305, 50)">
-              <rect x="0" y="0" width="125" height="100" rx="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
-              <circle cx="62" cy="45" r="22" fill="#082f49" stroke="#0ea5e9" stroke-width="2"/>
-              <circle cx="62" cy="45" r="10" fill="#0284c7"/>
-              <circle cx="58" cy="41" r="3.5" fill="#ffffff"/>
-              <text x="62" y="82" fill="#bae6fd" font-size="9" font-weight="900" text-anchor="middle">CAM 2: TRÁI</text>
-              <text x="62" y="93" fill="#7dd3fc" font-size="7.5" text-anchor="middle">Góc 120° (Điểm mù trái)</text>
-            </g>
-
-            <!-- Cam 3: Hướng Phải (240°) -->
-            <g transform="translate(235, 160)">
-              <rect x="0" y="0" width="125" height="100" rx="8" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
-              <circle cx="62" cy="45" r="22" fill="#082f49" stroke="#0ea5e9" stroke-width="2"/>
-              <circle cx="62" cy="45" r="10" fill="#0284c7"/>
-              <circle cx="58" cy="41" r="3.5" fill="#ffffff"/>
-              <text x="62" y="82" fill="#bae6fd" font-size="9" font-weight="900" text-anchor="middle">CAM 3: PHẢI</text>
-              <text x="62" y="93" fill="#7dd3fc" font-size="7.5" text-anchor="middle">Góc 240° (Điểm mù phải)</text>
-            </g>
-
-            <!-- Description Box inside Cam Card -->
-            <g transform="translate(20, 275)">
-              <rect x="0" y="0" width="410" height="90" rx="8" fill="#0c2d48" stroke="#0369a1"/>
-              <text x="15" y="24" fill="#38bdf8" font-size="9.5" font-weight="800">★ ƯU ĐIỂM CỤM 3 CAM TAM GIÁC ĐỀU 120°:</text>
-              <text x="15" y="44" fill="#e0f2fe" font-size="9">• Bao quát 360° không góc chết quanh người lái xe máy</text>
-              <text x="15" y="62" fill="#e0f2fe" font-size="9">• 3 Camera USB cắm gọn vào USB 3.0 Hub trên đỉnh nón</text>
-              <text x="15" y="80" fill="#38bdf8" font-size="9">• Cáp Hub cắm thẳng cổng USB 3.0 Blue Pi 4 băng thông 5Gbps</text>
-            </g>
-          </g>
-
-
-          <!-- ========================================================================= -->
-          <!-- HÀNG 2 (BOTTOM ROW): 4 MODULE TÁCH BIỆT HOÀN TOÀN KHÔNG CHẠM NHAU (y=525..945) -->
-          <!-- ========================================================================= -->
-
-          <!-- MODULE 1: MẠCH KÍCH CÒI BUZZER S8050 NPN (BOTTOM-LEFT: x=40, y=525, w=360, h=420) -->
-          <g id="buzzer-node" transform="translate(40, 525)">
-            <rect x="0" y="0" width="360" height="420" rx="14" fill="#180c14" stroke="#f43f5e" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="360" height="34" rx="12" fill="#881337"/>
-            <text x="180" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH KÍCH CÒI TRAN S8050 NPN</text>
-
-            <!-- Top Inlets / Wire terminals (Connecting to upper corridor) -->
-            <!-- R_BASE Inlet at x=70 (x_global=110), GND Inlet at x=120 (x_global=160), 5V Inlet at x=180 (x_global=220) -->
-            <circle cx="70" cy="0" r="6" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="70" y="-8" fill="#fb7185" font-size="8.5" font-weight="800" text-anchor="middle">Tín hiệu Pin 18</text>
-
-            <circle cx="120" cy="0" r="6" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="120" y="-8" fill="#cbd5e1" font-size="8.5" font-weight="800" text-anchor="middle">Mass Pin 20</text>
-
-            <circle cx="180" cy="0" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="180" y="-8" fill="#ef4444" font-size="8.5" font-weight="800" text-anchor="middle">Nguồn 5V Pin 4</text>
-
-            <!-- Active Buzzer (Còi Báo Động 5V) -->
-            <g transform="translate(195, 75)">
-              <circle cx="0" cy="0" r="32" fill="#020617" stroke="#cbd5e1" stroke-width="2.5"/>
-              <circle cx="0" cy="0" r="9" fill="#1e293b"/>
-              <text x="0" y="4" fill="#94a3b8" font-size="8" font-weight="800" text-anchor="middle">CÒI 5V</text>
-              <text x="-18" y="-12" fill="#ef4444" font-size="14" font-weight="900">+</text>
-              <text x="14" y="-12" fill="#60a5fa" font-size="14" font-weight="900">-</text>
-            </g>
-
-            <!-- Diode 1N4148 Song Song Còi Bảo Vệ -->
-            <g transform="translate(290, 60)">
-              <rect x="0" y="0" width="18" height="30" rx="3" fill="#ea580c" stroke="#fed7aa"/>
-              <line x1="0" y1="8" x2="18" y2="8" stroke="#ffffff" stroke-width="3"/>
-              <text x="26" y="18" fill="#fdba74" font-size="8.5" font-weight="800">1N4148</text>
-              <text x="26" y="30" fill="#94a3b8" font-size="7.5">(Dập tia lửa)</text>
-            </g>
-
-            <!-- Điện Trở R_BASE 1kΩ -->
-            <g transform="translate(45, 155)">
-              <rect x="0" y="0" width="55" height="22" rx="3" fill="#1e293b" stroke="#f43f5e" stroke-width="1.8"/>
-              <text x="27" y="15" fill="#ffffff" font-size="9.5" font-weight="900" text-anchor="middle">1 kΩ</text>
-              <text x="27" y="-6" fill="#fb7185" font-size="8" font-weight="700" text-anchor="middle">R_BASE</text>
-            </g>
-
-            <!-- HÌNH VẼ TO-92 S8050 CHUẨN KỸ THUẬT SIÊU TRỰC QUAN -->
-            <g transform="translate(160, 205)">
-              <!-- S8050 Vỏ dẹt có chữ -->
-              <path d="M -50 -25 L 50 -25 A 50 50 0 0 1 -50 -25 Z" fill="#1e293b" stroke="#cbd5e1" stroke-width="2.5"/>
-              <text x="0" y="-8" fill="#ffffff" font-size="14" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">S8050</text>
-              <text x="0" y="8" fill="#38bdf8" font-size="8.5" font-weight="700" text-anchor="middle">NPN BJT (Mặt Dẹt Có Chữ)</text>
-
-              <!-- 3 Chân: 1:E (Trái), 2:B (Giữa), 3:C (Phải) -->
-              <!-- Chân 1: E (Trái) -> GND -->
-              <g transform="translate(-36, 25)">
-                <line x1="0" y1="-12" x2="0" y2="0" stroke="#cbd5e1" stroke-width="3"/>
-                <circle cx="0" cy="0" r="8" fill="#047857" stroke="#ffffff" stroke-width="1.5"/>
-                <text x="0" y="3" fill="#ffffff" font-size="8.5" font-weight="900" text-anchor="middle">E</text>
-                <text x="0" y="18" fill="#34d399" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:GND</text>
-              </g>
-
-              <!-- Chân 2: B (Giữa) -> R_BASE -> Pin 18 -->
-              <g transform="translate(0, 25)">
-                <line x1="0" y1="-12" x2="0" y2="0" stroke="#cbd5e1" stroke-width="3"/>
-                <circle cx="0" cy="0" r="8" fill="#be123c" stroke="#ffffff" stroke-width="1.5"/>
-                <text x="0" y="3" fill="#ffffff" font-size="8.5" font-weight="900" text-anchor="middle">B</text>
-                <text x="0" y="18" fill="#fb7185" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:Pin18</text>
-              </g>
-
-              <!-- Chân 3: C (Phải) -> (-) Còi -->
-              <g transform="translate(36, 25)">
-                <line x1="0" y1="-12" x2="0" y2="0" stroke="#cbd5e1" stroke-width="3"/>
-                <circle cx="0" cy="0" r="8" fill="#1d4ed8" stroke="#ffffff" stroke-width="1.5"/>
-                <text x="0" y="3" fill="#ffffff" font-size="8.5" font-weight="900" text-anchor="middle">C</text>
-                <text x="0" y="18" fill="#60a5fa" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3:Còi(-)</text>
-              </g>
-            </g>
-
-            <!-- Hướng dẫn nhanh bên dưới còi -->
-            <g transform="translate(15, 290)">
-              <rect x="0" y="0" width="330" height="115" rx="8" fill="#0f172a" stroke="#be123c"/>
-              <text x="12" y="22" fill="#fb7185" font-size="10" font-weight="800">CÁCH ĐẤU TRAN S8050 (NHÌN LÀ HÀN ĐƯỢC):</text>
-              <text x="12" y="44" fill="#cbd5e1" font-size="9">• <b>Chân 1 (Trái):</b> Nối thẳng vào <tspan fill="#34d399" font-weight="800">Pin 20 (GND)</tspan></text>
-              <text x="12" y="64" fill="#cbd5e1" font-size="9">• <b>Chân 2 (Giữa):</b> Qua <tspan fill="#fb7185" font-weight="800">Trở 1kΩ</tspan> ➔ Vào <tspan fill="#fb7185" font-weight="800">Pin 18 (GPIO 24)</tspan></text>
-              <text x="12" y="84" fill="#cbd5e1" font-size="9">• <b>Chân 3 (Phải):</b> Nối vào <tspan fill="#60a5fa" font-weight="800">Cực (-) Còi Buzzer</tspan></text>
-              <text x="12" y="104" fill="#cbd5e1" font-size="9">• <b>Cực (+) Còi:</b> Nối vào <tspan fill="#ef4444" font-weight="800">Pin 4 (+5V)</tspan> của Raspberry Pi</text>
-            </g>
-          </g>
-
-          <!-- MODULE 2: MẠCH NÚT BÁO ĐỘNG SOS (BOTTOM-CENTER-LEFT: x=430, y=525, w=340, h=420) -->
-          <g id="sos-node" transform="translate(430, 525)">
-            <rect x="0" y="0" width="340" height="420" rx="14" fill="#181308" stroke="#eab308" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="340" height="34" rx="12" fill="#713f12"/>
-            <text x="170" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH NÚT BÁO ĐỘNG SOS (PIN 22 & 20)</text>
-
-            <!-- Top Inlets / Wire terminals -->
-            <!-- Chân 1 SOS Inlet at x=90 (x_global=520), Chân 4 SOS GND Inlet at x=230 (x_global=660) -->
-            <circle cx="90" cy="0" r="6" fill="#eab308" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="90" y="-8" fill="#fde047" font-size="8.5" font-weight="800" text-anchor="middle">Pin 22 (GPIO 25)</text>
-
-            <circle cx="230" cy="0" r="6" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="230" y="-8" fill="#cbd5e1" font-size="8.5" font-weight="800" text-anchor="middle">Pin 20 (GND)</text>
-
-            <!-- Pushbutton Switch Visual (Khối Nút Bấm 4 Chân) -->
-            <g transform="translate(30, 60)">
-              <rect x="0" y="0" width="135" height="110" rx="10" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
-              <circle cx="67" cy="55" r="34" fill="#dc2626" stroke="#991b1b" stroke-width="3"/>
-              <text x="67" y="61" fill="#ffffff" font-size="15" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">SOS</text>
-
-              <!-- 4 Chân Nút: Chân 1 (Trên-Trái), Chân 2 (Trên-Phải), Chân 3 (Dưới-Trái), Chân 4 (Dưới-Phải) -->
-              <!-- Chân 1 (ĐẤU DÂY PIN 22) -->
-              <circle cx="-6" cy="20" r="7" fill="#ca8a04" stroke="#ffffff" stroke-width="2"/>
-              <text x="-16" y="23" fill="#fde047" font-size="9" font-weight="900" text-anchor="end">1:Pin 22</text>
-
-              <!-- Chân 2 -->
-              <circle cx="141" cy="20" r="5" fill="#475569"/>
-
-              <!-- Chân 3 -->
-              <circle cx="-6" cy="90" r="5" fill="#475569"/>
-
-              <!-- Chân 4 (ĐẤU DÂY GND PIN 20) -->
-              <circle cx="141" cy="90" r="7" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-              <text x="153" y="93" fill="#cbd5e1" font-size="9" font-weight="900">4:GND</text>
-
-              <!-- Đường chéo hướng dẫn đấu góc -->
-              <line x1="2" y1="26" x2="133" y2="84" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="4,3"/>
-              <text x="67" y="105" fill="#4ade80" font-size="8.5" font-weight="800" text-anchor="middle">★ ĐẤU CHÉO (1 & 4)</text>
-            </g>
-
-            <!-- Tụ Gốm 104 (100nF) Kẹp Song Song Chống Dội Phím -->
-            <g transform="translate(195, 65)">
-              <rect x="0" y="0" width="125" height="100" rx="8" fill="#0f172a" stroke="#d97706" stroke-width="1.8"/>
-              <circle cx="62" cy="45" r="22" fill="#d97706" stroke="#fbbf24" stroke-width="2"/>
-              <text x="62" y="50" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">104</text>
-              <text x="62" y="82" fill="#fde047" font-size="8.5" font-weight="800" text-anchor="middle">TỤ GỐM 100nF</text>
-              <text x="62" y="94" fill="#94a3b8" font-size="7.5" text-anchor="middle">(Lọc dội Debounce)</text>
-            </g>
-
-            <!-- Hướng Dẫn Nút Bấm SOS -->
-            <g transform="translate(15, 205)">
-              <rect x="0" y="0" width="310" height="200" rx="8" fill="#0f172a" stroke="#ca8a04"/>
-              <text x="15" y="24" fill="#facc15" font-size="10.5" font-weight="800">QUY TẮC ĐẤU NỐI NÚT SOS CHUẨN:</text>
-              <text x="15" y="48" fill="#cbd5e1" font-size="9">• <b>Chân 1 nút:</b> Cắm vào <tspan fill="#fde047" font-weight="800">Pin 22 (GPIO 25)</tspan></text>
-              <text x="15" y="70" fill="#cbd5e1" font-size="9">• <b>Chân 4 nút:</b> Cắm vào <tspan fill="#cbd5e1" font-weight="800">Pin 20 (GND)</tspan></text>
-              <text x="15" y="92" fill="#38bdf8" font-size="9">💡 <b>Cực kỳ tiện lợi:</b> Pin 20 và Pin 22 nằm sát nhau!</text>
-              <text x="15" y="114" fill="#cbd5e1" font-size="9">• <b>Tụ 100nF:</b> Hàn kẹp trực tiếp 2 chân nút bấm</text>
-              <text x="15" y="134" fill="#4ade80" font-size="9">• <b>Code Pi 4:</b> Kích hoạt trở kéo lên Pull-up nội</text>
-              <text x="15" y="152" fill="#94a3b8" font-size="8.5">  <code>pull_up_down=GPIO.PUD_UP</code> (Không cần trở ngoài)</text>
-              <text x="15" y="174" fill="#f87171" font-size="9">• <b>Thao tác:</b> Nhấn giữ 1.2s để hú còi và gửi vị trí GPS</text>
-            </g>
-          </g>
-
-          <!-- MODULE 3: MẠCH 4 ĐỘNG CƠ RUNG BÁO HƯỚNG CẢNH BÁO (BOTTOM-CENTER-RIGHT: x=800, y=525, w=440, h=420) -->
-          <g id="haptic-node" transform="translate(800, 525)">
-            <rect x="0" y="0" width="440" height="420" rx="14" fill="#061f18" stroke="#10b981" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="440" height="34" rx="12" fill="#064e3b"/>
-            <text x="220" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH 4 ĐỘNG CƠ RUNG BÁO HƯỚNG CẢNH BÁO</text>
-
-            <!-- Top Inlets / Wire terminals -->
-            <!-- IN1 (50->850), IN2 (90->890), IN3 (130->930), IN4 (170->970), COM 5V (220->1020), GND (270->1070) -->
-            <circle cx="50" cy="0" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="50" y="-8" fill="#34d399" font-size="8" font-weight="900" text-anchor="middle">IN1:P11</text>
-
-            <circle cx="90" cy="0" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="90" y="-8" fill="#34d399" font-size="8" font-weight="900" text-anchor="middle">IN2:P13</text>
-
-            <circle cx="130" cy="0" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="130" y="-8" fill="#34d399" font-size="8" font-weight="900" text-anchor="middle">IN3:P15</text>
-
-            <circle cx="170" cy="0" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="170" y="-8" fill="#34d399" font-size="8" font-weight="900" text-anchor="middle">IN4:P16</text>
-
-            <circle cx="220" cy="0" r="6" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="220" y="-8" fill="#ef4444" font-size="8" font-weight="900" text-anchor="middle">COM:5V</text>
-
-            <circle cx="270" cy="0" r="6" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="270" y="-8" fill="#cbd5e1" font-size="8" font-weight="900" text-anchor="middle">GND</text>
-
-            <!-- IC Đệm ULN2003A (Darlington Transistor Array) -->
-            <g transform="translate(25, 60)">
-              <rect x="0" y="0" width="130" height="180" rx="6" fill="#0f172a" stroke="#34d399" stroke-width="2"/>
-              <text x="65" y="24" fill="#a7f3d0" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">ULN2003A</text>
-              <text x="65" y="40" fill="#94a3b8" font-size="8" text-anchor="middle">IC Đệm Công Suất</text>
-              <!-- 4 Input Pins Left -->
-              <text x="12" y="70" fill="#34d399" font-size="8.5" font-weight="800">IN1 (P11)</text>
-              <text x="12" y="95" fill="#34d399" font-size="8.5" font-weight="800">IN2 (P13)</text>
-              <text x="12" y="120" fill="#34d399" font-size="8.5" font-weight="800">IN3 (P15)</text>
-              <text x="12" y="145" fill="#34d399" font-size="8.5" font-weight="800">IN4 (P16)</text>
-              <text x="12" y="170" fill="#cbd5e1" font-size="8" font-weight="800">GND (Pin 8)</text>
-              <!-- COM Pin Right -->
-              <text x="118" y="170" fill="#ef4444" font-size="8" font-weight="800" text-anchor="end">COM:5V</text>
-            </g>
-
-            <!-- 4 Động Cơ Rung Đồng Xu (Coin Vibration Motors) Bố Trí Vòng Quanh Nón -->
-            <g transform="translate(180, 50)">
-              <!-- Motor 1: Hướng Trước -->
-              <g transform="translate(75, 10)">
-                <circle cx="25" cy="25" r="22" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
-                <circle cx="25" cy="25" r="7" fill="#059669"/>
-                <text x="25" y="60" fill="#a7f3d0" font-size="8.5" font-weight="900" text-anchor="middle">M1: TRƯỚC</text>
-                <text x="25" y="70" fill="#94a3b8" font-size="7.5" text-anchor="middle">(Vật cản trước)</text>
-              </g>
-
-              <!-- Motor 4: Hướng Trái -->
-              <g transform="translate(10, 85)">
-                <circle cx="25" cy="25" r="22" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
-                <circle cx="25" cy="25" r="7" fill="#059669"/>
-                <text x="25" y="60" fill="#a7f3d0" font-size="8.5" font-weight="900" text-anchor="middle">M4: TRÁI</text>
-                <text x="25" y="70" fill="#94a3b8" font-size="7.5" text-anchor="middle">(Vượt trái)</text>
-              </g>
-
-              <!-- Motor 2: Hướng Phải -->
-              <g transform="translate(140, 85)">
-                <circle cx="25" cy="25" r="22" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
-                <circle cx="25" cy="25" r="7" fill="#059669"/>
-                <text x="25" y="60" fill="#a7f3d0" font-size="8.5" font-weight="900" text-anchor="middle">M2: PHẢI</text>
-                <text x="25" y="70" fill="#94a3b8" font-size="7.5" text-anchor="middle">(Vượt phải)</text>
-              </g>
-
-              <!-- Motor 3: Hướng Sau -->
-              <g transform="translate(75, 140)">
-                <circle cx="25" cy="25" r="22" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
-                <circle cx="25" cy="25" r="7" fill="#059669"/>
-                <text x="25" y="60" fill="#a7f3d0" font-size="8.5" font-weight="900" text-anchor="middle">M3: SAU</text>
-                <text x="25" y="70" fill="#94a3b8" font-size="7.5" text-anchor="middle">(Bám đuôi)</text>
-              </g>
-            </g>
-
-            <!-- Mô Tả 4 Kênh Rung Phản Xạ -->
-            <g transform="translate(20, 265)">
-              <rect x="0" y="0" width="400" height="140" rx="8" fill="#0f172a" stroke="#059669"/>
-              <text x="15" y="22" fill="#34d399" font-size="10" font-weight="800">CƠ CHẾ RUNG PHẢN XẠ HƯỚNG (HAPTIC FEEDBACK):</text>
-              <text x="15" y="44" fill="#cbd5e1" font-size="9">• <b>M1 Trước (Pin 11):</b> Rung khi AI phát hiện xe phanh gấp phía trước</text>
-              <text x="15" y="66" fill="#cbd5e1" font-size="9">• <b>M2 Phải (Pin 13):</b> Rung mép phải khi có phương tiện vượt bên phải</text>
-              <text x="15" y="88" fill="#cbd5e1" font-size="9">• <b>M3 Sau (Pin 15):</b> Rung gáy khi có xe tải/ô tô áp sát phía sau</text>
-              <text x="15" y="110" fill="#cbd5e1" font-size="9">• <b>M4 Trái (Pin 16):</b> Rung mép trái khi có xe tạt đầu bên trái</text>
-              <text x="15" y="130" fill="#38bdf8" font-size="8.5">★ Sử dụng IC ULN2003A bảo vệ 100% cổng GPIO của Pi 4</text>
-            </g>
-          </g>
-
-          <!-- MODULE 4: MODULE ĐỊNH VỊ GPS NEO-6M (BOTTOM-RIGHT: x=1270, y=525, w=370, h=420) -->
-          <g id="gps-node" transform="translate(1270, 525)">
-            <rect x="0" y="0" width="370" height="420" rx="14" fill="#1e1026" stroke="#c084fc" stroke-width="2.5" filter="url(#pcb-shadow)"/>
-            <rect x="0" y="0" width="370" height="34" rx="12" fill="#581c87"/>
-            <text x="185" y="22" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE ĐỊNH VỊ GPS NEO-6M & ANTEN</text>
-
-            <!-- Top Inlets / Wire terminals -->
-            <!-- VCC 3.3V (60->1330), GND (120->1390), RXD (190->1460), TXD (260->1530) -->
-            <circle cx="60" cy="0" r="5.5" fill="#ea580c" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="60" y="-8" fill="#fed7aa" font-size="8" font-weight="900" text-anchor="middle">VCC:P1</text>
-
-            <circle cx="120" cy="0" r="5.5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="120" y="-8" fill="#cbd5e1" font-size="8" font-weight="900" text-anchor="middle">GND:P6</text>
-
-            <circle cx="190" cy="0" r="5.5" fill="#a855f7" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="190" y="-8" fill="#d8b4fe" font-size="8" font-weight="900" text-anchor="middle">RXD:P8</text>
-
-            <circle cx="260" cy="0" r="5.5" fill="#c084fc" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="260" y="-8" fill="#e9d5ff" font-size="8" font-weight="900" text-anchor="middle">TXD:P10</text>
-
-            <!-- Bo Mạch GPS NEO-6M & Ăng-ten gốm vuông -->
-            <g transform="translate(25, 50)">
-              <rect x="0" y="0" width="160" height="175" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="2"/>
-              <text x="80" y="24" fill="#c084fc" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">NEO-6M</text>
-              <rect x="25" y="40" width="110" height="55" rx="4" fill="#1e1b4b" stroke="#6366f1"/>
-              <text x="80" y="65" fill="#ffffff" font-size="10" font-weight="800" text-anchor="middle">u-blox NEO-6</text>
-              <text x="80" y="80" fill="#a5b4fc" font-size="8" text-anchor="middle">GPS/GNSS Engine</text>
-
-              <!-- LED PPS (Nhấp nháy khi có sóng) -->
-              <circle cx="35" cy="120" r="5" fill="#22c55e" stroke="#86efac" stroke-width="1.5"/>
-              <text x="48" y="123" fill="#86efac" font-size="8.5" font-weight="700">PPS (Fix)</text>
-
-              <!-- Pinout Label trên bo -->
-              <text x="80" y="155" fill="#94a3b8" font-size="8.5" font-family="'JetBrains Mono', monospace" text-anchor="middle">VCC | GND | TXD | RXD</text>
-            </g>
-
-            <!-- Ăng-ten Gốm Vuông 25x25mm (Ceramic Patch Antenna) -->
-            <g transform="translate(210, 50)">
-              <rect x="0" y="0" width="135" height="135" rx="8" fill="#451a03" stroke="#f59e0b" stroke-width="2.5"/>
-              <rect x="15" y="15" width="105" height="105" rx="6" fill="#78350f"/>
-              <circle cx="67" cy="67" r="8" fill="#cbd5e1" stroke="#ffffff" stroke-width="2"/>
-              <text x="67" y="152" fill="#fbbf24" font-size="9" font-weight="900" text-anchor="middle">ĂNG-TEN GỐM 25x25</text>
-              <text x="67" y="165" fill="#cbd5e1" font-size="7.5" text-anchor="middle">Đặt ngửa lên đỉnh nón</text>
-            </g>
-
-            <!-- Hướng Dẫn Cắm Dây UART Bắt Chéo -->
-            <g transform="translate(20, 245)">
-              <rect x="0" y="0" width="330" height="160" rx="8" fill="#0f172a" stroke="#a855f7"/>
-              <text x="15" y="22" fill="#d8b4fe" font-size="10" font-weight="800">QUY TẮC CẮM DÂY GPS UART BẮT CHÉO:</text>
-              <text x="15" y="44" fill="#cbd5e1" font-size="9">• <b>VCC GPS:</b> Nối vào <tspan fill="#fed7aa" font-weight="800">Pin 1 (3.3V)</tspan> hoặc Pin 4 (5V)</text>
-              <text x="15" y="66" fill="#cbd5e1" font-size="9">• <b>GND GPS:</b> Nối vào <tspan fill="#cbd5e1" font-weight="800">Pin 6 (GND)</tspan></text>
-              <text x="15" y="88" fill="#cbd5e1" font-size="9">• <b>TXD GPS ➔ Cắm vào:</b> <tspan fill="#d8b4fe" font-weight="800">Pin 10 (RXD0 - GPIO 15)</tspan></text>
-              <text x="15" y="110" fill="#cbd5e1" font-size="9">• <b>RXD GPS ➔ Cắm vào:</b> <tspan fill="#d8b4fe" font-weight="800">Pin 8 (TXD0 - GPIO 14)</tspan></text>
-              <text x="15" y="132" fill="#fbbf24" font-size="8.5">⚠️ Bắt chéo: TX của GPS phải vào RX của Pi và ngược lại!</text>
-              <text x="15" y="150" fill="#86efac" font-size="8.5">✓ Khi LED PPS nhấp nháy 1s/lần = Đã khóa tọa độ thành công</text>
-            </g>
-          </g>
-
-
-          <!-- ================================================================================== -->
-          <!-- KHU VỰC ĐƯỜNG DÂY NỐI TOÀN BỘ (WIRING NETWORK: CONTINUOUS, COLOR-CODED & LABELED) -->
-          <!-- ================================================================================== -->
-
-          <!-- 1. TUYẾN NGUỒN PIN & BUCK (PWR) -->
-          <g id="net-group-PWR" class="wire-group">
-            <!-- Buck OUT+ (5.10V) -> Pi 4 Pin 2 (+5V Power IN) -->
-            <!-- From (340, 390) down to y=435, right to x=530, up to Pin 2 (530, 380) -->
-            <path id="trace-pwr-5v-main" class="wire-trace" d="M 340 390 L 340 435 L 530 435 L 530 380" fill="none" stroke="#ef4444" stroke-width="5"/>
-            <rect x="375" y="425" width="125" height="20" rx="4" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
-            <text x="437" y="439" fill="#ffffff" class="net-tag" text-anchor="middle">5.10V ➔ PIN 2 (5V)</text>
-
-            <!-- Buck OUT- (GND) -> Pi 4 Pin 6 (GND) -->
-            <!-- From (380, 390) down to y=450, right to x=586, up to Pin 6 (586, 380) -->
-            <path id="trace-pwr-gnd-main" class="wire-trace" d="M 380 390 L 380 450 L 586 450 L 586 380" fill="none" stroke="#64748b" stroke-width="5"/>
-            <rect x="420" y="442" width="115" height="18" rx="4" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
-            <text x="477" y="455" fill="#cbd5e1" class="net-tag" text-anchor="middle">GND ➔ PIN 6 (GND)</text>
-
-            <!-- 5V Cấp Cho Còi: Pin 4 (558, 380) down to y=465, left to Còi 5V (220, 465) down to (220, 525) -->
-            <path id="trace-pwr-5v-buzzer" class="wire-trace" d="M 558 380 L 558 465 L 220 465 L 220 525" fill="none" stroke="#f97316" stroke-width="3.5" stroke-dasharray="6,3"/>
-            <rect x="250" y="457" width="105" height="18" rx="4" fill="#7c2d12" stroke="#f97316" stroke-width="1"/>
-            <text x="302" y="470" fill="#ffedd5" class="net-tag" text-anchor="middle">PIN 4 ➔ CÒI (+)</text>
-
-            <!-- 5V Cấp Cho ULN2003A COM: Pin 4 down to y=465, right to COM (1020, 465) down to (1020, 525) -->
-            <path id="trace-pwr-5v-motor" class="wire-trace" d="M 558 465 L 1020 465 L 1020 525" fill="none" stroke="#f97316" stroke-width="3.5" stroke-dasharray="6,3"/>
-            <rect x="880" y="457" width="125" height="18" rx="4" fill="#7c2d12" stroke="#f97316" stroke-width="1"/>
-            <text x="942" y="470" fill="#ffedd5" class="net-tag" text-anchor="middle">PIN 4 ➔ COM 5V</text>
-
-            <!-- GND Cấp Cho ULN2003A: Pin 6 (586, 450) right to (1070, 450) down to (1070, 525) -->
-            <path id="trace-pwr-gnd-motor" class="wire-trace" d="M 586 450 L 1070 450 L 1070 525" fill="none" stroke="#64748b" stroke-width="3.5"/>
-            
-            <!-- GND Cấp Cho GPS: from (1070, 450) right to (1390, 450) down to (1390, 525) -->
-            <path id="trace-pwr-gnd-gps" class="wire-trace" d="M 1070 450 L 1390 450 L 1390 525" fill="none" stroke="#64748b" stroke-width="3.5"/>
-          </g>
-
-          <!-- 2. TUYẾN CÒI BUZZER S8050 (BUZZER) -->
-          <g id="net-group-BUZZER" class="wire-group">
-            <!-- Pin 18 (GPIO 24) -> Trở 1k R_BASE tại (110, 525) -->
-            <!-- Start at Pin 18 (754, 380) down to y=485, left to x=110, down to (110, 525) -->
-            <path id="trace-buzzer-sig" class="wire-trace" d="M 754 380 L 754 485 L 110 485 L 110 525" fill="none" stroke="#f43f5e" stroke-width="5"/>
-            <rect x="140" y="476" width="180" height="20" rx="4" fill="#881337" stroke="#f43f5e" stroke-width="1"/>
-            <text x="230" y="490" fill="#fecdd3" class="net-tag" text-anchor="middle">PIN 18 ➔ TRỞ 1kΩ ➔ S8050(B)</text>
-
-            <!-- Pin 20 (GND) -> Chân 1 (E) S8050 tại (160, 525) -->
-            <!-- Start at Pin 20 (782, 380) down to y=500, left to x=160, down to (160, 525) -->
-            <path id="trace-buzzer-gnd" class="wire-trace" d="M 782 380 L 782 500 L 160 500 L 160 525" fill="none" stroke="#64748b" stroke-width="4"/>
-          </g>
-
-          <!-- 3. TUYẾN NÚT BẤM SOS (SOS) -->
-          <g id="net-group-SOS" class="wire-group">
-            <!-- Pin 22 (GPIO 25) -> Chân 1 Nút SOS tại (520, 525) -->
-            <!-- Start at Pin 22 (810, 380) down to y=475, left to x=520, down to (520, 525) -->
-            <path id="trace-sos-sig" class="wire-trace" d="M 810 380 L 810 475 L 520 475 L 520 525" fill="none" stroke="#eab308" stroke-width="5"/>
-            <rect x="540" y="466" width="160" height="20" rx="4" fill="#713f12" stroke="#eab308" stroke-width="1"/>
-            <text x="620" y="480" fill="#fef08a" class="net-tag" text-anchor="middle">PIN 22 (GPIO 25) ➔ NÚT CHÂN 1</text>
-
-            <!-- Pin 20 (GND) -> Chân 4 Nút SOS tại (660, 525) -->
-            <!-- From Pin 20 line at (782, 500) left to x=660, down to (660, 525) -->
-            <path id="trace-sos-gnd" class="wire-trace" d="M 782 500 L 660 500 L 660 525" fill="none" stroke="#64748b" stroke-width="4.5"/>
-            <rect x="680" y="492" width="140" height="18" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1"/>
-            <text x="750" y="505" fill="#cbd5e1" class="net-tag" text-anchor="middle">PIN 20 (GND) ➔ NÚT CHÂN 4</text>
-          </g>
-
-          <!-- 4. TUYẾN 4 ĐỘNG CƠ RUNG HAPTIC (HAPTIC) -->
-          <g id="net-group-HAPTIC" class="wire-group">
-            <!-- Pin 11 (GPIO 17 - M1 TRƯỚC) at (670, 402) down to y=440, right to x=850, down to (850, 525) -->
-            <path id="trace-haptic-m1" class="wire-trace" d="M 670 402 L 670 440 L 850 440 L 850 525" fill="none" stroke="#10b981" stroke-width="4.5"/>
-            
-            <!-- Pin 13 (GPIO 27 - M2 PHẢI) at (698, 402) down to y=460, right to x=890, down to (890, 525) -->
-            <path id="trace-haptic-m2" class="wire-trace" d="M 698 402 L 698 460 L 890 460 L 890 525" fill="none" stroke="#10b981" stroke-width="4.5"/>
-
-            <!-- Pin 15 (GPIO 22 - M3 SAU) at (726, 402) down to y=480, right to x=930, down to (930, 525) -->
-            <path id="trace-haptic-m3" class="wire-trace" d="M 726 402 L 726 480 L 930 480 L 930 525" fill="none" stroke="#10b981" stroke-width="4.5"/>
-
-            <!-- Pin 16 (GPIO 23 - M4 TRÁI) at (726, 380) right to x=740, down to y=495, right to x=970, down to (970, 525) -->
-            <path id="trace-haptic-m4" class="wire-trace" d="M 726 380 L 740 380 L 740 495 L 970 495 L 970 525" fill="none" stroke="#10b981" stroke-width="4.5"/>
-
-            <rect x="760" y="432" width="130" height="18" rx="4" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
-            <text x="825" y="445" fill="#a7f3d0" class="net-tag" text-anchor="middle">HAPTIC M1..M4 (P11-16)</text>
-          </g>
-
-          <!-- 5. TUYẾN GPS NEO-6M (GPS) -->
-          <g id="net-group-GPS" class="wire-group">
-            <!-- Pin 1 (3.3V) at (530, 402) down to y=515, right to x=1330, down to (1330, 525) -->
-            <path id="trace-gps-3v3" class="wire-trace" d="M 530 402 L 530 515 L 1330 515 L 1330 525" fill="none" stroke="#ea580c" stroke-width="4"/>
-            <rect x="1170" y="506" width="130" height="18" rx="4" fill="#7c2d12" stroke="#ea580c" stroke-width="1"/>
-            <text x="1235" y="519" fill="#fed7aa" class="net-tag" text-anchor="middle">PIN 1 (3.3V) ➔ VCC GPS</text>
-
-            <!-- Pin 8 (TXD0 - GPIO 14) at (614, 380) down to y=425, right to x=1460 (RXD GPS), down to (1460, 525) -->
-            <path id="trace-gps-tx" class="wire-trace" d="M 614 380 L 614 425 L 1460 425 L 1460 525" fill="none" stroke="#a855f7" stroke-width="4.5"/>
-            <rect x="1280" y="416" width="160" height="20" rx="4" fill="#581c87" stroke="#a855f7" stroke-width="1"/>
-            <text x="1360" y="430" fill="#e9d5ff" class="net-tag" text-anchor="middle">PIN 8 (TX) ➔ RXD GPS (CHÉO)</text>
-
-            <!-- Pin 10 (RXD0 - GPIO 15) at (642, 380) down to y=440, right to x=1530 (TXD GPS), down to (1530, 525) -->
-            <path id="trace-gps-rx" class="wire-trace" d="M 642 380 L 642 440 L 1530 440 L 1530 525" fill="none" stroke="#c084fc" stroke-width="4.5"/>
-            <rect x="1410" y="432" width="160" height="20" rx="4" fill="#581c87" stroke="#c084fc" stroke-width="1"/>
-            <text x="1490" y="446" fill="#e9d5ff" class="net-tag" text-anchor="middle">PIN 10 (RX) ➔ TXD GPS (CHÉO)</text>
-          </g>
-
-          <!-- 6. TUYẾN 3 CAMERA USB HUB (CAM) -->
-          <g id="net-group-CAM" class="wire-group">
-            <!-- Cáp Chính USB 3.0 từ Cổng Ra USB Hub (1210, 110) sang Cổng USB 3.0 Blue Pi 4 (1155, 110) -->
-            <path id="trace-cam-usb" class="wire-trace" d="M 1210 110 L 1155 110" fill="none" stroke="#0284c7" stroke-width="9" stroke-linecap="round"/>
-            <rect x="1140" y="70" width="85" height="20" rx="4" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1"/>
-            <text x="1182" y="84" fill="#bae6fd" class="net-tag" text-anchor="middle">CÁP USB 3.0</text>
-          </g>
-
-        </svg>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- Cột 1: Nhận diện S8050 -->
+        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-3">
+          <h3 class="font-bold text-amber-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+            <span>🔍</span> BƯỚC 1: XÁC ĐỊNH HƯỚNG CẦM S8050
+          </h3>
+          <div class="p-3 bg-slate-900 rounded-lg text-center space-y-2 border border-slate-800">
+            <svg viewBox="0 0 160 110" class="w-36 h-auto mx-auto select-none">
+              <path d="M 20 20 L 140 20 A 60 60 0 0 1 20 20 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="2"/>
+              <text x="80" y="38" fill="#ffffff" font-size="14" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">S8050</text>
+              <text x="80" y="52" fill="#94a3b8" font-size="9" font-weight="700" text-anchor="middle">MẶT PHẲNG DẸT</text>
+              <rect x="35" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
+              <rect x="76" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
+              <rect x="117" y="55" width="8" height="45" fill="#cbd5e1" rx="1"/>
+              <text x="39" y="108" fill="#34d399" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:E</text>
+              <text x="80" y="108" fill="#fb7185" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:B</text>
+              <text x="121" y="108" fill="#60a5fa" font-size="10" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">3:C</text>
+            </svg>
+            <p class="text-[11px] text-slate-300 leading-tight">
+              Cầm mặt phẳng có chữ <b class="text-white">"S8050"</b> quay về phía mắt bạn, 3 chân chúc xuống dưới.
+            </p>
+          </div>
+        </div>
+
+        <!-- Cột 2: Đấu 3 chân S8050 -->
+        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-2">
+          <h3 class="font-bold text-rose-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+            <span>⚡</span> BƯỚC 2: NỐI 3 CHÂN CỦA S8050 VÀO ĐÂU?
+          </h3>
+          <div class="space-y-2 pt-1 text-xs">
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-emerald-500/40">
+              <span class="text-emerald-400 font-extrabold font-mono-code">CHÂN 1 (TRÁI - E):</span>
+              <span class="text-slate-300 ml-1">Nối thẳng vào <b>Pin 20 (GND)</b> của Pi 4.</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-rose-500/50">
+              <span class="text-rose-400 font-extrabold font-mono-code">CHÂN 2 (GIỮA - B):</span>
+              <span class="text-slate-300 ml-1">Qua <b>Trở 1kΩ</b> ➔ Cắm vào <b>Pin 18 (GPIO 24)</b>.</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-blue-500/40">
+              <span class="text-blue-400 font-extrabold font-mono-code">CHÂN 3 (PHẢI - C):</span>
+              <span class="text-slate-300 ml-1">Nối vào <b>Cực Âm (-) của Còi Buzzer</b>.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cột 3: Đấu Nút Bấm SOS -->
+        <div class="bg-[#0b0f19] p-4 rounded-xl border border-slate-800 space-y-2">
+          <h3 class="font-bold text-yellow-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+            <span>🆘</span> BƯỚC 3: ĐẤU CHÉO GÓC NÚT BẤM SOS
+          </h3>
+          <div class="space-y-2 pt-1 text-xs">
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-yellow-500/40">
+              <span class="text-yellow-400 font-extrabold font-mono-code">CHÂN 1 NÚT:</span>
+              <span class="text-slate-300 ml-1">Cắm vào <b>Pin 22 (GPIO 25)</b>.</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-900 border border-slate-700">
+              <span class="text-slate-300 font-extrabold font-mono-code">CHÂN 4 NÚT (CHÉO):</span>
+              <span class="text-slate-300 ml-1">Cắm vào <b>Pin 20 (GND)</b> ngay sát bên!</span>
+            </div>
+            <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-[11px] text-amber-200">
+              💡 <b>Tụ gốm 104 (100nF):</b> Kẹp song song 2 chân nút bấm để lọc dội phím (Hardware Debounce). Code bật pull-up nội <code>GPIO.PUD_UP</code>.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- SECTION 2: HỘP HƯỚNG DẪN CHI TIẾT 4 KHỐI PHẦN CỨNG QUAN TRỌNG -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-      
-      <!-- Box 1: S8050 NPN Buzzer -->
-      <div class="bg-[#0f172a] border border-rose-500/50 rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center gap-2 border-b border-rose-500/30 pb-2">
-          <span class="w-7 h-7 rounded-lg bg-rose-600/30 text-rose-400 font-black text-sm flex items-center justify-center">1</span>
-          <h3 class="text-sm font-black text-white uppercase font-mono-code">HÀN TRAN S8050 KÍCH CÒI</h3>
+    <!-- SECTION 1: BẢN VẼ VECTOR SƠ ĐỒ NGUYÊN LÝ CHUẨN ALTIUM EDA (1560 x 920) -->
+    <section class="bg-[#0f172a] border border-slate-800 rounded-2xl p-4 md:p-6 shadow-2xl space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h2 class="text-base font-bold text-white uppercase tracking-wide">Bản Vẽ Đồ Họa Đấu Nối Tổng Thể (Tất Cả Tuyến Dây Đều Thông Suốt 100%)</h2>
         </div>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          Cầm mặt phẳng có chữ <b>"S8050"</b> quay vào mắt, 3 chân chúc xuống:
-        </p>
-        <ul class="text-xs space-y-1.5 text-slate-300">
-          <li class="flex items-start gap-1.5"><span class="text-emerald-400 font-bold">1(E) Trái:</span> Nối Mass <b>Pin 20 (GND)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-rose-400 font-bold">2(B) Giữa:</span> Qua <b>Trở 1kΩ</b> ➔ <b>Pin 18 (GPIO 24)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-blue-400 font-bold">3(C) Phải:</span> Nối cực <b>(-) Còi Buzzer</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-red-400 font-bold">(+) Còi:</span> Nối vào <b>Pin 4 (+5V)</b>.</li>
-        </ul>
-        <div class="p-2.5 rounded-lg bg-rose-950/40 border border-rose-500/30 text-[11px] text-rose-300">
-          💡 <i>Trở 1kΩ chặn dòng bảo vệ GPIO Pi 4 không bao giờ bị cháy!</i>
+        <div class="flex flex-wrap items-center gap-3 text-xs font-mono-code text-slate-400">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-red-500"></span> +5.1V Nguồn</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-orange-400"></span> +3.3V</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-500"></span> Mass GND</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-rose-500"></span> Còi (Pin 18)</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-yellow-400"></span> Nút SOS (Pin 22)</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500"></span> 4 Motor Rung</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-purple-500"></span> GPS UART</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-cyan-400"></span> 3 Camera USB</span>
         </div>
       </div>
 
-      <!-- Box 2: SOS Pushbutton -->
-      <div class="bg-[#0f172a] border border-amber-500/50 rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center gap-2 border-b border-amber-500/30 pb-2">
-          <span class="w-7 h-7 rounded-lg bg-amber-600/30 text-amber-400 font-black text-sm flex items-center justify-center">2</span>
-          <h3 class="text-sm font-black text-white uppercase font-mono-code">NÚT SOS ĐẤU CHÉO GÓC</h3>
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          Nút 4 chân thường có 2 cặp thông nhau bên trong. Để chống nhầm lẫn:
-        </p>
-        <ul class="text-xs space-y-1.5 text-slate-300">
-          <li class="flex items-start gap-1.5"><span class="text-amber-400 font-bold">Chân 1 (Góc):</span> Nối <b>Pin 22 (GPIO 25)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-slate-400 font-bold">Chân 4 (Chéo):</span> Nối <b>Pin 20 (GND)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-yellow-400 font-bold">Tụ gốm 104:</span> Kẹp song song 2 chân lọc dội.</li>
-        </ul>
-        <div class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-500/30 text-[11px] text-amber-300">
-          💡 <i>Pin 20 và Pin 22 nằm cạnh nhau ở hàng ngoài. Cắm dây cực kỳ gọn gàng!</i>
-        </div>
+      <!-- Vector SVG Canvas Container -->
+      <div class="overflow-x-auto rounded-xl bg-[#070b13] border border-slate-800 p-2">
+<svg id="eda-schematic" viewBox="0 0 1560 920" class="w-full min-w-[1280px] h-auto select-none font-sans" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="pcb-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.8"/>
+    </filter>
+    <pattern id="eda-grid" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M 26 0 L 0 0 0 26" fill="none" stroke="#1e293b" stroke-width="0.7" stroke-opacity="0.45"/>
+      <circle cx="0" cy="0" r="1" fill="#334155" opacity="0.6"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Grid -->
+  <rect width="1560" height="920" fill="url(#eda-grid)"/>
+
+  <!-- ==================== HÀNG 1 (TOP ROW: y=50..370): NGUỒN PIN & BUCK | PI 4 | 3 CAM HUB ==================== -->
+
+  <!-- 1. KHỐI NGUỒN PIN 2S & HẠ ÁP BUCK XL4015 (TOP-LEFT: x=40, y=50, w=350, h=320) -->
+  <g id="power-node" transform="translate(40, 50)">
+    <rect x="0" y="0" width="350" height="320" rx="14" fill="#180a0a" stroke="#ef4444" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="350" height="32" rx="12" fill="#7f1d1d"/>
+    <text x="175" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">KHỐI NGUỒN PIN 2S &amp; BUCK XL4015 (5.1V/5A)</text>
+
+    <!-- Pack Pin 2S Li-ion -->
+    <g transform="translate(18, 46)">
+      <rect x="0" y="0" width="145" height="75" rx="6" fill="#0f172a" stroke="#eab308" stroke-width="1.8"/>
+      <text x="72" y="22" fill="#facc15" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">PACK PIN 2S LI-ION</text>
+      <text x="72" y="42" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">7.4V - 8.4V</text>
+      <text x="72" y="60" fill="#94a3b8" font-size="8" text-anchor="middle">Dung lượng 3500mAh</text>
+      <circle cx="20" cy="75" r="5" fill="#ef4444"/>
+      <text x="20" y="88" fill="#f87171" font-size="8.5" font-weight="800" text-anchor="middle">(+)</text>
+      <circle cx="125" cy="75" r="5" fill="#64748b"/>
+      <text x="125" y="88" fill="#cbd5e1" font-size="8.5" font-weight="800" text-anchor="middle">(-)</text>
+    </g>
+
+    <!-- Công tắc bập bênh KCD11 -->
+    <g transform="translate(180, 48)">
+      <rect x="0" y="0" width="150" height="70" rx="6" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.8"/>
+      <rect x="15" y="14" width="42" height="42" rx="4" fill="#ef4444"/>
+      <circle cx="36" cy="35" r="8" fill="#ffffff"/>
+      <text x="100" y="32" fill="#ffffff" font-size="10.5" font-weight="900">BẬT / TẮT</text>
+      <text x="100" y="48" fill="#94a3b8" font-size="8">Công tắc nguồn</text>
+    </g>
+
+    <!-- Module Hạ Áp Buck XL4015 -->
+    <g transform="translate(18, 142)">
+      <rect x="0" y="0" width="314" height="162" rx="8" fill="#0b1720" stroke="#f59e0b" stroke-width="1.8"/>
+      <text x="157" y="20" fill="#fbbf24" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE HẠ ÁP BUCK XL4015 (5A MAX)</text>
+
+      <!-- Biến trở, Cuộn cảm, Tụ lọc -->
+      <g transform="translate(20, 36)">
+        <rect x="0" y="0" width="50" height="36" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.2"/>
+        <circle cx="25" cy="18" r="7" fill="#eab308"/>
+        <text x="25" y="47" fill="#fde047" font-size="7.5" font-weight="800" text-anchor="middle">BIẾN TRỞ</text>
+        <text x="25" y="57" fill="#94a3b8" font-size="7" text-anchor="middle">Vặn 5.10V</text>
+      </g>
+
+      <g transform="translate(100, 32)">
+        <circle cx="26" cy="22" r="18" fill="#451a03" stroke="#f59e0b" stroke-width="1.8"/>
+        <text x="26" y="25" fill="#fde047" font-size="7.5" font-weight="900" text-anchor="middle">CUỘN CẢM</text>
+      </g>
+
+      <g transform="translate(180, 32)">
+        <circle cx="22" cy="22" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="1.8"/>
+        <text x="22" y="26" fill="#38bdf8" font-size="7.5" font-weight="900" text-anchor="middle">1000uF</text>
+        <text x="22" y="52" fill="#94a3b8" font-size="7" text-anchor="middle">Tụ lọc ra</text>
+      </g>
+
+      <!-- Đầu vào IN+ & IN- -->
+      <g transform="translate(25, 126)">
+        <circle cx="0" cy="0" r="5" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+        <text x="10" y="3" fill="#f87171" font-size="8" font-weight="800">IN+ (Từ Pin)</text>
+      </g>
+      <g transform="translate(140, 126)">
+        <circle cx="0" cy="0" r="5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
+        <text x="10" y="3" fill="#cbd5e1" font-size="8" font-weight="800">IN- (Mass Pin)</text>
+      </g>
+
+      <!-- Đầu ra OUT+ (5.10V) & OUT- (GND) -->
+      <!-- Global coords: x=40+18+245=303 -> lets align to 300; x=40+18+285=343 -> align to 340. y=50+142+150=342 -->
+      <g transform="translate(242, 148)">
+        <circle cx="0" cy="0" r="7.5" fill="#ef4444" stroke="#ffffff" stroke-width="2"/>
+        <text x="0" y="-11" fill="#ef4444" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">OUT+(5.1V)</text>
+      </g>
+      <g transform="translate(282, 148)">
+        <circle cx="0" cy="0" r="7.5" fill="#64748b" stroke="#ffffff" stroke-width="2"/>
+        <text x="0" y="-11" fill="#cbd5e1" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">OUT-(GND)</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 2. RASPBERRY PI 4 MODEL B (TOP-CENTER: x=420, y=50, w=680, h=320) -->
+  <g id="rpi4-node" transform="translate(420, 50)">
+    <rect x="0" y="0" width="680" height="320" rx="14" fill="#08331e" stroke="#15803d" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="680" height="32" rx="12" fill="#14532d"/>
+    <text x="340" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">RASPBERRY PI 4 MODEL B - BO MẠCH XỬ LÝ TRUNG TÂM (EDGE AI)</text>
+
+    <!-- SoC BCM2711 Chip (Center) -->
+    <rect x="235" y="55" width="140" height="110" rx="5" fill="#0f172a" stroke="#475569" stroke-width="1.8"/>
+    <text x="305" y="95" fill="#f8fafc" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">BROADCOM</text>
+    <text x="305" y="112" fill="#38bdf8" font-size="10.5" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="middle">BCM2711</text>
+    <text x="305" y="128" fill="#94a3b8" font-size="8" text-anchor="middle">Quad-Core A72 @ 1.5GHz</text>
+    <text x="305" y="145" fill="#22c55e" font-size="8" font-weight="700" text-anchor="middle">RAM 4GB / 8GB LPDDR4</text>
+
+    <!-- Cổng Type-C (Left) -->
+    <rect x="-12" y="75" width="20" height="38" rx="3" fill="#94a3b8" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="16" y="98" fill="#94a3b8" font-size="7.5" font-weight="800">TYPE-C</text>
+
+    <!-- 2 Cổng Micro HDMI (Left) -->
+    <rect x="-10" y="140" width="16" height="24" rx="2" fill="#64748b"/>
+    <rect x="-10" y="180" width="16" height="24" rx="2" fill="#64748b"/>
+    <text x="14" y="165" fill="#64748b" font-size="7" font-weight="700">HDMI 0/1</text>
+
+    <!-- 2x USB 3.0 Blue Ports (Right Edge) -->
+    <g transform="translate(664, 48)">
+      <rect x="0" y="0" width="24" height="46" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.8"/>
+      <rect x="4" y="7" width="16" height="32" rx="2" fill="#075985"/>
+      <text x="-8" y="28" fill="#38bdf8" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="end">USB 3.0 (Xanh)</text>
+    </g>
+    <g transform="translate(664, 104)">
+      <rect x="0" y="0" width="24" height="46" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.8"/>
+      <rect x="4" y="7" width="16" height="32" rx="2" fill="#075985"/>
+      <text x="-8" y="28" fill="#38bdf8" font-size="8" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="end">USB 3.0</text>
+    </g>
+
+    <!-- 2x USB 2.0 Black Ports & Gigabit Ethernet -->
+    <g transform="translate(664, 160)">
+      <rect x="0" y="0" width="24" height="42" rx="4" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+      <text x="-8" y="26" fill="#64748b" font-size="7.5" font-weight="700" text-anchor="end">USB 2.0</text>
+    </g>
+    <g transform="translate(664, 214)">
+      <rect x="0" y="0" width="24" height="48" rx="4" fill="#475569" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="-8" y="30" fill="#94a3b8" font-size="7.5" font-weight="700" text-anchor="end">ETHERNET</text>
+    </g>
+
+    <!-- 40-PIN GPIO HEADER (J8) TẠI ĐÁY PI 4 (y=245..310 trong Pi 4 -> y_global=295..360) -->
+    <g id="gpio-header-40" transform="translate(30, 248)">
+      <rect x="0" y="0" width="620" height="64" rx="8" fill="#0b1720" stroke="#334155" stroke-width="1.8"/>
+      <text x="310" y="15" fill="#facc15" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">
+        ĐẦU CỌC 40 CHÂN GPIO (J8): HÀNG TRÊN (CHẴN y=325), HÀNG DƯỚI (LẺ y=355)
+      </text>
+
+      <!-- HÀNG TRÊN: EVEN PINS (y=28 trong header -> y_global = 50 + 248 + 27 = 325) -->
+      <!-- Pin dx = 28. Base x = 40 -> x_global = 420 + 30 + 40 = 490 -->
+      <!-- Pin 2: 5V IN (x=490, y=325) -->
+      <g transform="translate(40, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#ef4444" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:5V</text>
+      </g>
+      <!-- Pin 4: 5V OUT (x=518, y=325) -->
+      <g transform="translate(68, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#ef4444" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">4:5V</text>
+      </g>
+      <!-- Pin 6: GND (x=546, y=325) -->
+      <g transform="translate(96, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#cbd5e1" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">6:GND</text>
+      </g>
+      <!-- Pin 8: TXD0 UART (x=574, y=325) -->
+      <g transform="translate(124, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#7e22ce" stroke="#d8b4fe" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#d8b4fe" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">8:TX</text>
+      </g>
+      <!-- Pin 10: RXD0 UART (x=602, y=325) -->
+      <g transform="translate(152, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#7e22ce" stroke="#d8b4fe" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#d8b4fe" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">10:RX</text>
+      </g>
+      <!-- Pin 12, 14 (x=630, 658) -->
+      <g transform="translate(180, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#64748b"/></g>
+      <g transform="translate(208, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#64748b"/></g>
+      <!-- Pin 16: GPIO 23 - MOTOR TRÁI (x=686, y=325) -->
+      <g transform="translate(236, 27)">
+        <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
+        <text x="0" y="-10" fill="#34d399" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">16:M4</text>
+      </g>
+      <!-- Pin 18: GPIO 24 - CÒI TRAN S8050 (x=714, y=325) -->
+      <g transform="translate(264, 27)">
+        <circle cx="0" cy="0" r="8" fill="#e11d48" stroke="#ffffff" stroke-width="2"/>
+        <text x="0" y="-10" fill="#fb7185" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">18:CÒI</text>
+      </g>
+      <!-- Pin 20: GND CHUNG (x=742, y=325) -->
+      <g transform="translate(292, 27)">
+        <circle cx="0" cy="0" r="8" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="0" y="-10" fill="#cbd5e1" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">20:GND</text>
+      </g>
+      <!-- Pin 22: GPIO 25 - NÚT BÁO ĐỘNG SOS (x=770, y=325) -->
+      <g transform="translate(320, 27)">
+        <circle cx="0" cy="0" r="8" fill="#ca8a04" stroke="#ffffff" stroke-width="2"/>
+        <text x="0" y="-10" fill="#fde047" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">22:SOS</text>
+      </g>
+      <!-- Remaining even pins 24..40 -->
+      <g transform="translate(348, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(376, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(404, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(432, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(460, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(488, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(516, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(544, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(572, 27)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+
+      <!-- HÀNG DƯỚI: ODD PINS (y=50 trong header -> y_global = 50 + 248 + 57 = 355) -->
+      <!-- Pin 1: 3.3V Power OUT (x=490, y=355) -->
+      <g transform="translate(40, 50)">
+        <circle cx="0" cy="0" r="7.5" fill="#ea580c" stroke="#fed7aa" stroke-width="1.8"/>
+        <text x="0" y="14" fill="#fed7aa" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:3V3</text>
+      </g>
+      <!-- Pin 3, 5, 7, 9 -->
+      <g transform="translate(68, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(96, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(124, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(152, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <!-- Pin 11: GPIO 17 - MOTOR TRƯỚC (x=630, y=355) -->
+      <g transform="translate(180, 50)">
+        <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
+        <text x="0" y="14" fill="#34d399" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">11:M1</text>
+      </g>
+      <!-- Pin 13: GPIO 27 - MOTOR PHẢI (x=658, y=355) -->
+      <g transform="translate(208, 50)">
+        <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
+        <text x="0" y="14" fill="#34d399" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">13:M2</text>
+      </g>
+      <!-- Pin 15: GPIO 22 - MOTOR SAU (x=686, y=355) -->
+      <g transform="translate(236, 50)">
+        <circle cx="0" cy="0" r="7.5" fill="#047857" stroke="#34d399" stroke-width="1.8"/>
+        <text x="0" y="14" fill="#34d399" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">15:M3</text>
+      </g>
+      <!-- Remaining odd pins 17..39 -->
+      <g transform="translate(264, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(292, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(320, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(348, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(376, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(404, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(432, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(460, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(488, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(516, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(544, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+      <g transform="translate(572, 50)"><circle cx="0" cy="0" r="4" fill="#1e293b" stroke="#475569"/></g>
+    </g>
+  </g>
+
+  <!-- 3. CỤM 3 CAMERA USB TAM GIÁC ĐỀU 120° & HUB USB 3.0 (TOP-RIGHT: x=1130, y=50, w=390, h=320) -->
+  <g id="cam-hub-node" transform="translate(1130, 50)">
+    <rect x="0" y="0" width="390" height="320" rx="14" fill="#082f49" stroke="#0284c7" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="390" height="32" rx="12" fill="#0369a1"/>
+    <text x="195" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3 CAMERA USB TAM GIÁC 120° &amp; HUB USB 3.0</text>
+
+    <!-- Hộp Bộ Chia USB 3.0 Hub (Left inside card) -->
+    <g transform="translate(18, 50)">
+      <rect x="0" y="0" width="115" height="135" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1.8"/>
+      <text x="57" y="22" fill="#38bdf8" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">USB 3.0 HUB</text>
+      <text x="57" y="36" fill="#94a3b8" font-size="7.5" text-anchor="middle">SuperSpeed 5Gbps</text>
+      <rect x="15" y="48" width="85" height="18" rx="3" fill="#0284c7"/>
+      <text x="57" y="60" fill="#ffffff" font-size="7.5" font-weight="700" text-anchor="middle">CỔNG 1 (CAM 1)</text>
+      <rect x="15" y="74" width="85" height="18" rx="3" fill="#0284c7"/>
+      <text x="57" y="86" fill="#ffffff" font-size="7.5" font-weight="700" text-anchor="middle">CỔNG 2 (CAM 2)</text>
+      <rect x="15" y="100" width="85" height="18" rx="3" fill="#0284c7"/>
+      <text x="57" y="112" fill="#ffffff" font-size="7.5" font-weight="700" text-anchor="middle">CỔNG 3 (CAM 3)</text>
+    </g>
+
+    <!-- 3 Camera Cards -->
+    <!-- Cam 1: Trước 0° -->
+    <g transform="translate(150, 48)">
+      <rect x="0" y="0" width="105" height="85" rx="6" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
+      <circle cx="52" cy="38" r="18" fill="#082f49" stroke="#0ea5e9" stroke-width="1.8"/>
+      <circle cx="52" cy="38" r="8" fill="#0284c7"/>
+      <circle cx="49" cy="35" r="3" fill="#ffffff"/>
+      <text x="52" y="70" fill="#bae6fd" font-size="8" font-weight="900" text-anchor="middle">CAM 1: TRƯỚC</text>
+      <text x="52" y="79" fill="#7dd3fc" font-size="7" text-anchor="middle">Góc 0°</text>
+    </g>
+    <!-- Cam 2: Trái 120° -->
+    <g transform="translate(268, 48)">
+      <rect x="0" y="0" width="105" height="85" rx="6" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
+      <circle cx="52" cy="38" r="18" fill="#082f49" stroke="#0ea5e9" stroke-width="1.8"/>
+      <circle cx="52" cy="38" r="8" fill="#0284c7"/>
+      <circle cx="49" cy="35" r="3" fill="#ffffff"/>
+      <text x="52" y="70" fill="#bae6fd" font-size="8" font-weight="900" text-anchor="middle">CAM 2: TRÁI</text>
+      <text x="52" y="79" fill="#7dd3fc" font-size="7" text-anchor="middle">Góc 120°</text>
+    </g>
+    <!-- Cam 3: Phải 240° -->
+    <g transform="translate(210, 142)">
+      <rect x="0" y="0" width="105" height="85" rx="6" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1.5"/>
+      <circle cx="52" cy="38" r="18" fill="#082f49" stroke="#0ea5e9" stroke-width="1.8"/>
+      <circle cx="52" cy="38" r="8" fill="#0284c7"/>
+      <circle cx="49" cy="35" r="3" fill="#ffffff"/>
+      <text x="52" y="70" fill="#bae6fd" font-size="8" font-weight="900" text-anchor="middle">CAM 3: PHẢI</text>
+      <text x="52" y="79" fill="#7dd3fc" font-size="7" text-anchor="middle">Góc 240°</text>
+    </g>
+
+    <!-- Ghi chú cụm camera -->
+    <g transform="translate(18, 238)">
+      <rect x="0" y="0" width="354" height="68" rx="6" fill="#0c2d48" stroke="#0369a1"/>
+      <text x="12" y="20" fill="#38bdf8" font-size="8.5" font-weight="800">★ CỤM 3 CAM TAM GIÁC ĐỀU 120°:</text>
+      <text x="12" y="38" fill="#e0f2fe" font-size="8">• Bao quát 360° không góc chết quanh người lái</text>
+      <text x="12" y="54" fill="#38bdf8" font-size="8">• Cáp chính Hub cắm vào Cổng USB 3.0 Xanh của Pi 4</text>
+    </g>
+  </g>
+
+
+  <!-- ==================== HÀNG 2 (BOTTOM ROW: y=475..875): 4 MODULE TÁCH BIỆT RÕ RÀNG ==================== -->
+
+  <!-- MODULE 1: MẠCH KÍCH CÒI BUZZER S8050 NPN (BOTTOM-LEFT: x=40, y=475, w=330, h=400) -->
+  <g id="buzzer-node" transform="translate(40, 475)">
+    <rect x="0" y="0" width="330" height="400" rx="14" fill="#180c14" stroke="#f43f5e" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="330" height="32" rx="12" fill="#881337"/>
+    <text x="165" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH KÍCH CÒI TRAN S8050 NPN</text>
+
+    <!-- Top Inlets / Wire terminals: x=50 -> global x=90; x=110 -> global x=150; x=170 -> global x=210 -->
+    <circle cx="50" cy="0" r="5.5" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="50" y="-8" fill="#fb7185" font-size="8" font-weight="800" text-anchor="middle">Pin 18 (B)</text>
+
+    <circle cx="110" cy="0" r="5.5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="110" y="-8" fill="#cbd5e1" font-size="8" font-weight="800" text-anchor="middle">Pin 20 (E)</text>
+
+    <circle cx="170" cy="0" r="5.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="170" y="-8" fill="#ef4444" font-size="8" font-weight="800" text-anchor="middle">Pin 4 (+5V)</text>
+
+    <!-- Active Buzzer (Còi 5V) -->
+    <g transform="translate(185, 75)">
+      <circle cx="0" cy="0" r="30" fill="#020617" stroke="#cbd5e1" stroke-width="2.2"/>
+      <circle cx="0" cy="0" r="8" fill="#1e293b"/>
+      <text x="0" y="4" fill="#94a3b8" font-size="7.5" font-weight="800" text-anchor="middle">CÒI 5V</text>
+      <text x="-16" y="-12" fill="#ef4444" font-size="13" font-weight="900">+</text>
+      <text x="12" y="-12" fill="#60a5fa" font-size="13" font-weight="900">-</text>
+    </g>
+
+    <!-- Diode 1N4148 Song Song Còi Bảo Vệ -->
+    <g transform="translate(265, 62)">
+      <rect x="0" y="0" width="16" height="26" rx="2" fill="#ea580c" stroke="#fed7aa"/>
+      <line x1="0" y1="7" x2="16" y2="7" stroke="#ffffff" stroke-width="2.5"/>
+      <text x="22" y="16" fill="#fdba74" font-size="8" font-weight="800">1N4148</text>
+      <text x="22" y="26" fill="#94a3b8" font-size="7">(Dập xung)</text>
+    </g>
+
+    <!-- Điện Trở R_BASE 1kΩ -->
+    <g transform="translate(30, 145)">
+      <rect x="0" y="0" width="48" height="20" rx="3" fill="#1e293b" stroke="#f43f5e" stroke-width="1.5"/>
+      <text x="24" y="14" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle">1 kΩ</text>
+      <text x="24" y="-5" fill="#fb7185" font-size="7.5" font-weight="700" text-anchor="middle">R_BASE</text>
+    </g>
+
+    <!-- HÌNH VẼ TO-92 S8050 CHUẨN KỸ THUẬT SIÊU TRỰC QUAN -->
+    <g transform="translate(150, 195)">
+      <!-- Vỏ dẹt TO-92 -->
+      <path d="M -45 -22 L 45 -22 A 45 45 0 0 1 -45 -22 Z" fill="#1e293b" stroke="#cbd5e1" stroke-width="2.2"/>
+      <text x="0" y="-7" fill="#ffffff" font-size="13" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">S8050</text>
+      <text x="0" y="7" fill="#38bdf8" font-size="8" font-weight="700" text-anchor="middle">NPN BJT (Mặt Có Chữ)</text>
+
+      <!-- 3 Chân: 1:E (Trái), 2:B (Giữa), 3:C (Phải) -->
+      <g transform="translate(-32, 22)">
+        <line x1="0" y1="-10" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2.5"/>
+        <circle cx="0" cy="0" r="7" fill="#047857" stroke="#ffffff" stroke-width="1.5"/>
+        <text x="0" y="3" fill="#ffffff" font-size="8" font-weight="900" text-anchor="middle">E</text>
+        <text x="0" y="16" fill="#34d399" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1:GND</text>
+      </g>
+      <g transform="translate(0, 22)">
+        <line x1="0" y1="-10" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2.5"/>
+        <circle cx="0" cy="0" r="7" fill="#be123c" stroke="#ffffff" stroke-width="1.5"/>
+        <text x="0" y="3" fill="#ffffff" font-size="8" font-weight="900" text-anchor="middle">B</text>
+        <text x="0" y="16" fill="#fb7185" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2:Pin18</text>
+      </g>
+      <g transform="translate(32, 22)">
+        <line x1="0" y1="-10" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2.5"/>
+        <circle cx="0" cy="0" r="7" fill="#1d4ed8" stroke="#ffffff" stroke-width="1.5"/>
+        <text x="0" y="3" fill="#ffffff" font-size="8" font-weight="900" text-anchor="middle">C</text>
+        <text x="0" y="16" fill="#60a5fa" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3:Còi(-)</text>
+      </g>
+    </g>
+
+    <!-- Dây nối nội bộ bên trong mạch còi -->
+    <path d="M 50 0 L 50 145" fill="none" stroke="#f43f5e" stroke-width="2.5"/>
+    <path d="M 78 155 L 150 155 L 150 207" fill="none" stroke="#f43f5e" stroke-width="2.5"/>
+    <path d="M 110 0 L 110 240 L 118 240" fill="none" stroke="#64748b" stroke-width="2.5"/>
+    <path d="M 170 0 L 170 75" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+    <path d="M 215 75 L 235 75 L 235 195 L 182 195 L 182 207" fill="none" stroke="#3b82f6" stroke-width="2.5"/>
+
+    <!-- Tóm tắt đấu chân -->
+    <g transform="translate(15, 275)">
+      <rect x="0" y="0" width="300" height="110" rx="6" fill="#0f172a" stroke="#be123c"/>
+      <text x="12" y="20" fill="#fb7185" font-size="9" font-weight="800">CÁCH ĐẤU TRAN S8050 CHUẨN:</text>
+      <text x="12" y="38" fill="#cbd5e1" font-size="8.5">• Chân 1 (Trái): Nối Mass Pin 20 (GND)</text>
+      <text x="12" y="56" fill="#cbd5e1" font-size="8.5">• Chân 2 (Giữa): Qua Trở 1kΩ ➔ Vào Pin 18 (GPIO 24)</text>
+      <text x="12" y="74" fill="#cbd5e1" font-size="8.5">• Chân 3 (Phải): Nối vào Cực Âm (-) Còi Buzzer</text>
+      <text x="12" y="92" fill="#cbd5e1" font-size="8.5">• Cực (+) Còi: Nối vào Pin 4 (+5V)</text>
+    </g>
+  </g>
+
+  <!-- MODULE 2: MẠCH NÚT BÁO ĐỘNG SOS (BOTTOM-CENTER-LEFT: x=400, y=475, w=320, h=400) -->
+  <g id="sos-node" transform="translate(400, 475)">
+    <rect x="0" y="0" width="320" height="400" rx="14" fill="#181308" stroke="#eab308" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="320" height="32" rx="12" fill="#713f12"/>
+    <text x="160" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH NÚT BÁO ĐỘNG SOS (PIN 22 &amp; 20)</text>
+
+    <!-- Top Inlets: x=80 -> global x=480 (Pin 22); x=220 -> global x=620 (Pin 20) -->
+    <circle cx="80" cy="0" r="5.5" fill="#eab308" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="80" y="-8" fill="#fde047" font-size="8" font-weight="800" text-anchor="middle">Pin 22 (GPIO 25)</text>
+
+    <circle cx="220" cy="0" r="5.5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="220" y="-8" fill="#cbd5e1" font-size="8" font-weight="800" text-anchor="middle">Pin 20 (GND)</text>
+
+    <!-- Pushbutton Switch Visual (Khối Nút 4 Chân) -->
+    <g transform="translate(25, 55)">
+      <rect x="0" y="0" width="125" height="100" rx="8" fill="#1e293b" stroke="#94a3b8" stroke-width="1.8"/>
+      <circle cx="62" cy="50" r="30" fill="#dc2626" stroke="#991b1b" stroke-width="2.5"/>
+      <text x="62" y="55" fill="#ffffff" font-size="13" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">SOS</text>
+
+      <!-- 4 Chân: 1 (Trên-Trái), 2 (Trên-Phải), 3 (Dưới-Trái), 4 (Dưới-Phải) -->
+      <circle cx="-5" cy="18" r="6" fill="#ca8a04" stroke="#ffffff" stroke-width="1.8"/>
+      <text x="-14" y="21" fill="#fde047" font-size="8" font-weight="900" text-anchor="end">1:Pin 22</text>
+      <circle cx="130" cy="18" r="4.5" fill="#475569"/>
+      <circle cx="-5" cy="82" r="4.5" fill="#475569"/>
+      <circle cx="130" cy="82" r="6" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.8"/>
+      <text x="140" y="85" fill="#cbd5e1" font-size="8" font-weight="900">4:GND</text>
+
+      <!-- Đường chéo hướng dẫn -->
+      <line x1="2" y1="24" x2="122" y2="76" stroke="#22c55e" stroke-width="2" stroke-dasharray="4,3"/>
+      <text x="62" y="95" fill="#4ade80" font-size="7.5" font-weight="800" text-anchor="middle">★ ĐẤU CHÉO (1 &amp; 4)</text>
+    </g>
+
+    <!-- Tụ Gốm 104 (100nF) Kẹp Song Song -->
+    <g transform="translate(180, 60)">
+      <rect x="0" y="0" width="115" height="90" rx="6" fill="#0f172a" stroke="#d97706" stroke-width="1.5"/>
+      <circle cx="57" cy="40" r="18" fill="#d97706" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="57" y="44" fill="#ffffff" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">104</text>
+      <text x="57" y="72" fill="#fde047" font-size="8" font-weight="800" text-anchor="middle">TỤ GỐM 100nF</text>
+      <text x="57" y="82" fill="#94a3b8" font-size="7" text-anchor="middle">(Lọc dội phím)</text>
+    </g>
+
+    <!-- Dây nối nội bộ mạch nút -->
+    <path d="M 80 0 L 80 50 L 20 50 L 20 73" fill="none" stroke="#eab308" stroke-width="2.5"/>
+    <path d="M 220 0 L 220 50 L 155 50 L 155 137" fill="none" stroke="#64748b" stroke-width="2.5"/>
+
+    <!-- Tóm tắt đấu nút SOS -->
+    <g transform="translate(15, 185)">
+      <rect x="0" y="0" width="290" height="200" rx="6" fill="#0f172a" stroke="#ca8a04"/>
+      <text x="12" y="22" fill="#facc15" font-size="9.5" font-weight="800">QUY TẮC ĐẤU NỐI NÚT SOS:</text>
+      <text x="12" y="44" fill="#cbd5e1" font-size="8.5">• Chân 1 nút: Cắm vào Pin 22 (GPIO 25)</text>
+      <text x="12" y="64" fill="#cbd5e1" font-size="8.5">• Chân 4 nút: Cắm vào Pin 20 (GND)</text>
+      <text x="12" y="84" fill="#38bdf8" font-size="8.5">★ Pin 20 &amp; Pin 22 nằm sát nhau ở hàng ngoài!</text>
+      <text x="12" y="104" fill="#cbd5e1" font-size="8.5">• Tụ 100nF: Kẹp song song 2 chân lọc dội</text>
+      <text x="12" y="124" fill="#4ade80" font-size="8.5">• Code Pi 4 kích hoạt pull-up nội:</text>
+      <text x="12" y="142" fill="#94a3b8" font-size="8">  GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP)</text>
+      <text x="12" y="162" fill="#f87171" font-size="8.5">• Không cần gắn thêm bất kỳ điện trở ngoài nào</text>
+      <text x="12" y="182" fill="#cbd5e1" font-size="8.5">• Thao tác: Nhấn giữ 1.2s hú còi + gửi GPS cứu hộ</text>
+    </g>
+  </g>
+
+  <!-- MODULE 3: MẠCH 4 ĐỘNG CƠ RUNG BÁO HƯỚNG CẢNH BÁO (BOTTOM-CENTER-RIGHT: x=750, y=475, w=400, h=400) -->
+  <g id="haptic-node" transform="translate(750, 475)">
+    <rect x="0" y="0" width="400" height="400" rx="14" fill="#061f18" stroke="#10b981" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="400" height="32" rx="12" fill="#064e3b"/>
+    <text x="200" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MẠCH 4 ĐỘNG CƠ RUNG BÁO HƯỚNG CẢNH BÁO</text>
+
+    <!-- Top Inlets: x=50->800(P11); x=85->835(P13); x=120->870(P15); x=155->905(P16); x=210->960(5V); x=260->1010(GND) -->
+    <circle cx="50" cy="0" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="50" y="-8" fill="#34d399" font-size="7.5" font-weight="900" text-anchor="middle">IN1:P11</text>
+
+    <circle cx="85" cy="0" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="85" y="-8" fill="#34d399" font-size="7.5" font-weight="900" text-anchor="middle">IN2:P13</text>
+
+    <circle cx="120" cy="0" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="120" y="-8" fill="#34d399" font-size="7.5" font-weight="900" text-anchor="middle">IN3:P15</text>
+
+    <circle cx="155" cy="0" r="5" fill="#10b981" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="155" y="-8" fill="#34d399" font-size="7.5" font-weight="900" text-anchor="middle">IN4:P16</text>
+
+    <circle cx="210" cy="0" r="5.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="210" y="-8" fill="#ef4444" font-size="7.5" font-weight="900" text-anchor="middle">COM:5V</text>
+
+    <circle cx="260" cy="0" r="5.5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="260" y="-8" fill="#cbd5e1" font-size="7.5" font-weight="900" text-anchor="middle">GND</text>
+
+    <!-- IC Đệm ULN2003A Chip -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="120" height="170" rx="5" fill="#0f172a" stroke="#34d399" stroke-width="1.8"/>
+      <text x="60" y="22" fill="#a7f3d0" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">ULN2003A</text>
+      <text x="60" y="36" fill="#94a3b8" font-size="7.5" text-anchor="middle">Đệm Công Suất</text>
+      <text x="10" y="65" fill="#34d399" font-size="8" font-weight="800">IN1 (P11)</text>
+      <text x="10" y="90" fill="#34d399" font-size="8" font-weight="800">IN2 (P13)</text>
+      <text x="10" y="115" fill="#34d399" font-size="8" font-weight="800">IN3 (P15)</text>
+      <text x="10" y="140" fill="#34d399" font-size="8" font-weight="800">IN4 (P16)</text>
+      <text x="10" y="162" fill="#cbd5e1" font-size="8" font-weight="800">GND (Pin 8)</text>
+      <text x="110" y="162" fill="#ef4444" font-size="8" font-weight="800" text-anchor="end">COM:5V</text>
+    </g>
+
+    <!-- 4 Động Cơ Rung (Coin Vibration Motors) -->
+    <g transform="translate(165, 45)">
+      <!-- M1 Trước -->
+      <g transform="translate(70, 5)">
+        <circle cx="22" cy="22" r="20" fill="#0f172a" stroke="#10b981" stroke-width="2.2"/>
+        <circle cx="22" cy="22" r="6" fill="#059669"/>
+        <text x="22" y="54" fill="#a7f3d0" font-size="8" font-weight="900" text-anchor="middle">M1: TRƯỚC</text>
+      </g>
+      <!-- M4 Trái -->
+      <g transform="translate(10, 75)">
+        <circle cx="22" cy="22" r="20" fill="#0f172a" stroke="#10b981" stroke-width="2.2"/>
+        <circle cx="22" cy="22" r="6" fill="#059669"/>
+        <text x="22" y="54" fill="#a7f3d0" font-size="8" font-weight="900" text-anchor="middle">M4: TRÁI</text>
+      </g>
+      <!-- M2 Phải -->
+      <g transform="translate(130, 75)">
+        <circle cx="22" cy="22" r="20" fill="#0f172a" stroke="#10b981" stroke-width="2.2"/>
+        <circle cx="22" cy="22" r="6" fill="#059669"/>
+        <text x="22" y="54" fill="#a7f3d0" font-size="8" font-weight="900" text-anchor="middle">M2: PHẢI</text>
+      </g>
+      <!-- M3 Sau -->
+      <g transform="translate(70, 130)">
+        <circle cx="22" cy="22" r="20" fill="#0f172a" stroke="#10b981" stroke-width="2.2"/>
+        <circle cx="22" cy="22" r="6" fill="#059669"/>
+        <text x="22" y="54" fill="#a7f3d0" font-size="8" font-weight="900" text-anchor="middle">M3: SAU</text>
+      </g>
+    </g>
+
+    <!-- Tóm tắt cơ chế rung -->
+    <g transform="translate(15, 250)">
+      <rect x="0" y="0" width="370" height="135" rx="6" fill="#0f172a" stroke="#059669"/>
+      <text x="12" y="20" fill="#34d399" font-size="9" font-weight="800">CƠ CHẾ RUNG PHẢN XẠ HƯỚNG:</text>
+      <text x="12" y="40" fill="#cbd5e1" font-size="8.5">• M1 Trước (Pin 11): Rung khi có vật cản trước mặt</text>
+      <text x="12" y="60" fill="#cbd5e1" font-size="8.5">• M2 Phải (Pin 13): Rung khi có xe vượt bên phải</text>
+      <text x="12" y="80" fill="#cbd5e1" font-size="8.5">• M3 Sau (Pin 15): Rung khi có xe bám đuôi cự ly gần</text>
+      <text x="12" y="100" fill="#cbd5e1" font-size="8.5">• M4 Trái (Pin 16): Rung khi có xe tạt đầu bên trái</text>
+      <text x="12" y="120" fill="#38bdf8" font-size="8">★ ULN2003A bảo vệ 100% cổng GPIO của Pi 4</text>
+    </g>
+  </g>
+
+  <!-- MODULE 4: MODULE ĐỊNH VỊ GPS NEO-6M (BOTTOM-RIGHT: x=1180, y=475, w=340, h=400) -->
+  <g id="gps-node" transform="translate(1180, 475)">
+    <rect x="0" y="0" width="340" height="400" rx="14" fill="#1e1026" stroke="#c084fc" stroke-width="2.5" filter="url(#pcb-shadow)"/>
+    <rect x="0" y="0" width="340" height="32" rx="12" fill="#581c87"/>
+    <text x="170" y="21" fill="#ffffff" font-size="11.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">MODULE ĐỊNH VỊ GPS NEO-6M &amp; ANTEN</text>
+
+    <!-- Top Inlets: x=50->1230(VCC); x=100->1280(GND); x=160->1340(RX); x=220->1400(TX) -->
+    <circle cx="50" cy="0" r="5" fill="#ea580c" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="50" y="-8" fill="#fed7aa" font-size="7.5" font-weight="900" text-anchor="middle">VCC:P1</text>
+
+    <circle cx="100" cy="0" r="5" fill="#64748b" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="100" y="-8" fill="#cbd5e1" font-size="7.5" font-weight="900" text-anchor="middle">GND:P6</text>
+
+    <circle cx="160" cy="0" r="5" fill="#a855f7" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="160" y="-8" fill="#d8b4fe" font-size="7.5" font-weight="900" text-anchor="middle">RXD:P8</text>
+
+    <circle cx="220" cy="0" r="5" fill="#c084fc" stroke="#ffffff" stroke-width="1.5"/>
+    <text x="220" y="-8" fill="#e9d5ff" font-size="7.5" font-weight="900" text-anchor="middle">TXD:P10</text>
+
+    <!-- Bo Mạch GPS NEO-6M & Ăng-ten gốm vuông -->
+    <g transform="translate(20, 50)">
+      <rect x="0" y="0" width="145" height="150" rx="6" fill="#0f172a" stroke="#a855f7" stroke-width="1.8"/>
+      <text x="72" y="22" fill="#c084fc" font-size="10.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">NEO-6M</text>
+      <rect x="20" y="35" width="105" height="48" rx="4" fill="#1e1b4b" stroke="#6366f1"/>
+      <text x="72" y="58" fill="#ffffff" font-size="9.5" font-weight="800" text-anchor="middle">u-blox NEO-6</text>
+      <text x="72" y="72" fill="#a5b4fc" font-size="7.5" text-anchor="middle">GPS/GNSS Engine</text>
+      <!-- LED PPS -->
+      <circle cx="30" cy="105" r="4.5" fill="#22c55e" stroke="#86efac" stroke-width="1.2"/>
+      <text x="42" y="108" fill="#86efac" font-size="8" font-weight="700">PPS (Fix)</text>
+      <text x="72" y="135" fill="#94a3b8" font-size="8" font-family="'JetBrains Mono', monospace" text-anchor="middle">VCC | GND | TX | RX</text>
+    </g>
+
+    <!-- Ăng-ten Gốm Vuông 25x25mm -->
+    <g transform="translate(185, 50)">
+      <rect x="0" y="0" width="130" height="130" rx="6" fill="#451a03" stroke="#f59e0b" stroke-width="2"/>
+      <rect x="12" y="12" width="106" height="106" rx="4" fill="#78350f"/>
+      <circle cx="65" cy="65" r="7" fill="#cbd5e1" stroke="#ffffff" stroke-width="1.8"/>
+      <text x="65" y="145" fill="#fbbf24" font-size="8" font-weight="900" text-anchor="middle">ĂNG-TEN GỐM 25x25</text>
+    </g>
+
+    <!-- Tóm tắt cắm GPS UART -->
+    <g transform="translate(15, 225)">
+      <rect x="0" y="0" width="310" height="160" rx="6" fill="#0f172a" stroke="#a855f7"/>
+      <text x="12" y="20" fill="#d8b4fe" font-size="9" font-weight="800">QUY TẮC CẮM DÂY GPS UART:</text>
+      <text x="12" y="40" fill="#cbd5e1" font-size="8.5">• VCC GPS: Nối vào Pin 1 (3.3V) sạch</text>
+      <text x="12" y="60" fill="#cbd5e1" font-size="8.5">• GND GPS: Nối vào Pin 6 (GND)</text>
+      <text x="12" y="80" fill="#cbd5e1" font-size="8.5">• TXD GPS ➔ Cắm vào Pin 10 (RXD0 - GPIO 15)</text>
+      <text x="12" y="100" fill="#cbd5e1" font-size="8.5">• RXD GPS ➔ Cắm vào Pin 8 (TXD0 - GPIO 14)</text>
+      <text x="12" y="122" fill="#fbbf24" font-size="8">⚠️ Bắt chéo: TX GPS vào RX Pi và ngược lại!</text>
+      <text x="12" y="142" fill="#86efac" font-size="8">✓ Khi LED PPS nháy = Đã khóa tọa độ vệ tinh</text>
+    </g>
+  </g>
+
+
+  <!-- ========================================================================================== -->
+  <!-- TOÀN BỘ ĐƯỜNG DÂY NỐI VECTOR THÔNG SUỐT (WIRING NETWORK: CONTINUOUS, COLOR-CODED & LABELED) -->
+  <!-- ========================================================================================== -->
+
+  <!-- 1. TUYẾN NGUỒN PIN & BUCK (PWR) -->
+  <g id="net-group-PWR" class="wire-group">
+    <!-- Buck OUT+ (5.10V) -> Pi Pin 2 (5V IN): from (300, 342) down to y=390, right to x=490, up to Pin 2 (490, 325) -->
+    <path id="trace-pwr-5v-main" class="pcb-trace" d="M 300 342 L 300 390 L 490 390 L 490 325" fill="none" stroke="#ef4444" stroke-width="5"/>
+    <rect x="340" y="380" width="115" height="18" rx="3" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
+    <text x="397" y="393" fill="#ffffff" class="net-tag" text-anchor="middle">5.10V ➔ PIN 2</text>
+
+    <!-- Buck OUT- (GND) -> Pi Pin 6 (GND): from (340, 342) down to y=405, right to x=546, up to Pin 6 (546, 325) -->
+    <path id="trace-pwr-gnd-main" class="pcb-trace" d="M 340 342 L 340 405 L 546 405 L 546 325" fill="none" stroke="#64748b" stroke-width="4.5"/>
+    <rect x="390" y="396" width="105" height="18" rx="3" fill="#1e293b" stroke="#64748b" stroke-width="1"/>
+    <text x="442" y="409" fill="#cbd5e1" class="net-tag" text-anchor="middle">GND ➔ PIN 6</text>
+
+    <!-- 5V Cấp Cho Còi: Pin 4 (518, 325) down to y=420, left to Còi (210, 420) down to (210, 475) -->
+    <path id="trace-pwr-5v-buzzer" class="pcb-trace" d="M 518 325 L 518 420 L 210 420 L 210 475" fill="none" stroke="#f97316" stroke-width="3" stroke-dasharray="6,3"/>
+    <rect x="240" y="411" width="100" height="18" rx="3" fill="#7c2d12" stroke="#f97316" stroke-width="1"/>
+    <text x="290" y="424" fill="#ffedd5" class="net-tag" text-anchor="middle">PIN 4 ➔ CÒI(+)</text>
+
+    <!-- 5V Cấp Cho ULN2003A COM: Pin 4 down to y=420, right to COM (960, 420) down to (960, 475) -->
+    <path id="trace-pwr-5v-motor" class="pcb-trace" d="M 518 420 L 960 420 L 960 475" fill="none" stroke="#f97316" stroke-width="3" stroke-dasharray="6,3"/>
+    <rect x="850" y="411" width="100" height="18" rx="3" fill="#7c2d12" stroke="#f97316" stroke-width="1"/>
+    <text x="900" y="424" fill="#ffedd5" class="net-tag" text-anchor="middle">PIN 4 ➔ COM:5V</text>
+
+    <!-- GND Cấp Cho ULN2003A: Pin 6 (546, 405) right to (1010, 405) down to (1010, 475) -->
+    <path id="trace-pwr-gnd-motor" class="pcb-trace" d="M 546 405 L 1010 405 L 1010 475" fill="none" stroke="#64748b" stroke-width="3"/>
+
+    <!-- GND Cấp Cho GPS: from (1010, 405) right to (1280, 405) down to (1280, 475) -->
+    <path id="trace-pwr-gnd-gps" class="pcb-trace" d="M 1010 405 L 1280 405 L 1280 475" fill="none" stroke="#64748b" stroke-width="3"/>
+  </g>
+
+  <!-- 2. TUYẾN CÒI BUZZER S8050 (BUZZER) -->
+  <g id="net-group-BUZZER" class="wire-group">
+    <!-- Pin 18 (GPIO 24) -> Trở 1k tại (90, 475): from (714, 325) down to y=435, left to (90, 435) down to (90, 475) -->
+    <path id="trace-buzzer-sig" class="pcb-trace" d="M 714 325 L 714 435 L 90 435 L 90 475" fill="none" stroke="#f43f5e" stroke-width="4.5"/>
+    <rect x="110" y="426" width="170" height="18" rx="3" fill="#881337" stroke="#f43f5e" stroke-width="1"/>
+    <text x="195" y="439" fill="#fecdd3" class="net-tag" text-anchor="middle">PIN 18 ➔ R 1kΩ ➔ S8050(B)</text>
+
+    <!-- Pin 20 (GND) -> Chân 1 (E) S8050 tại (150, 475): from (742, 325) down to y=450, left to (150, 450) down to (150, 475) -->
+    <path id="trace-buzzer-gnd" class="pcb-trace" d="M 742 325 L 742 450 L 150 450 L 150 475" fill="none" stroke="#64748b" stroke-width="3.5"/>
+  </g>
+
+  <!-- 3. TUYẾN NÚT BẤM SOS (SOS) -->
+  <g id="net-group-SOS" class="wire-group">
+    <!-- Pin 22 (GPIO 25) -> Chân 1 Nút SOS tại (480, 475): from (770, 325) down to y=440, left to (480, 440) down to (480, 475) -->
+    <path id="trace-sos-sig" class="pcb-trace" d="M 770 325 L 770 440 L 480 440 L 480 475" fill="none" stroke="#eab308" stroke-width="4.5"/>
+    <rect x="510" y="431" width="155" height="18" rx="3" fill="#713f12" stroke="#eab308" stroke-width="1"/>
+    <text x="587" y="444" fill="#fef08a" class="net-tag" text-anchor="middle">PIN 22 (GPIO 25) ➔ NÚT CHÂN 1</text>
+
+    <!-- Pin 20 (GND) -> Chân 4 Nút SOS tại (620, 475): from (742, 450) left to (620, 450) down to (620, 475) -->
+    <path id="trace-sos-gnd" class="pcb-trace" d="M 742 450 L 620 450 L 620 475" fill="none" stroke="#64748b" stroke-width="3.5"/>
+    <rect x="635" y="442" width="130" height="16" rx="3" fill="#1e293b" stroke="#cbd5e1" stroke-width="1"/>
+    <text x="700" y="454" fill="#cbd5e1" class="net-tag" text-anchor="middle">PIN 20 (GND) ➔ NÚT CHÂN 4</text>
+  </g>
+
+  <!-- 4. TUYẾN 4 ĐỘNG CƠ RUNG HAPTIC (HAPTIC) -->
+  <g id="net-group-HAPTIC" class="wire-group">
+    <!-- Pin 11 (GPIO 17 - Trước) at (630, 355) down to y=390, right to (800, 390) down to (800, 475) -->
+    <path id="trace-haptic-m1" class="pcb-trace" d="M 630 355 L 630 390 L 800 390 L 800 475" fill="none" stroke="#10b981" stroke-width="4"/>
+
+    <!-- Pin 13 (GPIO 27 - Phải) at (658, 355) down to y=405, right to (835, 405) down to (835, 475) -->
+    <path id="trace-haptic-m2" class="pcb-trace" d="M 658 355 L 658 405 L 835 405 L 835 475" fill="none" stroke="#10b981" stroke-width="4"/>
+
+    <!-- Pin 15 (GPIO 22 - Sau) at (686, 355) down to y=420, right to (870, 420) down to (870, 475) -->
+    <path id="trace-haptic-m3" class="pcb-trace" d="M 686 355 L 686 420 L 870 420 L 870 475" fill="none" stroke="#10b981" stroke-width="4"/>
+
+    <!-- Pin 16 (GPIO 23 - Trái) at (686, 325) right to 700, down to y=435, right to (905, 435) down to (905, 475) -->
+    <path id="trace-haptic-m4" class="pcb-trace" d="M 686 325 L 700 325 L 700 435 L 905 435 L 905 475" fill="none" stroke="#10b981" stroke-width="4"/>
+
+    <rect x="710" y="382" width="130" height="16" rx="3" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
+    <text x="775" y="394" fill="#a7f3d0" class="net-tag" text-anchor="middle">HAPTIC M1..M4 (P11-16)</text>
+  </g>
+
+  <!-- 5. TUYẾN GPS NEO-6M (GPS) -->
+  <g id="net-group-GPS" class="wire-group">
+    <!-- Pin 1 (3.3V) at (490, 355) down to y=465, right to (1230, 465) down to (1230, 475) -->
+    <path id="trace-gps-3v3" class="pcb-trace" d="M 490 355 L 490 465 L 1230 465 L 1230 475" fill="none" stroke="#ea580c" stroke-width="3.5"/>
+    <rect x="1080" y="456" width="130" height="18" rx="3" fill="#7c2d12" stroke="#ea580c" stroke-width="1"/>
+    <text x="1145" y="469" fill="#fed7aa" class="net-tag" text-anchor="middle">PIN 1 (3.3V) ➔ VCC GPS</text>
+
+    <!-- Pin 8 (TXD0) at (574, 325) down to y=385, right to (1340, 385) down to (1340, 475) -->
+    <path id="trace-gps-tx" class="pcb-trace" d="M 574 325 L 574 385 L 1340 385 L 1340 475" fill="none" stroke="#a855f7" stroke-width="4"/>
+    <rect x="1170" y="376" width="150" height="18" rx="3" fill="#581c87" stroke="#a855f7" stroke-width="1"/>
+    <text x="1245" y="389" fill="#e9d5ff" class="net-tag" text-anchor="middle">PIN 8 (TX) ➔ RXD GPS</text>
+
+    <!-- Pin 10 (RXD0) at (602, 325) down to y=398, right to (1400, 398) down to (1400, 475) -->
+    <path id="trace-gps-rx" class="pcb-trace" d="M 602 325 L 602 398 L 1400 398 L 1400 475" fill="none" stroke="#c084fc" stroke-width="4"/>
+    <rect x="1270" y="390" width="150" height="18" rx="3" fill="#581c87" stroke="#c084fc" stroke-width="1"/>
+    <text x="1345" y="403" fill="#e9d5ff" class="net-tag" text-anchor="middle">PIN 10 (RX) ➔ TXD GPS</text>
+  </g>
+
+  <!-- 6. TUYẾN 3 CAMERA USB HUB (CAM) -->
+  <g id="net-group-CAM" class="wire-group">
+    <!-- Cáp Chính USB 3.0 từ Cổng Ra USB Hub (1148, 120) sang Cổng USB 3.0 Xanh Pi 4 (1108, 120) -->
+    <path id="trace-cam-usb" class="pcb-trace" d="M 1148 120 L 1108 120" fill="none" stroke="#0284c7" stroke-width="8" stroke-linecap="round"/>
+    <rect x="1090" y="80" width="85" height="18" rx="3" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1"/>
+    <text x="1132" y="93" fill="#bae6fd" class="net-tag" text-anchor="middle">CÁP USB 3.0</text>
+  </g>
+
+</svg>
       </div>
+    </section>
 
-      <!-- Box 3: 4 Vibration Motors -->
-      <div class="bg-[#0f172a] border border-emerald-500/50 rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center gap-2 border-b border-emerald-500/30 pb-2">
-          <span class="w-7 h-7 rounded-lg bg-emerald-600/30 text-emerald-400 font-black text-sm flex items-center justify-center">3</span>
-          <h3 class="text-sm font-black text-white uppercase font-mono-code">4 MOTOR RUNG ĐỆM ULN</h3>
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          Động cơ rung dán vào xốp mũ bảo hiểm theo 4 hướng phản xạ:
-        </p>
-        <ul class="text-xs space-y-1 text-slate-300 font-mono-code">
-          <li>• <b class="text-emerald-400">Pin 11 (GPIO 17)</b> ➔ Rung Trước</li>
-          <li>• <b class="text-emerald-400">Pin 13 (GPIO 27)</b> ➔ Rung Phải</li>
-          <li>• <b class="text-emerald-400">Pin 15 (GPIO 22)</b> ➔ Rung Sau</li>
-          <li>• <b class="text-emerald-400">Pin 16 (GPIO 23)</b> ➔ Rung Trái</li>
-        </ul>
-        <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-[11px] text-emerald-300">
-          💡 <i>IC đệm ULN2003A kéo dòng 500mA cho mỗi motor rung êm ái.</i>
-        </div>
-      </div>
-
-      <!-- Box 4: GPS UART & Power -->
-      <div class="bg-[#0f172a] border border-purple-500/50 rounded-2xl p-4 shadow-xl space-y-3">
-        <div class="flex items-center gap-2 border-b border-purple-500/30 pb-2">
-          <span class="w-7 h-7 rounded-lg bg-purple-600/30 text-purple-400 font-black text-sm flex items-center justify-center">4</span>
-          <h3 class="text-sm font-black text-white uppercase font-mono-code">GPS NEO-6M BẮT CHÉO</h3>
-        </div>
-        <p class="text-xs text-slate-300 leading-relaxed">
-          Nguyên tắc bắt buộc của chuẩn giao tiếp UART phần cứng:
-        </p>
-        <ul class="text-xs space-y-1.5 text-slate-300">
-          <li class="flex items-start gap-1.5"><span class="text-purple-400 font-bold">TXD GPS:</span> Cắm vào <b>Pin 10 (RXD0)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-purple-400 font-bold">RXD GPS:</span> Cắm vào <b>Pin 8 (TXD0)</b>.</li>
-          <li class="flex items-start gap-1.5"><span class="text-orange-400 font-bold">VCC GPS:</span> Cắm vào <b>Pin 1 (3.3V)</b>.</li>
-        </ul>
-        <div class="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/30 text-[11px] text-purple-300">
-          💡 <i>Ăng-ten gốm vuông 25x25mm phải đặt ngửa lên trời ở đỉnh nón!</i>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- SECTION 3: BẢNG TRA CỨU ĐẤU NỐI CHÂN CHI TIẾT (FULL PINOUT SPECIFICATION) -->
+    <!-- SECTION 2: BẢNG ĐẤU NỐI CHÂN CHI TIẾT TỪNG DÂY (FULL PINOUT SPECIFICATION) -->
     <section class="bg-[#0f172a] border border-slate-800 rounded-2xl p-5 md:p-6 shadow-2xl space-y-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
         <div>
@@ -1144,7 +1122,7 @@
 
             <!-- 3 CAMERA USB -->
             <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-3.5 px-3 font-bold text-cyan-400">Cụm 3 Camera & Hub USB</td>
+              <td class="py-3.5 px-3 font-bold text-cyan-400">Cụm 3 Camera &amp; Hub USB</td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-mono-code bg-cyan-950 text-cyan-300 font-bold">Cáp USB 3.0 Đực</span></td>
               <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded font-mono-code bg-cyan-950 text-cyan-300 font-bold">Cổng USB 3.0 Xanh</span></td>
               <td class="py-2.5 px-3 text-slate-300 font-mono-code">Cạnh PHẢI bo mạch Pi 4</td>
@@ -1158,6 +1136,54 @@
         </table>
       </div>
     </section>
+
+    <!-- SECTION 3: HƯỚNG DẪN BỐ TRÍ THỰC TẾ TRÊN NÓN BẢO HIỂM -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="bg-[#0f172a] p-4 rounded-xl border border-slate-800 space-y-2">
+        <h3 class="font-bold text-emerald-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+          <span>📳</span> BỐ TRÍ 4 MOTOR RUNG PHẢN XẠ TRONG LÒNG MŨ
+        </h3>
+        <p class="text-[11px] text-slate-300 leading-relaxed">
+          Khoét rãnh sâu 3mm trong lớp mút xốp EPS của mũ bảo hiểm và dán cố định 4 động cơ rung dạng đồng xu (Coin Motor) bằng băng dính 3M:
+        </p>
+        <ul class="text-[11px] space-y-1 text-slate-300 font-mono-code">
+          <li>• <b>Trán (M1):</b> Báo vật cản trước mặt ➔ Kích bởi Pin 11 (GPIO 17)</li>
+          <li>• <b>Thái dương Phải (M2):</b> Báo vượt phải ➔ Kích bởi Pin 13 (GPIO 27)</li>
+          <li>• <b>Gáy Sau (M3):</b> Báo xe bám đuôi ➔ Kích bởi Pin 15 (GPIO 22)</li>
+          <li>• <b>Thái dương Trái (M4):</b> Báo tạt đầu trái ➔ Kích bởi Pin 16 (GPIO 23)</li>
+        </ul>
+      </div>
+
+      <div class="bg-[#0f172a] p-4 rounded-xl border border-slate-800 space-y-2">
+        <h3 class="font-bold text-purple-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+          <span>🛰️</span> LẮP ĐẶT GPS NEO-6M &amp; ĂNG-TEN GỐM ĐỈNH NÓN
+        </h3>
+        <p class="text-[11px] text-slate-300 leading-relaxed">
+          Cục anten gốm vuông 25x25mm bắt buộc phải được gắn ngửa lên trời ở vị trí cao nhất trên đỉnh vỏ nón bảo hiểm:
+        </p>
+        <ul class="text-[11px] space-y-1 text-slate-300">
+          <li>• Không để vật kim loại hoặc dây dẫn che chắn bề mặt anten gốm.</li>
+          <li>• Khi thử nghiệm cần ra ngoài trời hoặc gần cửa sổ thoáng đãng.</li>
+          <li>• Khi đèn LED PPS màu xanh trên bo nhấp nháy 1 lần/giây = Đã khóa vệ tinh!</li>
+          <li>• Dữ liệu NMEA $GPGGA truyền qua cổng Serial <code>/dev/ttyAMA0</code> tốc độ 9600 bps.</li>
+        </ul>
+      </div>
+
+      <div class="bg-[#0f172a] p-4 rounded-xl border border-slate-800 space-y-2">
+        <h3 class="font-bold text-cyan-400 text-xs font-mono-code uppercase flex items-center gap-1.5">
+          <span>📷</span> GÓC NHÌN 3 CAMERA USB TAM GIÁC ĐỀU 120°
+        </h3>
+        <p class="text-[11px] text-slate-300 leading-relaxed">
+          Bố trí 3 camera mắt cá góc rộng 120° trên vành nón bảo hiểm tạo thành hình tam giác đều khép kín 360°:
+        </p>
+        <ul class="text-[11px] space-y-1 text-slate-300">
+          <li>• <b>Cam 1 (0°):</b> Hướng thẳng trước mặt nhận diện phương tiện và biển báo.</li>
+          <li>• <b>Cam 2 (120°):</b> Hướng chếch sau bên trái bao quát điểm mù bên trái.</li>
+          <li>• <b>Cam 3 (240°):</b> Hướng chếch sau bên phải bao quát điểm mù bên phải.</li>
+          <li>• Dây cáp từ 3 camera cắm vào USB Hub, chỉ có 1 sợi dây USB duy nhất nối vào Pi 4.</li>
+        </ul>
+      </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="text-center text-xs text-slate-500 py-4 border-t border-slate-800 no-print">
@@ -1197,7 +1223,7 @@
           const el = document.getElementById('net-group-' + g);
           if (el) {
             el.classList.remove('dimmed-trace');
-            el.querySelectorAll('.wire-trace').forEach(t => t.classList.remove('dimmed-trace', 'active-trace'));
+            el.querySelectorAll('.pcb-trace').forEach(t => t.classList.remove('dimmed-trace', 'active-trace'));
           }
         });
       } else {
@@ -1206,13 +1232,13 @@
           if (el) {
             if (g === net) {
               el.classList.remove('dimmed-trace');
-              el.querySelectorAll('.wire-trace').forEach(t => {
+              el.querySelectorAll('.pcb-trace').forEach(t => {
                 t.classList.remove('dimmed-trace');
                 t.classList.add('active-trace');
               });
             } else {
               el.classList.add('dimmed-trace');
-              el.querySelectorAll('.wire-trace').forEach(t => {
+              el.querySelectorAll('.pcb-trace').forEach(t => {
                 t.classList.remove('active-trace');
                 t.classList.add('dimmed-trace');
               });
