@@ -272,6 +272,280 @@
         </span>
       </div>
 
+    <!-- BẢN VẼ ĐẶC BIỆT MINH HỌA NGUYÊN LÝ 2N2222 & 4 MOTOR SONG SONG (CHUẨN HÌNH MẪU KỸ THUẬT) -->
+    <div class="w-full overflow-x-auto bg-[#07130e] p-4 rounded-xl border-2 border-emerald-500/60 shadow-2xl">
+      <div class="text-xs font-black uppercase tracking-wider text-emerald-400 mb-3 flex items-center justify-between">
+        <span class="flex items-center gap-2">
+          <span class="text-base">📐</span> BẢN VẼ KỸ THUẬT: SƠ ĐỒ NGUYÊN LÝ • CHÂN VỎ TO-92 THỰC TẾ • KÝ HIỆU BJT NPN TIÊU CHUẨN
+        </span>
+        <span class="text-[11px] font-mono-code text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded border border-emerald-900">
+          Tải: 4 Motor Rung Mắc Song Song • Driver: 1x 2N2222 NPN
+        </span>
+      </div>
+      <svg viewBox="0 0 1080 370" class="w-full min-w-[950px] h-auto select-none font-sans" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="vg-to92-body" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1e293b"/>
+            <stop offset="35%" stop-color="#334155"/>
+            <stop offset="70%" stop-color="#1e293b"/>
+            <stop offset="100%" stop-color="#0f172a"/>
+          </linearGradient>
+          <linearGradient id="vg-lead-metal" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#94a3b8"/>
+            <stop offset="50%" stop-color="#f8fafc"/>
+            <stop offset="100%" stop-color="#64748b"/>
+          </linearGradient>
+          <filter id="vg-card-shadow" x="-5%" y="-5%" width="110%" height="110%">
+            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.6"/>
+          </filter>
+        </defs>
+
+        <!-- ================= PANEL 1: SƠ ĐỒ NGUYÊN LÝ HOẠT ĐỘNG (BÊN TRÁI) ================= -->
+        <g transform="translate(15, 15)">
+          <rect x="0" y="0" width="440" height="340" rx="10" fill="#0b1712" stroke="#10b981" stroke-width="1.8" filter="url(#vg-card-shadow)"/>
+          <rect x="0" y="0" width="440" height="30" rx="8" fill="#064e3b"/>
+          <text x="220" y="20" fill="#a7f3d0" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1. SƠ ĐỒ MẠCH NGUYÊN LÝ HOẠT ĐỘNG</text>
+
+          <!-- Đường nguồn +5V (Pin 4) trên đỉnh -->
+          <line x1="30" y1="55" x2="425" y2="55" stroke="#ef4444" stroke-width="3"/>
+          <circle cx="45" cy="55" r="4" fill="#ef4444"/>
+          <rect x="20" y="38" width="90" height="15" rx="3" fill="#7f1d1d" stroke="#ef4444" stroke-width="0.8"/>
+          <text x="65" y="49" fill="#fecaca" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">+5V (PIN 4 PI 4)</text>
+
+          <!-- Tín hiệu điều khiển: RPi 4 GPIO 17 (Pin 11) -->
+          <rect x="15" y="150" width="85" height="36" rx="4" fill="#047857" stroke="#34d399" stroke-width="1.2"/>
+          <text x="57" y="165" fill="#ffffff" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">PI 4: GPIO 17</text>
+          <text x="57" y="177" fill="#a7f3d0" font-size="7.5" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="middle">(PIN 11: 3.3V)</text>
+
+          <!-- Dây dẫn từ GPIO 17 -> Trở Base -->
+          <line x1="100" y1="168" x2="120" y2="168" stroke="#34d399" stroke-width="2.5"/>
+
+          <!-- Điện trở Base 470Ω - 1kΩ -->
+          <g transform="translate(120, 156)">
+            <rect x="0" y="0" width="48" height="24" rx="3" fill="#1e293b" stroke="#f59e0b" stroke-width="1.8"/>
+            <text x="24" y="13" fill="#fef08a" font-size="8" font-weight="900" text-anchor="middle">470Ω/1kΩ</text>
+            <text x="24" y="22" fill="#cbd5e1" font-size="6.5" font-weight="700" text-anchor="middle">R_BASE</text>
+          </g>
+
+          <!-- Dây dẫn từ Trở -> Chân 2 Base -->
+          <line x1="168" y1="168" x2="195" y2="168" stroke="#34d399" stroke-width="2.5"/>
+
+          <!-- Ký hiệu Transistor NPN 2N2222 trong sơ đồ -->
+          <g transform="translate(195, 168)">
+            <!-- Vòng tròn transistor -->
+            <circle cx="22" cy="0" r="22" fill="#0f172a" stroke="#38bdf8" stroke-width="1.8"/>
+            
+            <!-- Thanh đứng Base -->
+            <line x1="14" y1="-12" x2="14" y2="12" stroke="#ffffff" stroke-width="3"/>
+            <!-- Chân vào Base -->
+            <line x1="0" y1="0" x2="14" y2="0" stroke="#34d399" stroke-width="2.5"/>
+            <text x="-3" y="-5" fill="#fb7185" font-size="8.5" font-weight="900">2 (Base)</text>
+
+            <!-- Nhánh Collector đi lên -->
+            <line x1="14" y1="-6" x2="28" y2="-18" stroke="#38bdf8" stroke-width="2.2"/>
+            <line x1="28" y1="-18" x2="28" y2="-32" stroke="#38bdf8" stroke-width="2.5"/>
+            <text x="35" y="-22" fill="#38bdf8" font-size="8" font-weight="900">3 (C)</text>
+
+            <!-- Nhánh Emitter đi xuống với mũi tên -->
+            <line x1="14" y1="6" x2="28" y2="18" stroke="#cbd5e1" stroke-width="2.2"/>
+            <!-- Mũi tên Emitter trỏ ra ngoài -->
+            <polygon points="28,18 20,16 23,11" fill="#34d399"/>
+            <line x1="28" y1="18" x2="28" y2="35" stroke="#cbd5e1" stroke-width="2.5"/>
+            <text x="35" y="28" fill="#34d399" font-size="8" font-weight="900">1 (E)</text>
+
+            <!-- Tên linh kiện -->
+            <text x="22" y="4" fill="#f8fafc" font-size="7.5" font-weight="900" text-anchor="middle">2N2222</text>
+          </g>
+
+          <!-- Đường Emitter (chân 1) nối xuống GND -->
+          <line x1="223" y1="203" x2="223" y2="275" stroke="#94a3b8" stroke-width="2.5"/>
+          <!-- Ký hiệu GND 3 gạch giảm dần -->
+          <g transform="translate(223, 275)">
+            <line x1="-16" y1="0" x2="16" y2="0" stroke="#94a3b8" stroke-width="2.5"/>
+            <line x1="-10" y1="4" x2="10" y2="4" stroke="#94a3b8" stroke-width="2"/>
+            <line x1="-4" y1="8" x2="4" y2="8" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="0" y="20" fill="#cbd5e1" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">GND: PIN 6</text>
+          </g>
+
+          <!-- Cụm Tải: 4 Motor Rung // và Diode 1N4148 -->
+          <!-- Điểm Collector (223, 136) nối vào thanh Bus Âm của tải -->
+          <line x1="223" y1="136" x2="223" y2="115" stroke="#38bdf8" stroke-width="2.5"/>
+          <!-- Thanh Bus Âm tải chạy ngang -->
+          <line x1="215" y1="115" x2="425" y2="115" stroke="#38bdf8" stroke-width="3"/>
+          <rect x="238" y="107" width="160" height="14" rx="2" fill="#0c4a6e" stroke="#38bdf8" stroke-width="0.8"/>
+          <text x="318" y="117" fill="#e0f2fe" font-size="7" font-weight="800" text-anchor="middle">THANH COLLECTOR ➔ 4 DÂY ĐEN (-) &amp; DIODE</text>
+
+          <!-- Diode 1N4148 dập xung ngược (Mắc ngược giữa +5V và Collector) -->
+          <g transform="translate(245, 68)">
+            <!-- Thân Diode cam -->
+            <rect x="0" y="0" width="12" height="34" rx="2" fill="#ea580c" stroke="#fdba74" stroke-width="1"/>
+            <!-- Vạch trắng Cathode ở đỉnh (+5V) -->
+            <rect x="0" y="3" width="12" height="5" fill="#ffffff"/>
+            <!-- Dây Cathode lên +5V -->
+            <line x1="6" y1="0" x2="6" y2="-13" stroke="#ef4444" stroke-width="1.5"/>
+            <!-- Dây Anode xuống Collector Bus -->
+            <line x1="6" y1="34" x2="6" y2="47" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="-5" y="19" fill="#fdba74" font-size="6" font-weight="900" text-anchor="end">1N4148</text>
+          </g>
+
+          <!-- 4 ĐỘNG CƠ RUNG MẮC SONG SONG -->
+          <!-- Motor M1: TRƯỚC -->
+          <g transform="translate(285, 85)">
+            <line x1="0" y1="-30" x2="0" y2="-12" stroke="#ef4444" stroke-width="1.8"/>
+            <line x1="0" y1="12" x2="0" y2="30" stroke="#38bdf8" stroke-width="1.8"/>
+            <circle cx="0" cy="0" r="11" fill="#1e293b" stroke="#06b6d4" stroke-width="1.8"/>
+            <text x="0" y="3" fill="#ffffff" font-size="6" font-weight="900" text-anchor="middle">M1</text>
+            <text x="0" y="-15" fill="#a5f3fc" font-size="5.5" font-weight="800" text-anchor="middle">TRƯỚC</text>
+          </g>
+          <!-- Motor M2: PHẢI -->
+          <g transform="translate(325, 85)">
+            <line x1="0" y1="-30" x2="0" y2="-12" stroke="#ef4444" stroke-width="1.8"/>
+            <line x1="0" y1="12" x2="0" y2="30" stroke="#38bdf8" stroke-width="1.8"/>
+            <circle cx="0" cy="0" r="11" fill="#1e293b" stroke="#f59e0b" stroke-width="1.8"/>
+            <text x="0" y="3" fill="#ffffff" font-size="6" font-weight="900" text-anchor="middle">M2</text>
+            <text x="0" y="-15" fill="#fde68a" font-size="5.5" font-weight="800" text-anchor="middle">PHẢI</text>
+          </g>
+          <!-- Motor M3: SAU -->
+          <g transform="translate(365, 85)">
+            <line x1="0" y1="-30" x2="0" y2="-12" stroke="#ef4444" stroke-width="1.8"/>
+            <line x1="0" y1="12" x2="0" y2="30" stroke="#38bdf8" stroke-width="1.8"/>
+            <circle cx="0" cy="0" r="11" fill="#1e293b" stroke="#8b5cf6" stroke-width="1.8"/>
+            <text x="0" y="3" fill="#ffffff" font-size="6" font-weight="900" text-anchor="middle">M3</text>
+            <text x="0" y="-15" fill="#ddd6fe" font-size="5.5" font-weight="800" text-anchor="middle">SAU</text>
+          </g>
+          <!-- Motor M4: TRÁI -->
+          <g transform="translate(405, 85)">
+            <line x1="0" y1="-30" x2="0" y2="-12" stroke="#ef4444" stroke-width="1.8"/>
+            <line x1="0" y1="12" x2="0" y2="30" stroke="#38bdf8" stroke-width="1.8"/>
+            <circle cx="0" cy="0" r="11" fill="#1e293b" stroke="#10b981" stroke-width="1.8"/>
+            <text x="0" y="3" fill="#ffffff" font-size="6" font-weight="900" text-anchor="middle">M4</text>
+            <text x="0" y="-15" fill="#6ee7b7" font-size="5.5" font-weight="800" text-anchor="middle">TRÁI</text>
+          </g>
+
+          <!-- Chú thích tóm tắt nguyên lý -->
+          <rect x="15" y="298" width="410" height="30" rx="4" fill="#052e16" stroke="#10b981" stroke-width="0.8"/>
+          <text x="220" y="312" fill="#a7f3d0" font-size="8" font-weight="800" text-anchor="middle">GPIO 17 = 3.3V (HIGH) ➔ 2N2222 BÃO HÒA ➔ 4 MOTOR CHẠY 5V ĐỒNG LOẠT</text>
+          <text x="220" y="323" fill="#94a3b8" font-size="7.5" text-anchor="middle">Diode 1N4148 dập triệt tiêu tia lửa cảm ứng ngược khi ngắt điện motor</text>
+        </g>
+
+        <!-- ================= PANEL 2: HÌNH DÁNG VỎ TO-92 THỰC TẾ (Ở GIỮA) ================= -->
+        <g transform="translate(470, 15)">
+          <rect x="0" y="0" width="300" height="340" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.8" filter="url(#vg-card-shadow)"/>
+          <rect x="0" y="0" width="300" height="30" rx="8" fill="#0369a1"/>
+          <text x="150" y="20" fill="#e0f2fe" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2. THỰC TẾ VỎ TO-92 (CHÂN 1-2-3)</text>
+
+          <text x="150" y="47" fill="#facc15" font-size="8.5" font-weight="900" text-anchor="middle">★ MẶT PHẲNG CÓ CHỮ QUAY VÀO MẮT ★</text>
+          <text x="150" y="59" fill="#94a3b8" font-size="7.5" text-anchor="middle">Đếm từ TRÁI sang PHẢI: Chân 1 ➔ 2 ➔ 3</text>
+
+          <!-- VẼ 3D TRANSISTOR TO-92 CHUẨN THỰC TẾ -->
+          <g transform="translate(150, 118)">
+            <!-- Thân bán trụ màu đen/xám -->
+            <path d="M -45 -35 C -45 -55, 45 -55, 45 -35 L 45 15 C 45 22, -45 22, -45 15 Z" fill="url(#vg-to92-body)" stroke="#475569" stroke-width="1.5"/>
+            <!-- Mặt vát phẳng phía trước (nhìn trực diện) -->
+            <rect x="-42" y="-30" width="84" height="42" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1.2"/>
+            
+            <!-- Chữ in trên thân transistor -->
+            <text x="0" y="-12" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="1.5">2N2222</text>
+            <text x="0" y="2" fill="#38bdf8" font-size="7.5" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">NPN BJT • 800mA</text>
+
+            <!-- 3 Chân kim loại mạ chì dài chúc xuống dưới (xòe nhẹ như thực tế) -->
+            <!-- Chân 1 (Trái): Emitter -->
+            <line x1="-24" y1="15" x2="-35" y2="75" stroke="url(#vg-lead-metal)" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Chân 2 (Giữa): Base -->
+            <line x1="0" y1="15" x2="0" y2="75" stroke="url(#vg-lead-metal)" stroke-width="4.5" stroke-linecap="round"/>
+            <!-- Chân 3 (Phải): Collector -->
+            <line x1="24" y1="15" x2="35" y2="75" stroke="url(#vg-lead-metal)" stroke-width="4.5" stroke-linecap="round"/>
+
+            <!-- Số thứ tự 1, 2, 3 dập nổi dưới chân -->
+            <circle cx="-35" cy="85" r="9" fill="#047857" stroke="#ffffff" stroke-width="1.2"/>
+            <text x="-35" y="89" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">1</text>
+
+            <circle cx="0" cy="85" r="9" fill="#be123c" stroke="#ffffff" stroke-width="1.2"/>
+            <text x="0" y="89" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">2</text>
+
+            <circle cx="35" cy="85" r="9" fill="#1d4ed8" stroke="#ffffff" stroke-width="1.2"/>
+            <text x="35" y="89" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">3</text>
+          </g>
+
+          <!-- Hộp giải thích 3 chân cụ thể -->
+          <g transform="translate(12, 228)">
+            <rect x="0" y="0" width="276" height="98" rx="6" fill="#090d16" stroke="#1e293b" stroke-width="1"/>
+
+            <!-- Dòng 1: Chân 1 -->
+            <rect x="8" y="8" width="16" height="16" rx="3" fill="#047857"/>
+            <text x="16" y="20" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle">1</text>
+            <text x="30" y="20" fill="#34d399" font-size="8" font-weight="900">EMITTER (E): <tspan fill="#cbd5e1" font-weight="500">Nối Mass </tspan><tspan fill="#34d399" font-weight="800">Pin 6 (GND)</tspan></text>
+
+            <!-- Dòng 2: Chân 2 -->
+            <rect x="8" y="34" width="16" height="16" rx="3" fill="#be123c"/>
+            <text x="16" y="46" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle">2</text>
+            <text x="30" y="46" fill="#fb7185" font-size="8" font-weight="900">BASE (B): <tspan fill="#cbd5e1" font-weight="500">Trở 470Ω/1kΩ ➔ </tspan><tspan fill="#fb7185" font-weight="800">GPIO 17 (Pin 11)</tspan></text>
+
+            <!-- Dòng 3: Chân 3 -->
+            <rect x="8" y="60" width="16" height="16" rx="3" fill="#1d4ed8"/>
+            <text x="16" y="72" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle">3</text>
+            <text x="30" y="72" fill="#60a5fa" font-size="8" font-weight="900">COLLECTOR (C): <tspan fill="#cbd5e1" font-weight="500">Nối </tspan><tspan fill="#38bdf8" font-weight="800">4 Dây Đen (-) &amp; Diode</tspan></text>
+
+            <text x="138" y="90" fill="#facc15" font-size="7" font-weight="700" text-anchor="middle">🔒 Giữ nguyên thứ tự chân 1-E, 2-B, 3-C khi hàn vào mạch</text>
+          </g>
+        </g>
+
+        <!-- ================= PANEL 3: KÝ HIỆU TIÊU CHUẨN NPN BJT (BÊN PHẢI) ================= -->
+        <g transform="translate(785, 15)">
+          <rect x="0" y="0" width="280" height="340" rx="10" fill="#111827" stroke="#f43f5e" stroke-width="1.8" filter="url(#vg-card-shadow)"/>
+          <rect x="0" y="0" width="280" height="30" rx="8" fill="#881337"/>
+          <text x="140" y="20" fill="#ffe4e6" font-size="11" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3. KÝ HIỆU CHUẨN QUỐC TẾ (NPN)</text>
+
+          <!-- KÝ HIỆU TRÒN NPN CHUẨN (GIỐNG 100% ẢNH MẪU USER GỬI) -->
+          <g transform="translate(140, 126)">
+            <!-- Nhãn COLLECTOR và số 3 ở đỉnh -->
+            <text x="0" y="-68" fill="#38bdf8" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">COLLECTOR</text>
+            <text x="0" y="-56" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">3</text>
+            <!-- Chân Collector từ đỉnh vào vòng tròn -->
+            <line x1="0" y1="-50" x2="0" y2="-25" stroke="#38bdf8" stroke-width="3"/>
+
+            <!-- Nhãn BASE và số 2 ở bên trái -->
+            <text x="-70" y="-5" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2</text>
+            <text x="-70" y="8" fill="#fb7185" font-size="8.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">BASE</text>
+            <!-- Chân Base từ bên trái vào vòng tròn -->
+            <line x1="-50" y1="0" x2="-20" y2="0" stroke="#fb7185" stroke-width="3"/>
+
+            <!-- Vòng tròn biểu tượng NPN -->
+            <circle cx="0" cy="0" r="35" fill="#1e293b" stroke="#ffffff" stroke-width="2.2"/>
+
+            <!-- Thanh đứng Base dày ở giữa -->
+            <line x1="-10" y1="-18" x2="-10" y2="18" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+
+            <!-- Đường chéo Collector đi lên -->
+            <line x1="-9" y1="-9" x2="15" y2="-24" stroke="#ffffff" stroke-width="2.8"/>
+            <line x1="15" y1="-24" x2="0" y2="-25" stroke="#ffffff" stroke-width="2.8"/>
+
+            <!-- Đường chéo Emitter đi xuống có MŨI TÊN CHỈ RA NGOÀI -->
+            <line x1="-9" y1="9" x2="15" y2="24" stroke="#ffffff" stroke-width="2.8"/>
+            <line x1="15" y1="24" x2="0" y2="25" stroke="#ffffff" stroke-width="2.8"/>
+            <!-- Mũi tên Emitter chuẩn trỏ xuống góc phải -->
+            <polygon points="15,24 5,22 11,14" fill="#34d399"/>
+
+            <!-- Chân Emitter đi xuống đáy -->
+            <line x1="0" y1="25" x2="0" y2="50" stroke="#34d399" stroke-width="3"/>
+            <!-- Nhãn số 1 và EMITTER ở đáy -->
+            <text x="0" y="62" fill="#ffffff" font-size="12" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">1</text>
+            <text x="0" y="74" fill="#34d399" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">EMITTER</text>
+          </g>
+
+          <!-- Bảng tóm tắt chức năng 3 cực BJT NPN -->
+          <g transform="translate(10, 228)">
+            <rect x="0" y="0" width="260" height="98" rx="6" fill="#090d16" stroke="#374151" stroke-width="1"/>
+            <text x="10" y="18" fill="#f43f5e" font-size="8" font-weight="800">Quy tắc dòng điện NPN:</text>
+            <text x="10" y="34" fill="#cbd5e1" font-size="7.5">• <tspan fill="#fb7185" font-weight="800">Dòng Base (IB):</tspan> Từ GPIO 17 bơm vào chân 2.</text>
+            <text x="10" y="50" fill="#cbd5e1" font-size="7.5">• <tspan fill="#38bdf8" font-weight="800">Dòng Tải (IC):</tspan> Từ +5V qua motor vào chân 3.</text>
+            <text x="10" y="66" fill="#cbd5e1" font-size="7.5">• <tspan fill="#34d399" font-weight="800">Dòng Xả (IE):</tspan> Chân 1 xả toàn bộ dòng xuống GND.</text>
+            <text x="10" y="84" fill="#fde047" font-size="7.5" font-weight="700">➔ Đóng cắt tải 5V cực nhanh &amp; bảo vệ vi điều khiển!</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <!-- Cột 1: Hướng cầm 2N2222 & Quy tắc chân -->
         <div class="bg-[#0b1319] p-4 rounded-xl border border-emerald-900/60 space-y-3">
@@ -864,168 +1138,193 @@ finally:
     <text x="220" y="-11" fill="#cbd5e1" font-size="7" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">GND: PIN 6</text>
 
     <!-- ================= KHỐI ĐIỀU KHIỂN: 1x TRANSISTOR 2N2222 + TRỞ + DIODE (BÊN TRÁI) ================= -->
-    <g transform="translate(20, 50)">
-      <rect x="0" y="0" width="165" height="215" rx="8" fill="#0f172a" stroke="#34d399" stroke-width="1.8"/>
-      <text x="82" y="20" fill="#a7f3d0" font-size="9.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">TẦNG KÍCH 2N2222</text>
-      <text x="82" y="32" fill="#94a3b8" font-size="7" text-anchor="middle">Kéo Mass chung cho 4 Motor</text>
+    <g transform="translate(14, 44)">
+      <rect x="0" y="0" width="205" height="228" rx="8" fill="#0b1712" stroke="#34d399" stroke-width="1.8"/>
+      <rect x="0" y="0" width="205" height="22" rx="7" fill="#064e3b"/>
+      <text x="102" y="15" fill="#a7f3d0" font-size="9" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">TẦNG KÍCH 2N2222 (NPN BJT)</text>
 
-      <!-- Điện trở Base 470Ω - 1kΩ -->
-      <g transform="translate(15, 60)">
-        <rect x="0" y="0" width="45" height="20" rx="3" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
-        <text x="22" y="14" fill="#ffffff" font-size="8.5" font-weight="900" text-anchor="middle">470Ω</text>
-        <text x="22" y="-4" fill="#34d399" font-size="6.5" font-weight="700" text-anchor="middle">R_BASE</text>
+      <!-- 1. ĐIỆN TRỞ BASE 470Ω - 1kΩ -->
+      <g transform="translate(10, 48)">
+        <rect x="0" y="0" width="46" height="20" rx="3" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="23" y="14" fill="#fef08a" font-size="8" font-weight="900" text-anchor="middle">470Ω/1kΩ</text>
+        <text x="23" y="-3" fill="#34d399" font-size="6.5" font-weight="800" text-anchor="middle">R_BASE</text>
       </g>
-      <!-- Dây từ Pin 11 (local 65 -> inside g: 45) vào đầu trở (15) -->
-      <path d="M 45 -50 L 45 45 L 37 45 L 37 60" fill="none" stroke="#10b981" stroke-width="2.5"/>
+      <!-- Dây từ Pin 11 (inlet local 65 -> inside g: 51) vào đầu điện trở (x=10, y=58) -->
+      <path d="M 51 -44 L 51 32 L 33 32 L 33 48" fill="none" stroke="#10b981" stroke-width="2.5"/>
 
-      <!-- Transistor 2N2222 dạng vỏ TO-92 chuẩn trực quan -->
-      <g transform="translate(85, 115)">
-        <path d="M -30 -16 L 30 -16 A 30 30 0 0 1 -30 -16 Z" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-        <text x="0" y="-4" fill="#ffffff" font-size="10" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2N2222</text>
-        <text x="0" y="7" fill="#38bdf8" font-size="6.5" font-weight="700" text-anchor="middle">NPN (800mA)</text>
+      <!-- 2. KÝ HIỆU SƠ ĐỒ NGUYÊN LÝ NPN TRÒN (CHÂN 1-E, 2-B, 3-C) -->
+      <g transform="translate(75, 126)">
+        <!-- Vòng tròn transistor -->
+        <circle cx="0" cy="0" r="22" fill="#0f172a" stroke="#ffffff" stroke-width="1.8"/>
+        <!-- Thanh đứng Base -->
+        <line x1="-8" y1="-13" x2="-8" y2="13" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        <!-- Chân vào Base (từ trái) -->
+        <line x1="-22" y1="0" x2="-8" y2="0" stroke="#fb7185" stroke-width="2.5"/>
+        <text x="-25" y="-4" fill="#fb7185" font-size="7" font-weight="900" text-anchor="end">2:BASE</text>
 
-        <!-- 3 Chân: 1-E (Trái), 2-B (Giữa), 3-C (Phải) -->
-        <!-- Chân 1: Emitter (GND) -->
-        <g transform="translate(-20, 16)">
-          <line x1="0" y1="-8" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2"/>
-          <circle cx="0" cy="0" r="5" fill="#047857" stroke="#ffffff" stroke-width="1"/>
-          <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">E</text>
-          <text x="0" y="12" fill="#34d399" font-size="7" font-weight="900" text-anchor="middle">1:GND</text>
-        </g>
-        <!-- Chân 2: Base (Tín hiệu kích) -->
-        <g transform="translate(0, 16)">
-          <line x1="0" y1="-8" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2"/>
-          <circle cx="0" cy="0" r="5" fill="#be123c" stroke="#ffffff" stroke-width="1"/>
-          <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">B</text>
-          <text x="0" y="12" fill="#fb7185" font-size="7" font-weight="900" text-anchor="middle">2:Base</text>
-        </g>
-        <!-- Chân 3: Collector (Kéo Mass 4 Motor) -->
-        <g transform="translate(20, 16)">
-          <line x1="0" y1="-8" x2="0" y2="0" stroke="#cbd5e1" stroke-width="2"/>
-          <circle cx="0" cy="0" r="5" fill="#1d4ed8" stroke="#ffffff" stroke-width="1"/>
-          <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">C</text>
-          <text x="0" y="12" fill="#60a5fa" font-size="7" font-weight="900" text-anchor="middle">3:C(-)</text>
-        </g>
+        <!-- Nhánh Collector đi lên -->
+        <line x1="-6" y1="-7" x2="10" y2="-17" stroke="#38bdf8" stroke-width="2.2"/>
+        <line x1="10" y1="-17" x2="10" y2="-28" stroke="#38bdf8" stroke-width="2.5"/>
+        <text x="13" y="-22" fill="#38bdf8" font-size="7" font-weight="900">3:COLLECTOR</text>
+
+        <!-- Nhánh Emitter đi xuống kèm MŨI TÊN CHỈ RA NGOÀI -->
+        <line x1="-6" y1="7" x2="10" y2="17" stroke="#34d399" stroke-width="2.2"/>
+        <!-- Mũi tên Emitter -->
+        <polygon points="10,17 3,14 6,9" fill="#34d399"/>
+        <line x1="10" y1="17" x2="10" y2="30" stroke="#34d399" stroke-width="2.5"/>
+        <text x="13" y="27" fill="#34d399" font-size="7" font-weight="900">1:EMITTER</text>
+
+        <!-- Tên loại Transistor -->
+        <text x="0" y="3" fill="#cbd5e1" font-size="6.5" font-weight="900" text-anchor="middle">2N2222</text>
       </g>
 
-      <!-- Dây nối từ trở 470Ω vào Chân 2 (Base) -->
-      <path d="M 37 80 L 37 95 L 85 95 L 85 123" fill="none" stroke="#10b981" stroke-width="2.5"/>
+      <!-- Dây nối từ trở Base (33, 68) vào Chân 2 Base (53, 126) -->
+      <path d="M 33 68 L 33 126 L 53 126" fill="none" stroke="#fb7185" stroke-width="2.5"/>
 
-      <!-- Dây nối Chân 1 (Emitter) sang Mass Pin 6 -->
-      <!-- Inlet GND at local 220 -> inside g: 200 -->
-      <path d="M 65 131 L 65 185 L 140 185 L 140 -50" fill="none" stroke="#64748b" stroke-width="2.5"/>
+      <!-- Dây nối Chân 1 (Emitter) sang GND Pin 6 -->
+      <!-- Emitter exit at (85, 156), GND inlet at (220-14 = 206, -44) -->
+      <path d="M 85 156 L 85 210 L 195 210 L 195 -44" fill="none" stroke="#64748b" stroke-width="2.5"/>
+      <circle cx="85" cy="156" r="3" fill="#34d399"/>
+      <circle cx="195" cy="210" r="3" fill="#64748b"/>
 
-      <!-- Diode 1N4148 Dập Xung Song Song Ngược Cực -->
-      <g transform="translate(130, 60)">
-        <rect x="0" y="0" width="16" height="28" rx="2" fill="#ea580c" stroke="#fed7aa" stroke-width="1"/>
-        <line x1="0" y1="8" x2="16" y2="8" stroke="#ffffff" stroke-width="2.5"/>
-        <text x="8" y="40" fill="#fdba74" font-size="7" font-weight="900" text-anchor="middle">1N4148</text>
-        <text x="8" y="49" fill="#94a3b8" font-size="6" text-anchor="middle">(Dập xung)</text>
+      <!-- 3. HÌNH VẼ 3D VỎ TO-92 THỰC TẾ (BÊN PHẢI HỘP ĐIỀU KHIỂN) -->
+      <g transform="translate(155, 95)">
+        <path d="M -22 -14 C -22 -24, 22 -24, 22 -14 L 22 10 C 22 14, -22 14, -22 10 Z" fill="#1e293b" stroke="#64748b" stroke-width="1.2"/>
+        <rect x="-20" y="-12" width="40" height="20" rx="2" fill="#0f172a" stroke="#475569" stroke-width="0.8"/>
+        <text x="0" y="-1" fill="#ffffff" font-size="7.5" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">2N2222</text>
+        <text x="0" y="6" fill="#38bdf8" font-size="5" font-weight="700" text-anchor="middle">TO-92</text>
+        <!-- 3 Chân chúc xuống -->
+        <line x1="-12" y1="12" x2="-16" y2="34" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="0" y1="12" x2="0" y2="34" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="12" y1="12" x2="16" y2="34" stroke="#cbd5e1" stroke-width="2"/>
+
+        <circle cx="-16" cy="38" r="4" fill="#047857"/>
+        <text x="-16" y="41" fill="#ffffff" font-size="5.5" font-weight="900" text-anchor="middle">1</text>
+
+        <circle cx="0" cy="38" r="4" fill="#be123c"/>
+        <text x="0" y="41" fill="#ffffff" font-size="5.5" font-weight="900" text-anchor="middle">2</text>
+
+        <circle cx="16" cy="38" r="4" fill="#1d4ed8"/>
+        <text x="16" y="41" fill="#ffffff" font-size="5.5" font-weight="900" text-anchor="middle">3</text>
+
+        <text x="0" y="49" fill="#94a3b8" font-size="5" text-anchor="middle">1-E | 2-B | 3-C</text>
       </g>
 
-      <!-- Cathode (vạch trắng - đầu trên Diode) nối vào +5V Pin 4 -->
-      <path d="M 138 60 L 138 45 L 120 45 L 120 -50" fill="none" stroke="#ef4444" stroke-width="2.5"/>
-      <!-- Anode (đầu dưới Diode) nối vào Chân 3 Collector (105, 131) -->
-      <path d="M 138 88 L 138 131 L 105 131" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+      <!-- 4. DIODE 1N4148 DẬP XUNG NGƯỢC (GÓC DƯỚI BÊN PHẢI KHỐI) -->
+      <g transform="translate(142, 160)">
+        <rect x="0" y="0" width="26" height="15" rx="2" fill="#ea580c" stroke="#fed7aa" stroke-width="1"/>
+        <line x1="6" y1="0" x2="6" y2="15" stroke="#ffffff" stroke-width="2.5"/>
+        <text x="16" y="11" fill="#ffffff" font-size="6" font-weight="900">1N4148</text>
+        <!-- Cathode (bên trái - có vạch) nối lên +5V -->
+        <path d="M 6 0 L 6 -115 L -16 -115 L -16 -88" fill="none" stroke="#ef4444" stroke-width="2"/>
+        <!-- Anode (bên phải - không vạch) nối vào Collector -->
+        <path d="M 26 8 L 45 8" fill="none" stroke="#38bdf8" stroke-width="2"/>
+      </g>
+
+      <!-- Dây Collector Chân 3 (85, 98) chạy ra thanh Bus Âm tải -->
+      <!-- Điểm ra Collector nối qua Diode Anode và chạy ra Bus Collector -->
+      <path d="M 85 98 L 85 78 L 125 78 L 125 168 L 205 168" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+      <circle cx="85" cy="98" r="3" fill="#38bdf8"/>
     </g>
 
     <!-- ================= 2 THANH RAY NGUỒN SONG SONG & 4 ĐỘNG CƠ RUNG (BÊN PHẢI) ================= -->
     
-    <!-- THANH RAY 1: BUS DƯƠNG +5V (DÂY ĐỎ CHUNG) - Nằm ở y=60 chạy từ x=205 đến x=435 -->
-    <path d="M 140 0 L 140 60 L 435 60" fill="none" stroke="#ef4444" stroke-width="4"/>
-    <rect x="235" y="48" width="165" height="15" rx="3" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
-    <text x="317" y="59" fill="#ffedd5" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">THANH RAY +5V CHUNG (DÂY ĐỎ)</text>
+    <!-- THANH RAY 1: BUS DƯƠNG +5V (DÂY ĐỎ CHUNG) - Nằm ở y=56 chạy từ x=140 đến x=446 -->
+    <path d="M 140 0 L 140 56 L 446 56" fill="none" stroke="#ef4444" stroke-width="3.5"/>
+    <rect x="238" y="46" width="170" height="15" rx="3" fill="#7f1d1d" stroke="#ef4444" stroke-width="1"/>
+    <text x="323" y="57" fill="#ffedd5" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">THANH RAY +5V CHUNG (DÂY ĐỎ)</text>
 
-    <!-- THANH RAY 2: BUS ÂM KÉO MASS (DÂY ĐEN CHUNG TỪ COLLECTOR) - Nằm ở y=250 chạy từ x=125 đến x=435 -->
-    <path d="M 125 181 L 185 181 L 185 250 L 435 250" fill="none" stroke="#38bdf8" stroke-width="4"/>
-    <rect x="225" y="242" width="185" height="15" rx="3" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1"/>
-    <text x="317" y="253" fill="#e0f2fe" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">THANH RAY COLLECTOR 2N2222 (DÂY ĐEN)</text>
+    <!-- THANH RAY 2: BUS ÂM KÉO MASS (DÂY ĐEN CHUNG TỪ COLLECTOR) - Nằm ở y=256 chạy từ x=219 đến x=446 -->
+    <path d="M 219 212 L 230 212 L 230 256 L 446 256" fill="none" stroke="#38bdf8" stroke-width="3.5"/>
+    <rect x="228" y="248" width="190" height="15" rx="3" fill="#0c4a6e" stroke="#38bdf8" stroke-width="1"/>
+    <text x="323" y="259" fill="#e0f2fe" font-size="8" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">THANH RAY COLLECTOR 2N2222 (DÂY ĐEN)</text>
 
     <!-- 4 ĐỘNG CƠ RUNG MẮC SONG SONG BẮC CẦU GIỮA 2 THANH RAY -->
     
-    <!-- 1. MOTOR 1: TRƯỚC (x=230) -->
-    <g transform="translate(230, 155)">
-      <!-- Cầu dây Đỏ (+) từ thanh ray +5V (y=-95) xuống cực (+) motor -->
-      <line x1="0" y1="-95" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
-      <circle cx="0" cy="-95" r="3.5" fill="#ef4444"/>
-      <!-- Cầu dây Đen (-) từ cực (-) motor xuống thanh ray Collector (y=95) -->
-      <line x1="0" y1="20" x2="0" y2="95" stroke="#38bdf8" stroke-width="2.5"/>
-      <circle cx="0" cy="95" r="3.5" fill="#38bdf8"/>
+    <!-- 1. MOTOR 1: TRƯỚC (x=246) -->
+    <g transform="translate(246, 156)">
+      <!-- Cầu dây Đỏ (+) từ thanh ray +5V (y=-100) xuống cực (+) motor -->
+      <line x1="0" y1="-100" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
+      <circle cx="0" cy="-100" r="3.5" fill="#ef4444"/>
+
+      <!-- Cầu dây Đen (-) từ cực (-) motor xuống thanh ray Collector (y=100) -->
+      <line x1="0" y1="20" x2="0" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+      <circle cx="0" cy="100" r="3.5" fill="#38bdf8"/>
 
       <!-- Thân Motor Đồng Xu -->
-      <circle cx="0" cy="0" r="20" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#0891b2" stroke-width="1"/>
-      <circle cx="0" cy="0" r="4.5" fill="#facc15"/>
-      <circle cx="0" cy="-14" r="3" fill="#ef4444"/>
-      <circle cx="0" cy="14" r="3" fill="#38bdf8"/>
+      <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+      <circle cx="0" cy="0" r="11" fill="#0f172a" stroke="#0891b2" stroke-width="1"/>
+      <circle cx="0" cy="0" r="4" fill="#facc15"/>
+      <circle cx="0" cy="-13" r="2.8" fill="#ef4444"/>
+      <circle cx="0" cy="13" r="2.8" fill="#38bdf8"/>
       <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">M1</text>
       <!-- Nhãn -->
       <rect x="-24" y="-35" width="48" height="13" rx="2" fill="#083344" stroke="#06b6d4" stroke-width="0.8"/>
       <text x="0" y="-26" fill="#a5f3fc" font-size="6.5" font-weight="900" text-anchor="middle">TRƯỚC</text>
     </g>
 
-    <!-- 2. MOTOR 2: PHẢI (x=290) -->
-    <g transform="translate(290, 155)">
-      <line x1="0" y1="-95" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
-      <circle cx="0" cy="-95" r="3.5" fill="#ef4444"/>
-      <line x1="0" y1="20" x2="0" y2="95" stroke="#38bdf8" stroke-width="2.5"/>
-      <circle cx="0" cy="95" r="3.5" fill="#38bdf8"/>
+    <!-- 2. MOTOR 2: PHẢI (x=304) -->
+    <g transform="translate(304, 156)">
+      <line x1="0" y1="-100" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
+      <circle cx="0" cy="-100" r="3.5" fill="#ef4444"/>
+      <line x1="0" y1="20" x2="0" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+      <circle cx="0" cy="100" r="3.5" fill="#38bdf8"/>
 
-      <circle cx="0" cy="0" r="20" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#d97706" stroke-width="1"/>
-      <circle cx="0" cy="0" r="4.5" fill="#facc15"/>
-      <circle cx="0" cy="-14" r="3" fill="#ef4444"/>
-      <circle cx="0" cy="14" r="3" fill="#38bdf8"/>
+      <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+      <circle cx="0" cy="0" r="11" fill="#0f172a" stroke="#d97706" stroke-width="1"/>
+      <circle cx="0" cy="0" r="4" fill="#facc15"/>
+      <circle cx="0" cy="-13" r="2.8" fill="#ef4444"/>
+      <circle cx="0" cy="13" r="2.8" fill="#38bdf8"/>
       <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">M2</text>
       <rect x="-22" y="-35" width="44" height="13" rx="2" fill="#451a03" stroke="#f59e0b" stroke-width="0.8"/>
       <text x="0" y="-26" fill="#fde68a" font-size="6.5" font-weight="900" text-anchor="middle">PHẢI</text>
     </g>
 
-    <!-- 3. MOTOR 3: SAU (x=350) -->
-    <g transform="translate(350, 155)">
-      <line x1="0" y1="-95" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
-      <circle cx="0" cy="-95" r="3.5" fill="#ef4444"/>
-      <line x1="0" y1="20" x2="0" y2="95" stroke="#38bdf8" stroke-width="2.5"/>
-      <circle cx="0" cy="95" r="3.5" fill="#38bdf8"/>
+    <!-- 3. MOTOR 3: SAU (x=362) -->
+    <g transform="translate(362, 156)">
+      <line x1="0" y1="-100" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
+      <circle cx="0" cy="-100" r="3.5" fill="#ef4444"/>
+      <line x1="0" y1="20" x2="0" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+      <circle cx="0" cy="100" r="3.5" fill="#38bdf8"/>
 
-      <circle cx="0" cy="0" r="20" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#7c3aed" stroke-width="1"/>
-      <circle cx="0" cy="0" r="4.5" fill="#facc15"/>
-      <circle cx="0" cy="-14" r="3" fill="#ef4444"/>
-      <circle cx="0" cy="14" r="3" fill="#38bdf8"/>
+      <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+      <circle cx="0" cy="0" r="11" fill="#0f172a" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="0" cy="0" r="4" fill="#facc15"/>
+      <circle cx="0" cy="-13" r="2.8" fill="#ef4444"/>
+      <circle cx="0" cy="13" r="2.8" fill="#38bdf8"/>
       <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">M3</text>
       <rect x="-22" y="-35" width="44" height="13" rx="2" fill="#2e1065" stroke="#8b5cf6" stroke-width="0.8"/>
       <text x="0" y="-26" fill="#ddd6fe" font-size="6.5" font-weight="900" text-anchor="middle">SAU</text>
     </g>
 
-    <!-- 4. MOTOR 4: TRÁI (x=410) -->
-    <g transform="translate(410, 155)">
-      <line x1="0" y1="-95" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
-      <circle cx="0" cy="-95" r="3.5" fill="#ef4444"/>
-      <line x1="0" y1="20" x2="0" y2="95" stroke="#38bdf8" stroke-width="2.5"/>
-      <circle cx="0" cy="95" r="3.5" fill="#38bdf8"/>
+    <!-- 4. MOTOR 4: TRÁI (x=420) -->
+    <g transform="translate(420, 156)">
+      <line x1="0" y1="-100" x2="0" y2="-20" stroke="#ef4444" stroke-width="2.5"/>
+      <circle cx="0" cy="-100" r="3.5" fill="#ef4444"/>
+      <line x1="0" y1="20" x2="0" y2="100" stroke="#38bdf8" stroke-width="2.5"/>
+      <circle cx="0" cy="100" r="3.5" fill="#38bdf8"/>
 
-      <circle cx="0" cy="0" r="20" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#059669" stroke-width="1"/>
-      <circle cx="0" cy="0" r="4.5" fill="#facc15"/>
-      <circle cx="0" cy="-14" r="3" fill="#ef4444"/>
-      <circle cx="0" cy="14" r="3" fill="#38bdf8"/>
+      <circle cx="0" cy="0" r="19" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+      <circle cx="0" cy="0" r="11" fill="#0f172a" stroke="#059669" stroke-width="1"/>
+      <circle cx="0" cy="0" r="4" fill="#facc15"/>
+      <circle cx="0" cy="-13" r="2.8" fill="#ef4444"/>
+      <circle cx="0" cy="13" r="2.8" fill="#38bdf8"/>
       <text x="0" y="3" fill="#ffffff" font-size="6.5" font-weight="900" text-anchor="middle">M4</text>
       <rect x="-22" y="-35" width="44" height="13" rx="2" fill="#064e3b" stroke="#10b981" stroke-width="0.8"/>
       <text x="0" y="-26" fill="#6ee7b7" font-size="6.5" font-weight="900" text-anchor="middle">TRÁI</text>
     </g>
 
     <!-- HƯỚNG DẪN ĐẤU DÂY CHI TIẾT MẮC SONG SONG (DƯỚI ĐÁY CARD) -->
-    <g transform="translate(15, 275)">
-      <rect x="0" y="0" width="430" height="170" rx="6" fill="#0f172a" stroke="#059669" stroke-width="1.2"/>
-      <text x="12" y="20" fill="#34d399" font-size="9" font-weight="900">★ NGUYÊN LÝ MẠCH 4 MOTOR SONG SONG (DÙNG 1x 2N2222):</text>
-      <text x="12" y="40" fill="#cbd5e1" font-size="8.5">• <tspan fill="#f87171" font-weight="800">Dây ĐỎ (+) 4 Motor &amp; Cathode Diode (vạch trắng):</tspan> Hàn chụm vào <tspan fill="#f87171" font-weight="800">+5V (Pin 4)</tspan>.</text>
-      <text x="12" y="60" fill="#cbd5e1" font-size="8.5">• <tspan fill="#38bdf8" font-weight="800">Dây ĐEN (-) 4 Motor &amp; Anode Diode (không vạch):</tspan> Hàn chụm vào <tspan fill="#38bdf8" font-weight="800">Chân 3 (C) 2N2222</tspan>.</text>
-      <text x="12" y="80" fill="#cbd5e1" font-size="8.5">• <tspan fill="#cbd5e1" font-weight="800">Chân 1 (Emitter 2N2222):</tspan> Nối Mass <tspan fill="#cbd5e1" font-weight="800">Pin 6 (GND Pi 4)</tspan>.</text>
-      <text x="12" y="100" fill="#cbd5e1" font-size="8.5">• <tspan fill="#fde047" font-weight="800">Chân 2 (Base 2N2222):</tspan> Qua trở <tspan fill="#fde047" font-weight="800">470Ω - 1kΩ</tspan> cắm vào duy nhất <tspan fill="#fde047" font-weight="800">Pin 11 (GPIO 17)</tspan>.</text>
-      <text x="12" y="120" fill="#a5f3fc" font-size="8">⚡ Điện áp: Mỗi motor nhận đủ 5V. Tổng dòng tiêu thụ: ~320mA (2N2222 chịu tối đa 800mA).</text>
-      <text x="12" y="138" fill="#facc15" font-size="8">🛡️ Diode 1N4148 dập triệt để tia lửa xung ngược cảm ứng bảo vệ an toàn 100% cho 2N2222.</text>
-      <text x="12" y="156" fill="#4ade80" font-size="8">🔔 Cơ chế: Khi AI phát hiện nguy cơ va chạm ➔ Kích Pin 11 = HIGH ➔ Cả 4 motor đồng loạt rung!</text>
+    <g transform="translate(14, 278)">
+      <rect x="0" y="0" width="432" height="170" rx="6" fill="#0f172a" stroke="#059669" stroke-width="1.2"/>
+      <text x="12" y="19" fill="#34d399" font-size="9" font-weight="900">★ NGUYÊN LÝ MẠCH 4 MOTOR SONG SONG (DÙNG 1x 2N2222):</text>
+      <text x="12" y="38" fill="#cbd5e1" font-size="8.5">• <tspan fill="#f87171" font-weight="800">Dây ĐỎ (+) 4 Motor &amp; Cathode Diode (vạch trắng):</tspan> Hàn chụm vào <tspan fill="#f87171" font-weight="800">+5V (Pin 4)</tspan>.</text>
+      <text x="12" y="58" fill="#cbd5e1" font-size="8.5">• <tspan fill="#38bdf8" font-weight="800">Dây ĐEN (-) 4 Motor &amp; Anode Diode (không vạch):</tspan> Hàn chụm vào <tspan fill="#38bdf8" font-weight="800">Chân 3 (C) 2N2222</tspan>.</text>
+      <text x="12" y="78" fill="#cbd5e1" font-size="8.5">• <tspan fill="#cbd5e1" font-weight="800">Chân 1 (Emitter 2N2222):</tspan> Nối Mass <tspan fill="#cbd5e1" font-weight="800">Pin 6 (GND Pi 4)</tspan>.</text>
+      <text x="12" y="98" fill="#cbd5e1" font-size="8.5">• <tspan fill="#fde047" font-weight="800">Chân 2 (Base 2N2222):</tspan> Qua trở <tspan fill="#fde047" font-weight="800">470Ω - 1kΩ</tspan> cắm vào duy nhất <tspan fill="#fde047" font-weight="800">Pin 11 (GPIO 17)</tspan>.</text>
+      <text x="12" y="118" fill="#a5f3fc" font-size="8">⚡ Điện áp: Mỗi motor nhận đủ 5V. Tổng dòng tiêu thụ: ~320mA (2N2222 chịu tối đa 800mA).</text>
+      <text x="12" y="136" fill="#facc15" font-size="8">🛡️ Diode 1N4148 dập triệt để tia lửa xung ngược cảm ứng bảo vệ an toàn 100% cho 2N2222.</text>
+      <text x="12" y="154" fill="#4ade80" font-size="8">🔔 Cơ chế: Khi AI phát hiện nguy cơ va chạm ➔ Kích Pin 11 = HIGH ➔ Cả 4 motor đồng loạt rung!</text>
     </g>
   </g>
 
