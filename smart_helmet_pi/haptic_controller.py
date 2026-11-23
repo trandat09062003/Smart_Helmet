@@ -1,6 +1,8 @@
 """
 SMART HELMET 360 - BỘ ĐIỀU KHIỂN RUNG XÚC GIÁC (HAPTIC) & BUZZER
-Hỗ trợ 4 hướng: TRƯỚC, PHẢI, SAU, TRÁI
+Hỗ trợ cả chế độ:
+  1. PARALLEL: 4 Motor rung mắc song song điều khiển bằng 1 chân GPIO 17 (Pin 11) qua 1 Transistor 2N2222
+  2. DISCRETE: 4 Motor rung độc lập (Trước, Phải, Sau, Trái)
 """
 import time
 import threading
@@ -9,7 +11,7 @@ import config
 
 logger = logging.getLogger("HapticController")
 
-# Kiểm tra thư viện GPIO (RPi.GPIO hoặc gpiozero hoặc Mock trên máy tính thử nghiệm)
+# Kiểm tra thư viện GPIO (RPi.GPIO hoặc Mock trên PC)
 GPIO_AVAILABLE = False
 try:
     import RPi.GPIO as GPIO
@@ -35,10 +37,16 @@ class HapticController:
 
         if self.is_hardware:
             try:
-                for direction, pin in config.MOTOR_PINS.items():
+                # Khởi tạo các chân GPIO motor duy nhất (tránh setup trùng chân khi chạy song song)
+                unique_pins = set(config.MOTOR_PINS.values())
+                for pin in unique_pins:
                     GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                
+                # Khởi tạo chân Còi Buzzer
                 GPIO.setup(config.PIN_BUZZER, GPIO.OUT, initial=GPIO.LOW)
-                logger.info("Khởi tạo các chân GPIO Motor & Buzzer thành công.")
+                
+                mode_str = "4 Motor Rung Mắc Song Song (1x 2N2222 tại GPIO 17)" if config.MOTOR_MODE == 'PARALLEL' else "4 Motor Rung Độc Lập"
+                logger.info(f"Khởi tạo GPIO thành công. Chế độ: {mode_str}.")
             except Exception as e:
                 logger.error(f"Lỗi cấu hình GPIO: {e}. Chuyển sang mô phỏng.")
                 self.is_hardware = False
@@ -46,19 +54,28 @@ class HapticController:
     def _set_pin(self, target, state: bool):
         with self._lock:
             self.active_status[target] = state
-        if self.is_hardware:
-            try:
-                pin = config.MOTOR_PINS.get(target, config.PIN_BUZZER if target == 'BUZZER' else None)
-                if pin is not None:
-                    GPIO.output(pin, GPIO.HIGH if state else GPIO.LOW)
-            except Exception as e:
-                logger.error(f"Lỗi điều khiển GPIO {target}: {e}")
+            
+            if self.is_hardware:
+                try:
+                    if target == 'BUZZER':
+                        GPIO.output(config.PIN_BUZZER, GPIO.HIGH if state else GPIO.LOW)
+                    else:
+                        if config.MOTOR_MODE == 'PARALLEL':
+                            # Nếu bất kỳ hướng nào bật -> Bật GPIO 17
+                            any_motor_on = any(self.active_status[d] for d in ['FRONT', 'RIGHT', 'REAR', 'LEFT'])
+                            GPIO.output(config.PIN_MOTOR_PARALLEL, GPIO.HIGH if any_motor_on else GPIO.LOW)
+                        else:
+                            pin = config.MOTOR_PINS.get(target)
+                            if pin is not None:
+                                GPIO.output(pin, GPIO.HIGH if state else GPIO.LOW)
+                except Exception as e:
+                    logger.error(f"Lỗi điều khiển GPIO {target}: {e}")
 
     def vibrate(self, direction: str, pattern: str = "warning", duration: float = 0.3):
         """
-        Kích hoạt rung haptic theo hướng và mẫu rung (Chạy trên luồng nền để không lag AI)
+        Kích hoạt rung haptic theo hướng và mẫu rung (Chạy trên luồng nền để không nghẽn AI)
         - direction: 'FRONT', 'RIGHT', 'REAR', 'LEFT'
-        - pattern: 'notice' (rung nhẹ 1 nhịp), 'warning' (rung 2 nhịp), 'danger' (rung dồn dập)
+        - pattern: 'notice' (rung nhẹ 1 nhịp), 'warning' (rung 2 nhịp), 'danger' (rung dồn dập 3 nhịp)
         """
         if direction not in config.MOTOR_PINS:
             return
@@ -76,13 +93,13 @@ class HapticController:
                         self._set_pin(direction, True)
                         time.sleep(0.18)
                         self._set_pin(direction, False)
-                        time.sleep(0.1)
+                        time.sleep(0.10)
 
                 elif pattern == "danger":
                     # Rung dồn dập 3 nhịp mạnh
                     for _ in range(3):
                         self._set_pin(direction, True)
-                        time.sleep(0.2)
+                        time.sleep(0.22)
                         self._set_pin(direction, False)
                         time.sleep(0.08)
                 else:
@@ -103,7 +120,7 @@ class HapticController:
                     self._set_pin('BUZZER', True)
                     time.sleep(duration)
                     self._set_pin('BUZZER', False)
-                    time.sleep(0.1)
+                    time.sleep(0.10)
             finally:
                 self._set_pin('BUZZER', False)
 
@@ -111,9 +128,8 @@ class HapticController:
         t.start()
 
     def vibrate_all(self, duration: float = 0.5):
-        """Rung toàn bộ 4 motor (Dùng khi cảnh báo khẩn cấp hoặc khởi động hệ thống)"""
-        for direction in config.MOTOR_PINS.keys():
-            self.vibrate(direction, pattern="danger", duration=duration)
+        """Rung toàn bộ cụm motor (Dùng khi cảnh báo khẩn cấp hoặc khởi động hệ thống)"""
+        self.vibrate('FRONT', pattern="danger", duration=duration)
 
     def get_status(self):
         """Lấy trạng thái hiện tại của các motor để hiển thị lên Web Dashboard"""

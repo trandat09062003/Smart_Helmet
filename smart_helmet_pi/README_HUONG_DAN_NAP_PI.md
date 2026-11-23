@@ -1,131 +1,137 @@
-# HƯỚNG DẪN CHI TIẾT NẠP CODE VÀO RASPBERRY PI
-## DỰ ÁN SMART HELMET 360° (MŨ BẢO HIỂM THÔNG MINH CHO NGƯỜI KHIẾM THỊ)
+# HƯỚNG DẪN CHI TIẾT NẠP CODE & VẬN HÀNH TRÊN RASPBERRY PI 4
+## DỰ ÁN SMART HELMET 360° AI (MŨ BẢO HIỂM THÔNG MINH BẢO VỆ NGƯỜI ĐI XE & KHIẾM THỊ)
 
-Tài liệu này hướng dẫn chi tiết từng bước từ đấu nối chân phần cứng, sao chép mã nguồn vào Raspberry Pi (Pi 4 hoặc Pi 5) cho đến khi hệ thống tự động khởi động chạy ngầm.
-
----
-
-### BƯỚC 1: SƠ ĐỒ ĐẤU NỐI DÂY PHẦN CỨNG (GPIO PINOUT)
-
-> 💡 **CẨM NANG ĐẤU DÂY TƯƠNG TÁC:** Bạn có thể mở trực tiếp file **`HUONG_DAN_NOI_CHAN.html`** ở thư mục gốc để xem sơ đồ 40 chân màu sắc trực quan, bấm chọn từng chân để copy mã test terminal!
-
-Trên đầu nối 40 chân GPIO của Raspberry Pi:
-
-| Thiết Bị | Chân GPIO (BCM) | Chân Vật Lý (Physical Pin) | Ghi Chú Đấu Nối |
-| :--- | :--- | :--- | :--- |
-| **Motor Trước (Front)** | **GPIO 17** | Chân 11 | Kích qua cổng Collector/Drain transistor mạch đệm |
-| **Motor Phải (Right)** | **GPIO 27** | Chân 13 | Vị trí thái dương phải của mũ |
-| **Motor Sau (Rear)** | **GPIO 22** | Chân 15 | Vị trí gáy sau của mũ |
-| **Motor Trái (Left)** | **GPIO 23** | Chân 16 | Vị trí thái dương trái của mũ |
-| **Còi Báo Buzzer** | **GPIO 24** | Chân 18 | Còi chíp 5V chủ động (Active Buzzer) |
-| **Nút Nhấn Khẩn Cấp SOS** | **GPIO 25** | Chân 22 | 1 chân vào GPIO 25, 1 chân vào **GND (Chân 20)** |
-| **Nguồn Cấp Phụ Trợ** | **5V Power** | Chân 2 hoặc Chân 4 | Cấp nguồn cho mạch đệm motor |
-| **Đường Nối Đất Chung** | **GND** | Chân 6, 9, 14, 20, 25, 30 | Nối mass chung toàn bộ hệ thống |
-
-> ⚠️ **LƯU Ý QUAN TRỌNG:** Tuyệt đối **không** nối trực tiếp chân GPIO của Pi vào motor rung (vì motor tiêu thụ dòng 60–100mA, trong khi chân GPIO của Pi chỉ chịu tối đa 16mA). Bắt buộc phải qua mạch đệm Transistor NPN (2N2222, SS8050) hoặc IC đệm ULN2003 / MOSFET đã vẽ trong mạch Altium.
+Tài liệu này hướng dẫn chi tiết từ đấu nối dây phần cứng thực tế, tải mã nguồn từ GitHub về Raspberry Pi 4, kiểm tra chẩn đoán phần cứng cho đến khi khởi động toàn bộ hệ thống Edge AI 3 Camera.
 
 ---
 
-### BƯỚC 2: CẮM 3 CAMERA USB VÀO BỘ CHIA USB HUB (BỐ TRÍ TAM GIÁC 120°)
+### BƯỚC 1: SƠ ĐỒ ĐẤU NỐI DÂY THỰC TẾ TRÊN ĐẦU NỐI 40 CHÂN GPIO (J8)
 
-1. Bố trí 3 mắt camera theo hình tam giác đều ($120^\circ$ mỗi góc) quanh đỉnh mũ:
-   - **Cam 1 (TRƯỚC - $0^\circ$):** Hướng thẳng chính diện phía trước mặt.
-   - **Cam 2 (SAU-PHẢI - $120^\circ$):** Hướng chếch sau vai phải.
-   - **Cam 3 (SAU-TRÁI - $240^\circ$ hay $-120^\circ$):** Hướng chếch sau vai trái.
-   *(Thuật toán AI tự động phân vùng không gian để quét kín 100% không gian 360° và kích hoạt đầy đủ 4 kênh motor rung: TRƯỚC, PHẢI, SAU, TRÁI).*
+> 💡 **TRA CỨU TRỰC QUAN:** Mở file **`so_do_noi_chan_smart_helmet_pi.html`** trên trình duyệt để xem sơ đồ màu 40 chân và bảng nối chi tiết!
 
-2. Cắm 3 mắt camera USB vào các cổng trên **Bộ chia USB Hub (USB 3.0 SuperSpeed Hub)** theo thứ tự:
-   - Cổng **USB1**: Mắt camera **TRƯỚC** (`FRONT` - $0^\circ$)
-   - Cổng **USB2**: Mắt camera **SAU-PHẢI** (`REAR_RIGHT` - $120^\circ$)
-   - Cổng **USB3**: Mắt camera **SAU-TRÁI** (`REAR_LEFT` - $240^\circ$)
+Toàn bộ hệ thống chỉ sử dụng đúng **10 chân GPIO**:
+* **HÀNG TRÊN (Chân Lẻ, phía trong bo mạch gần SoC):** Cọc **PIN 1** và **PIN 11**.
+* **HÀNG DƯỚI (Chân Chẵn, sát mép ngoài bàn):** Cọc **PIN 2, 4, 6, 8, 10, 18, 20, 22**.
 
-3. Cắm cáp ngõ ra của USB Hub vào cổng **USB 3.0 (cổng màu xanh dương)** trên Raspberry Pi 4 để đảm bảo băng thông truyền tải cao nhất.
-4. Chạy script chẩn đoán tự động để test đồng thời cả 3 camera:
-   ```bash
-   python3 test_cameras.py
-   ```
-   *Script sẽ kiểm tra luồng V4L2-MMAP Low-FPS (6 FPS) ổn định cho cả 3 camera.*
+| Cọc PIN # | Vị Trí Cọc Thực Tế | Tên Chân (BCM) | Màu Dây Cắm | Linh Kiện Đích & Chân Nối | Chức Năng Kỹ Thuật |
+| :---: | :--- | :--- | :---: | :--- | :--- |
+| **PIN 1** | Hàng Trên (ngoài cùng Phải) | `3V3_PWR` | 🟠 Cam | Module GPS NEO-6M (Chân `VCC`) | Cấp nguồn 3.3V nuôi module GPS. |
+| **PIN 2** | Hàng Dưới (ngoài cùng Phải) | `5V_PWR_IN` | 🔴 Đỏ to (20AWG) | Mạch Buck XL4015 (Cực `OUT+`) | **Nguồn chính 5.10V nuôi Pi 4**. *Đo VOM trước khi cắm!* |
+| **PIN 4** | Hàng Dưới (cột 2 từ Phải) | `5V_PWR_OUT` | 🔴 Đỏ | Cực `(+)` 4 Motor // & Cực `(+)` Còi Buzzer | Cấp nguồn +5V cho cơ cấu chấp hành (motor + còi). |
+| **PIN 6** | Hàng Dưới (cột 3 từ Phải) | `GND_MASS` | ⚫ Đen to (20AWG) | Cực `OUT-` Buck, `GND` GPS, `Emitter` 2N2222 | **Mass chung toàn hệ thống**. Bắt buộc thông mạch. |
+| **PIN 8** | Hàng Dưới (cột 4 từ Phải) | `GPIO 14` (TXD) | 🟣 Tím | Module GPS NEO-6M (Chân `RXD`) | UART TX ➔ RX (Pi gửi lệnh sang GPS). |
+| **PIN 10** | Hàng Dưới (cột 5 từ Phải) | `GPIO 15` (RXD) | 🔵 Xanh Dương | Module GPS NEO-6M (Chân `TXD`) | UART RX 🠔 TX (Pi nhận toạ độ NMEA từ GPS). |
+| **PIN 11** | Hàng Trên (cột 6 từ Phải) | `GPIO 17` | 🟢 Xanh Lá | Qua trở `1kΩ` ➔ `Base` 2N2222 (4 Motor //) | Kích rung toàn bộ cụm 4 motor rung mắc song song. |
+| **PIN 18** | Hàng Dưới (cột 9 từ Phải) | `GPIO 24` | 🌸 Hồng | Qua trở `1kΩ` ➔ `Base` S8050 (Còi Buzzer) | Kích còi báo động Active Buzzer 5V. |
+| **PIN 20** | Hàng Dưới (cột 10 từ Phải) | `GND_MASS` | ⚫ Đen | `Emitter` S8050 & Chân 2 Nút Bấm SOS | Mass âm cho còi và chân đối diện nút SOS. |
+| **PIN 22** | Hàng Dưới (cột 11 từ Phải) | `GPIO 25` | 🟡 Vàng | Chân 1 Nút Bấm Khẩn Cấp SOS | Tín hiệu nút SOS (Active LOW, **ĐÃ BỎ TỤ LỌC**). |
 
----
-
-### BƯỚC 3: SAO CHÉP MÃ NGUỒN VÀO RASPBERRY PI
-
-Toàn bộ mã nguồn đã được tạo sẵn trong thư mục:
-`c:\Users\Public\Documents\Altium\08052026\Smart_helmet\smart_helmet_pi\`
-
-Bạn có thể chép vào Pi bằng 1 trong 3 cách sau:
-
-#### Cách 1: Dùng USB Flash Drive (Đơn giản nhất)
-1. Cắm USB vào máy tính Windows, copy toàn bộ thư mục `smart_helmet_pi` vào USB.
-2. Rút USB cắm sang Raspberry Pi.
-3. Mở Terminal trên Pi và copy vào thư mục cá nhân:
-   ```bash
-   cp -r /media/$USER/* /smart_helmet_pi ~/smart_helmet_pi
-   cd ~/smart_helmet_pi
-   ```
-
-#### Cách 2: Dùng phần mềm WinSCP (Truyền qua mạng WiFi)
-1. Bật tính năng SSH trên Raspberry Pi.
-2. Tải phần mềm WinSCP trên máy tính, nhập IP của con Pi, tài khoản và mật khẩu.
-3. Kéo thả thư mục `smart_helmet_pi` từ máy tính vào thư mục `/home/<tên_user>/` trên Pi.
+*(30 chân còn lại hoàn toàn để trống - NC).*
 
 ---
 
-### BƯỚC 4: CHẠY CÀI ĐẶT TỰ ĐỘNG (1-CLICK SETUP)
+### BƯỚC 2: CẮM CỤM 3 CAMERA (CSI + USB 3.0)
 
-Mở Terminal trên Raspberry Pi và chạy 2 lệnh sau:
+1. **Camera Trước (MIPI CSI):** Cắm cáp dải ribbon vào cổng CSI (Camera Slot) trên bo mạch Pi 4, mặt tiếp xúc màu bạc quay về phía cổng HDMI.
+2. **Camera Điểm Mù Trái:** Cắm vào cổng USB 3.0 màu xanh (Trên).
+3. **Camera Điểm Mù Phải:** Cắm vào cổng USB 3.0 màu xanh (Dưới).
+
+---
+
+### BƯỚC 3: TẢI CODE TỪ GITHUB VỀ RASPBERRY PI 4
+
+Mở Terminal trên Raspberry Pi 4 (hoặc SSH vào Pi):
 
 ```bash
-cd ~/smart_helmet_pi
-chmod +x setup.sh
+# 1. Cập nhật hệ thống và cài đặt git
+sudo apt update && sudo apt install -y git python3-pip python3-opencv
+
+# 2. Clone mã nguồn dự án từ GitHub
+cd ~
+git clone https://github.com/trandat09062003/Smart_Helmet.git
+
+# 3. Di chuyển vào thư mục code Pi
+cd ~/Smart_Helmet/smart_helmet_pi
+
+# 4. Cấp quyền thực thi cho các file script
+chmod +x *.sh *.py
+```
+
+---
+
+### BƯỚC 4: CÀI ĐẶT MÔI TRƯỜNG & THƯ VIỆN PHẦN MỀM
+
+Chạy script cài đặt tự động (mất khoảng 3-5 phút):
+
+```bash
 ./setup.sh
 ```
 
-**Script `setup.sh` sẽ tự động làm toàn bộ các việc sau:**
-- Cập nhật thư viện Linux OS, cài `espeak-ng` (giọng nói tiếng Việt), `ffmpeg`, `v4l-utils`.
-- Tạo môi trường ảo Python `venv` độc lập.
-- Cài đặt đầy đủ `opencv`, `ultralytics` (YOLOv8-Nano), `flask`, `RPi.GPIO`.
-- Tự động tải sẵn mô hình AI `yolov8n.pt`.
-- Đăng ký dịch vụ `smart_helmet.service` để **mũ tự động khởi động chạy ngầm mỗi khi cắm pin/bật nguồn!**
+Hoặc cài thủ công qua pip:
+```bash
+pip3 install -r requirements.txt
+```
 
 ---
 
-### BƯỚC 5: KIỂM TRA CHẠY THỬ & ĐIỀU KHIỂN
+### BƯỚC 5: CHẨN ĐOÁN & KIỂM TRA PHẦN CỨNG (HARDWARE TEST)
 
-#### 1. Chạy thử nghiệm trực tiếp trên màn hình:
+Trước khi chạy hệ thống chính, chạy công cụ kiểm tra tự động để đảm bảo 100% linh kiện hoạt động tốt:
+
 ```bash
-cd ~/smart_helmet_pi
+python3 test_hardware.py
+```
+* **Chọn 1:** Test cụm 4 motor rung (rung mạnh trong 1.2s).
+* **Chọn 2:** Test còi Buzzer (kêu 3 tiếng bíp ngắn).
+* **Chọn 3:** Test nút bấm SOS (bấm nút trên mũ để phát hiện mức 0).
+* **Chọn 4:** Test module GPS (đọc bản tin NMEA qua cổng UART).
+* **Chọn 5:** Chạy toàn bộ bài test tự động.
+
+Kiểm tra hình ảnh từ 3 camera:
+```bash
+python3 test_cameras.py
+```
+
+---
+
+### BƯỚC 6: KHỞI ĐỘNG HỆ THỐNG CHÍNH
+
+#### Cách 1: Chạy trực tiếp trên Terminal (Xem log thời gian thực):
+```bash
 ./run.sh
-# Hoặc thủ công:
-# source venv/bin/activate
-# python3 main.py
 ```
-- Khi khởi động: Mũ sẽ kêu "bíp", rung nhẹ 4 hướng và loa phát giọng nói: *"Hệ thống Mũ thông minh 360 độ đã sẵn sàng hoạt động."*
-- Đưa tay hoặc để người di chuyển xung quanh 4 hướng:
-  - Vật cản ở góc nào -> Motor hướng đó rung cảnh báo.
-  - Vật cản tiến lại gần -> Rung dồn dập và phát loa thông báo.
-
-#### 2. Mở Giao diện Web Dashboard phục vụ Thuyết trình & Giám khảo:
-Mở trình duyệt (trên điện thoại hoặc laptop bất kỳ kết nối cùng WiFi với con Pi):
-```
-http://<Địa_chỉ_IP_con_Pi>:5000
-```
-*(Ví dụ: `http://192.168.1.15:5000`)*
-
-**Trên Web Dashboard bạn sẽ thấy:**
-- Khung nhìn 3 Camera thời gian thực (Trước, Sau, Phải) đồng bộ cùng cơ chế phân vùng không gian góc Trái.
-- Vòng tròn Radar mô phỏng trạng thái 4 motor rung (sáng đỏ khi rung).
-- Tọa độ GPS thời gian thực.
-- Nút bấm test còi và test báo động SOS.
-
-#### 3. Quản lý Dịch vụ Tự Khởi Động:
-Có thể dùng các script tiện ích sẵn có:
+Hoặc:
 ```bash
-./start_background.sh   # Bật dịch vụ chạy ngầm
-./status.sh             # Kiểm tra trạng thái dịch vụ và API
-./stop.sh               # Tắt dịch vụ chạy ngầm
+python3 main.py
 ```
-Hoặc dùng trực tiếp lệnh hệ thống `systemctl`:
-- Xem trạng thái: `sudo systemctl status smart_helmet.service`
-- Khởi động lại: `sudo systemctl restart smart_helmet.service`
-- Tạm dừng: `sudo systemctl stop smart_helmet.service`
+
+#### Cách 2: Chạy ngầm trong nền (Chạy tự động khi gắn mũ lên xe):
+```bash
+./start_background.sh
+```
+
+* **Kiểm tra trạng thái đang chạy:**
+  ```bash
+  ./status.sh
+  ```
+* **Xem log thời gian thực:**
+  ```bash
+  tail -f smart_helmet.log
+  ```
+* **Dừng chương trình:**
+  ```bash
+  ./stop.sh
+  ```
+
+---
+
+### BƯỚC 7: TRUY CẬP WEB DASHBOARD GIÁM SÁT 360°
+
+Khi hệ thống đang chạy, bạn có thể dùng điện thoại hoặc máy tính bảng kết nối cùng mạng WiFi với Pi để xem camera và toạ độ:
+* Mở trình duyệt web gõ: `http://<IP_CỦA_PI_4>:5000`
+* Ví dụ: `http://192.168.1.50:5000`
+* Giao diện sẽ hiển thị đồng thời:
+  * 3 Luồng Camera Live Stream (Trước, Sau-Phải, Sau-Trái).
+  * Hộp nhận diện vật thể AI Bounding Box (Người, Ô tô, Xe máy, Xe tải...).
+  * Bản đồ GPS vị trí hiện tại.
+  * Trạng thái rung haptic 4 hướng và còi cảnh báo.

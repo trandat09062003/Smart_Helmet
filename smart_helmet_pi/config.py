@@ -1,26 +1,36 @@
 """
-SMART HELMET 360 - CẤU HÌNH HỆ THỐNG TRÊN RASPBERRY PI
+SMART HELMET 360 - CẤU HÌNH HỆ THỐNG TRÊN RASPBERRY PI 4 MODEL B
 Đề tài Nghiên Cứu Khoa Học Kỹ Thuật 2026
-Kiến trúc Triple-Camera 360° (Chạy đồng thời 3 Camera ở FPS thấp + Phân Vùng Không Gian 4 Hướng Haptic)
+Kiến trúc Triple-Camera 360° AI + Cụm 4 Motor Rung Song Song + Còi Buzzer + SOS + GPS
 """
 import os
 
 # ==============================================================================
-# 1. CẤU HÌNH GPIO (CHÂN BCM TRÊN RASPBERRY PI 4 / 5)
+# 1. CẤU HÌNH GPIO (CHÂN BCM TRÊN RASPBERRY PI 4) - KHỚP 100% SƠ ĐỒ ĐẤU DÂY
 # ==============================================================================
-# 4 Motor rung định hướng haptic (qua mạch đệm Transistor / MOSFET)
-PIN_MOTOR_FRONT = 17   # Chân kích motor Trước trán (Front)
-PIN_MOTOR_RIGHT = 27   # Chân kích motor Thái dương phải (Right)
-PIN_MOTOR_REAR  = 22   # Chân kích motor Gáy sau (Rear)
-PIN_MOTOR_LEFT  = 23   # Chân kích motor Thái dương trái (Left)
+# Chế độ điều khiển động cơ rung:
+# - 'PARALLEL': 4 Động cơ rung mắc song song, điều khiển qua 1 Transistor NPN 2N2222
+#               trên duy nhất chân GPIO 17 (Cọc vật lý Pin 11 - Dây Xanh Lá).
+#               (Chuẩn thiết kế phần cứng nón bảo hiểm: rung cực mạnh 5V cả 4 vị trí).
+# - 'DISCRETE': 4 Động cơ rung điều khiển độc lập qua 4 chân GPIO riêng biệt.
+MOTOR_MODE = 'PARALLEL'
 
-# Còi Buzzer cảnh báo âm lượng lớn
-PIN_BUZZER      = 24   # Chân còi báo động chủ động (Active Buzzer)
+# Chân kích cụm 4 motor rung song song (Pin 11 - Dây Xanh Lá)
+PIN_MOTOR_PARALLEL = 17
 
-# Nút nhấn khẩn cấp SOS (Pull-up nội bộ, nhấn nối đất GND)
-PIN_BUTTON_SOS  = 25   # Chân nút SOS khẩn cấp
+# Cấu hình chân tương thích (Dù cảnh báo hướng nào cũng kích rung cụm 4 motor):
+PIN_MOTOR_FRONT = 17
+PIN_MOTOR_RIGHT = 17 if MOTOR_MODE == 'PARALLEL' else 27
+PIN_MOTOR_REAR  = 17 if MOTOR_MODE == 'PARALLEL' else 22
+PIN_MOTOR_LEFT  = 17 if MOTOR_MODE == 'PARALLEL' else 23
 
-# Map các hướng tới chân GPIO (Đầy đủ 4 hướng rung xúc giác trên mũ)
+# Còi Buzzer cảnh báo chủ động (Pin 18 - Dây Hồng qua Transistor NPN S8050)
+PIN_BUZZER      = 24   # Chân BCM GPIO 24
+
+# Nút nhấn khẩn cấp SOS (Pin 22 - Dây Vàng, ĐÃ BỎ TỤ LỌC, dùng PULL_UP nội)
+PIN_BUTTON_SOS  = 25   # Chân BCM GPIO 25 (Active LOW - Bấm dập xuống GND Pin 20)
+
+# Map các hướng tới chân GPIO
 MOTOR_PINS = {
     'FRONT': PIN_MOTOR_FRONT,
     'RIGHT': PIN_MOTOR_RIGHT,
@@ -29,7 +39,17 @@ MOTOR_PINS = {
 }
 
 # ==============================================================================
-# 2. CẤU HÌNH KIẾN TRÚC 3 CAMERA TAM GIÁC ĐỒNG THỜI (CONTINUOUS LOW-FPS 120°)
+# 2. CẤU HÌNH GPS NEO-6M (CỔNG UART PHẦN CỨNG TRÊN PI 4)
+# ==============================================================================
+# Cổng UART phần cứng trên Raspberry Pi 4 (GPIO 14 TX Pin 8 & GPIO 15 RX Pin 10)
+# Mặc định là /dev/serial0 (hoặc /dev/ttyAMA0), fallback sang /dev/ttyUSB0 nếu cắm cáp nạp USB
+GPS_SERIAL_PORT = "/dev/serial0"
+GPS_BAUDRATE    = 9600
+DEFAULT_LAT     = 10.7769
+DEFAULT_LON     = 106.7009
+
+# ==============================================================================
+# 3. CẤU HÌNH KIẾN TRÚC 3 CAMERA TAM GIÁC ĐỒNG THỜI (CONTINUOUS LOW-FPS 120°)
 # ==============================================================================
 # Kiểu bố trí 3 Camera vật lý trên mũ:
 # - 'TRI_120': Bố trí tam giác đều 120° (Trước 0°, Sau-Phải 120°, Sau-Trái 240°)
@@ -44,9 +64,9 @@ AUTO_DISCOVER_CAMERAS = True
 # Fallback index ưu tiên theo thứ tự cổng USB trên Hub:
 # (Trên Linux mỗi webcam tạo 2 node, ví dụ video0 là hình, video1 là metadata)
 CAMERA_INDICES = {
-    'FRONT':      0,    # /dev/video0 (Cổng USB 1 - Cam Trước 0°)
-    'REAR_RIGHT': 2,    # /dev/video2 (Cổng USB 2 - Cam Sau-Phải 120°)
-    'REAR_LEFT':  4,    # /dev/video4 (Cổng USB 3 - Cam Sau-Trái 240°)
+    'FRONT':      0,    # /dev/video0 (Cổng CSI ribbon hoặc Cổng USB 1 - Cam Trước 0°)
+    'REAR_RIGHT': 2,    # /dev/video2 (Cổng USB 3.0 trên - Cam Sau-Phải 120°)
+    'REAR_LEFT':  4,    # /dev/video4 (Cổng USB 3.0 dưới - Cam Sau-Trái 240°)
     'REAR':       2,    # Tương thích ngược nếu đặt tên REAR
     'RIGHT':      4     # Tương thích ngược nếu đặt tên RIGHT
 }
@@ -71,7 +91,7 @@ ZONE_FRONT_RIGHT_RATIO = 0.72   # > 72% chiều ngang Cam Trước -> Lệch sư
 ZONE_REAR_SPLIT_RATIO  = 0.50   # Chia nửa ảnh giữa hướng hông sườn và hướng sau gáy
 
 # ==============================================================================
-# 3. CẤU HÌNH MÔ HÌNH AI NHẬN DIỆN VẬT THỂ
+# 4. CẤU HÌNH MÔ HÌNH AI NHẬN DIỆN VẬT THỂ
 # ==============================================================================
 AI_MODEL_PATH = os.path.join(os.path.dirname(__file__), 'models', 'yolov8n.pt')
 CONFIDENCE_THRESHOLD = 0.40
@@ -105,23 +125,20 @@ VIETNAMESE_LABELS = {
 }
 
 # ==============================================================================
-# 4. CẤU HÌNH KHOẢNG CÁCH & BỘ LỌC CẢNH BÁO THÔNG MINH
+# 5. CẤU HÌNH KHOẢNG CÁCH & BỘ LỌC CẢNH BÁO THÔNG MINH
 # ==============================================================================
 BBOX_RATIO_CRITICAL = 0.28   # >28% khung hình: Rất gần (< 1m) -> Báo động mức ĐỎ
 BBOX_RATIO_WARNING  = 0.12   # >12% khung hình: Gần (1m - 2m) -> Báo động mức VÀNG
 VOICE_COOLDOWN_SECONDS = 3.5
 
 # ==============================================================================
-# 5. CẤU HÌNH WEB DASHBOARD CHO GIÁM KHẢO / NGƯỜI THÂN
+# 6. CẤU HÌNH WEB DASHBOARD CHO GIÁM KHẢO / NGƯỜI THÂN
 # ==============================================================================
 WEB_HOST = '0.0.0.0'
 WEB_PORT = 5000
 
 # ==============================================================================
-# 6. CẤU HÌNH SOS & TELEGRAM BOT (TÙY CHỌN)
+# 7. CẤU HÌNH SOS & TELEGRAM BOT (TÙY CHỌN)
 # ==============================================================================
 TELEGRAM_BOT_TOKEN = ""
 TELEGRAM_CHAT_ID   = ""
-DEFAULT_LAT = 10.7769
-DEFAULT_LON = 106.7009
-GPS_SERIAL_PORT = "/dev/ttyUSB0"
